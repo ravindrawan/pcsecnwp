@@ -1,0 +1,1999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>North Western Provincial Council Office</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@300;400;700&family=Noto+Sans+Tamil:wght@300;400;700&family=Segoe+UI:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif,
+                         'Noto Sans Sinhala', 'Noto Sans Tamil', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+            overflow-x: hidden;
+        }
+
+        .search-container {
+            position: relative;
+            margin-left: 2rem;
+            z-index: 10002; /* Higher than everything */
+        }
+
+        .search-dropdown {
+            position: absolute;
+            top: calc(100% + 10px);
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            max-height: 500px;
+            overflow-y: auto;
+            z-index: 10003; /* Even higher to ensure visibility */
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .search-results-header {
+            padding: 12px 16px;
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border-bottom: 2px solid #3b82f6;
+            font-weight: 600;
+            color: #1e3c72;
+            font-size: 0.9rem;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        .search-result-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 16px;
+            border-bottom: 1px solid #f1f5f9;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .search-result-item:hover {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            padding-left: 24px;
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-result-item i {
+            color: #3b82f6;
+            font-size: 1.2rem;
+            margin-top: 3px;
+            min-width: 20px;
+        }
+
+        .search-result-content {
+            flex: 1;
+        }
+
+        .search-result-content strong {
+            display: block;
+            color: #1e3c72;
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .search-result-content p {
+            color: #666;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        .search-result-item mark {
+            background: linear-gradient(135deg, #fef08a, #fde047);
+            color: #854d0e;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        .no-results {
+            justify-content: center;
+            padding: 30px 20px;
+            text-align: center;
+            color: #94a3b8;
+            cursor: default;
+        }
+
+        .no-results:hover {
+            background: transparent;
+            padding: 30px 20px;
+        }
+
+        .no-results i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            opacity: 0.5;
+        }
+
+        /* Scrollbar styling for search dropdown */
+        .search-dropdown::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .search-dropdown::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .search-dropdown::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        .search-dropdown::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Loading state */
+        .search-loading {
+            padding: 20px;
+            text-align: center;
+            color: #3b82f6;
+        }
+
+        .search-loading i {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .search-dropdown {
+                left: -100px;
+                right: -100px;
+                max-height: 400px;
+            }
+            
+            .search-result-content strong {
+                font-size: 0.9rem;
+            }
+            
+            .search-result-content p {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Royal Door Opening Animation */
+        .royal-doors {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10000;
+            pointer-events: none;
+        }
+
+        .door {
+            position: absolute;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 50%, #1e293b 100%);
+            transition: transform 2s cubic-bezier(0.77, 0, 0.175, 1);
+            overflow: hidden;
+        }
+
+        .door::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(90deg, 
+                    transparent, 
+                    transparent 40px, 
+                    rgba(255,255,255,0.03) 40px, 
+                    rgba(255,255,255,0.03) 80px);
+            z-index: 1;
+        }
+
+        .door::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+            border-radius: 50%;
+            transform: translateY(-50%);
+            box-shadow: 
+                0 0 30px rgba(251, 191, 36, 0.6),
+                inset 0 0 20px rgba(0,0,0,0.3);
+            z-index: 2;
+        }
+
+        .door-left {
+            left: 0;
+            border-right: 4px solid #fbbf24;
+            box-shadow: inset -20px 0 50px rgba(0,0,0,0.5);
+        }
+
+        .door-left::after {
+            right: 30px;
+        }
+
+        .door-right {
+            right: 0;
+            border-left: 4px solid #fbbf24;
+            box-shadow: inset 20px 0 50px rgba(0,0,0,0.5);
+        }
+
+        .door-right::after {
+            left: 30px;
+        }
+
+        .door-left.open {
+            transform: translateX(-100%);
+        }
+
+        .door-right.open {
+            transform: translateX(100%);
+        }
+
+        .door-ornament {
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 80%;
+            border: 3px solid rgba(251, 191, 36, 0.3);
+            border-radius: 10px;
+            z-index: 1;
+        }
+
+        .door-ornament::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 2px solid rgba(251, 191, 36, 0.2);
+            border-radius: 8px;
+        }
+
+        /* Header with Enhanced Prismatic Effects */
+        .header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            color: white;
+            padding: 1rem 0;
+            position: absolute;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+            overflow: visible;
+        }
+
+        #prismaticCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.7;
+            z-index: 1;
+        }
+
+        .header > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        .top-bar {
+            background: rgba(0,0,0,0.3);
+            padding: 0.5rem 0;
+            font-size: 0.9rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .top-bar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .contact-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .contact-info i {
+            color: #60a5fa;
+        }
+
+        .divider {
+            color: rgba(255,255,255,0.3);
+        }
+
+        .language-selector {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .language-btn {
+            padding: 8px 12px;
+            background-color: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 0.8rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .language-btn:hover {
+            background-color: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(96, 165, 250, 0.3);
+        }
+        
+        .language-btn.active {
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+            color: white;
+            border-color: #60a5fa;
+            box-shadow: 0 4px 12px rgba(96, 165, 250, 0.4);
+        }
+
+        .main-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+            border-radius: 20%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(96, 165, 250, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 12px 32px rgba(96, 165, 250, 0.6);
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20%;
+        }
+
+        .site-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .site-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            color: #94a3b8;
+        }
+
+        .nav {
+            background: rgba(0,0,0,0.2);
+            padding: 0;
+            backdrop-filter: blur(10px);
+            overflow: visible;
+            position: relative;
+            z-index: 100; /* Lower than search */
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-item {
+            position: relative;
+            z-index: 100;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 1rem 1.5rem;
+            display: block;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #60a5fa, #3b82f6);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(96, 165, 250, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-link:hover::before {
+            width: 80%;
+        }
+
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: linear-gradient(135deg, #1e293b, #334155);
+            min-width: 200px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            z-index: 101; /* Just above nav items but below search */
+        }
+
+        .nav-item:hover .dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown a {
+            color: #e2e8f0;
+            padding: 0.75rem 1rem;
+            display: block;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .dropdown a:hover {
+            background: rgba(96, 165, 250, 0.2);
+            padding-left: 1.5rem;
+            color: #60a5fa;
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .search-input {
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 25px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            width: 250px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .search-input:focus {
+            outline: none;
+            background: rgba(255,255,255,0.2);
+            width: 300px;
+            box-shadow: 0 4px 12px rgba(96, 165, 250, 0.3);
+            border-color: #60a5fa;
+        }
+
+        .search-input::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .news-ticker {
+            background: linear-gradient(135deg, #1e3a8a, #1e40af);
+            color: white;
+            padding: 0.5rem 0;
+            overflow: hidden;
+            position: fixed;
+            top: 140px;
+            width: 100%;
+            z-index: 999;
+            border-top: 2px solid #60a5fa;
+        }
+
+        .ticker-content {
+            white-space: nowrap;
+            animation: ticker 60s linear infinite;
+        }
+
+        @keyframes ticker {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Enhanced Hero Section */
+        .hero {
+            margin-top: 180px;
+            height: 80vh;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+            z-index: 2;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+
+        .hero-slideshow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .hero-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+            animation: kenburns 20s ease-in-out infinite;
+        }
+
+        @keyframes kenburns {
+            0% { transform: scale(1) translateX(0); }
+            50% { transform: scale(1.1) translateX(-20px); }
+            100% { transform: scale(1) translateX(0); }
+        }
+
+        .hero-slide.active {
+            opacity: 1;
+        }
+
+        .hero-slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(15, 23, 42, 0.7) 0%, 
+                rgba(30, 41, 59, 0.5) 50%, 
+                rgba(51, 65, 85, 0.7) 100%);
+            z-index: 1;
+        }
+
+        /* Floating particles */
+        .hero-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: radial-gradient(circle, rgba(96, 165, 250, 0.8) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 15s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(50px); opacity: 0; }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            color: white;
+            max-width: 800px;
+            padding: 0 2rem;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
+            text-shadow: 
+                2px 2px 4px rgba(0,0,0,0.3),
+                0 0 30px rgba(96, 165, 250, 0.5);
+            font-weight: 700;
+        }
+
+        .hero-content p {
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease 0.2s both;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, #3b82f6, #60a5fa);
+            color: white;
+            padding: 1.2rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            transition: all 0.3s ease;
+            animation: fadeInUp 1s ease 0.4s both;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .cta-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .cta-button:hover {
+            background: linear-gradient(45deg, #2563eb, #3b82f6);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.6);
+        }
+
+        .slideshow-controls {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 4;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .control-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .control-dot.active {
+            background: #60a5fa;
+            border-color: white;
+            transform: scale(1.2);
+            box-shadow: 0 0 10px rgba(96, 165, 250, 0.8);
+        }
+
+        .slide-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .slide-arrow:hover {
+            background: rgba(96, 165, 250, 0.4);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .slide-arrow.prev {
+            left: 2rem;
+        }
+
+        .slide-arrow.next {
+            right: 2rem;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #1e3c72;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+            margin: 1rem auto;
+            border-radius: 2px;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .about-img {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+            transition: all 0.4s ease;
+        }
+
+        .about-img:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(59, 130, 246, 0.3);
+        }
+
+        .about-img img {
+            width: 100%;
+            height: auto;
+            transition: all 0.4s ease;
+        }
+
+        .about-img:hover img {
+            transform: scale(1.08);
+        }
+
+        .about-text h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #1e3c72;
+        }
+
+        .about-text p {
+            margin-bottom: 15px;
+        }
+
+        .about-text ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .about-text li {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .about-text li:hover {
+            transform: translateX(10px);
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+        }
+
+        .about-text li i {
+            color: #3b82f6;
+            margin-top: 0.3rem;
+            font-size: 1.2rem;
+        }
+
+        .leadership {
+            padding: 4rem 0;
+            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+        }
+
+        .leaders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 10rem;
+        }
+
+        .leader-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+            filter: grayscale(0.2);
+        }
+
+        .leader-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            cursor: pointer;
+        }
+       
+        .leader-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #3b82f6, #60a5fa, #93c5fd);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+            z-index: 10;
+        }
+
+        .leader-card:hover {
+            transform: translateY(-20px) scale(1.05);
+            box-shadow: 0 30px 80px rgba(59, 130, 246, 0.35);
+            z-index: 100;
+        }
+
+        .leader-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .leader-image {
+            width: 100%;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .leader-card:hover .leader-image img {
+            transform: scale(1.15);
+            filter: grayscale(0) brightness(1.1);
+        }
+
+        .leader-info {
+            padding: 2rem;
+            text-align: center;
+            background: linear-gradient(180deg, white 0%, #f8fafc 100%);
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .leader-info::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(96, 165, 250, 0.1) 50%, 
+                transparent 100%);
+            transition: left 0.8s ease;
+        }
+
+        .leader-card:hover .leader-info::before {
+            left: 100%;
+        }
+
+        .leader-info h3 {
+            font-size: 1.5rem;
+            color: #1e3c72;
+            margin-bottom: 0.5rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .leader-card:hover .leader-info h3 {
+            color: #3b82f6;
+            transform: scale(1.1) translateY(-5px);
+            text-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .leader-info p {
+            color: #666;
+            margin-bottom: 0.5rem;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .leader-card:hover .leader-info p {
+            color: #1e3c72;
+            transform: translateY(-3px);
+        }
+
+        .leader-card:hover .leader-info p strong {
+            color: #3b82f6;
+            font-size: 1.05em;
+        }
+
+        /* Add staggered animation delay for multiple cards */
+        .leaders-grid .leader-card:nth-child(1) {
+            animation: fadeInUp 0.6s ease 0.1s both;
+        }
+
+        .leaders-grid .leader-card:nth-child(2) {
+            animation: fadeInUp 0.6s ease 0.3s both;
+        }
+
+        /* Add subtle pulse on initial load */
+        .leader-card {
+            animation: subtlePulse 2s ease-in-out 2s 3;
+        }
+
+        @keyframes subtlePulse {
+            0%, 100% {
+                box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            }
+            50% {
+                box-shadow: 0 10px 40px rgba(59, 130, 246, 0.15);
+            }
+        }
+
+        .leader-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, 
+                transparent 0%, 
+                transparent 40%,
+                rgba(59, 130, 246, 0.1) 70%,
+                rgba(59, 130, 246, 0.3) 100%);
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            z-index: 2;
+        }
+
+        .leader-card:hover .leader-image::after {
+            opacity: 1;
+        }
+
+        .leader-card:hover .leader-image::before {
+            width: 600px;
+            height: 600px;
+            opacity: 1;
+        }
+
+        .leader-image::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+            z-index: 1;
+            opacity: 0;
+        }
+
+        .leader-card:hover .leader-image {
+            height: 500px;
+        }
+
+        .statistics {
+            padding: 4rem 0;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .statistics::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(96, 165, 250, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-item {
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+        }
+
+        .stat-item:hover {
+            background: rgba(96, 165, 250, 0.15);
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(96, 165, 250, 0.3);
+            border-color: rgba(96, 165, 250, 0.5);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            display: block;
+            background: linear-gradient(135deg, #60a5fa, #93c5fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: white;
+            padding: 3rem 0 1rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: #60a5fa;
+        }
+
+        .footer-section p,
+        .footer-section li {
+            margin-bottom: 0.5rem;
+            line-height: 1.8;
+            color: #94a3b8;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: #60a5fa;
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1rem;
+            text-align: center;
+            color: #64748b;
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                margin-top: 160px;
+                height: 70vh;
+            }
+            
+            .main-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .search-container {
+                margin-left: 0;
+                margin-top: 1rem;
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .nav-menu {
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: linear-gradient(135deg, #0f172a, #1e293b);
+                display: none;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .dropdown {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                background: rgba(0,0,0,0.2);
+            }
+
+            .dropdown a {
+                color: white !important;
+            }
+
+            .slide-arrow {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+
+            .top-bar-content {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .search-input {
+                width: 100%;
+            }
+
+            .search-input:focus {
+                width: 100%;
+            }
+
+            .search-dropdown {
+                left: 0;
+                right: 0;
+            }
+        }
+
+        *:focus {
+            outline: 2px solid #60a5fa;
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Royal Doors -->
+    <div class="royal-doors">
+        <div class="door door-left">
+            <div class="door-ornament"></div>
+        </div>
+        <div class="door door-right">
+            <div class="door-ornament"></div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <canvas id="prismaticCanvas"></canvas>
+        
+        <div class="top-bar">
+            <div class="container">
+                <div class="top-bar-content">
+                    <div class="contact-info">
+                        <i class="fas fa-phone"></i> <span data-translate="phone">+94 37 222 3391</span>
+                        <span class="divider">|</span>
+                        <i class="fas fa-envelope"></i> <span data-translate="email">nwpcouncil@gmail.com</span>
+                    </div>
+                    
+                    <div class="language-selector">
+                        <button class="language-btn active" data-lang="en">English</button>
+                        <button class="language-btn" data-lang="si">සිංහල</button>
+                        <button class="language-btn" data-lang="ta">தமிழ்</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="main-header">
+                <div class="logo-section">
+                    <div class="logo">
+                        <img src="logo.jpeg" alt="NWP Logo" class="logo">
+                    </div>
+                    <div>
+                        <h1 class="site-title" data-translate="site-title">North Western Provincial Council</h1>
+                        <div class="site-subtitle" data-translate="site-subtitle">Democratic Governance • Development • Service</div>
+                    </div>
+                </div>
+                <div class="search-container">
+                    <input type="search" class="search-input" placeholder="Search..." data-translate="search-placeholder" aria-label="Search">
+                </div>
+                <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <nav class="nav">
+            <div class="container">
+                <ul class="nav-menu" id="navMenu">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-translate="nav-home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="aboutus-si.html" class="nav-link" data-translate="nav-about">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-translate="nav-history">History</a>
+                        <div class="dropdown">
+                            <a href="firstcouncil-si.html" data-translate="nav-1st-council">1st Council</a>
+                            <a href="secondcouncil-si.html" data-translate="nav-2nd-council">2nd Council</a>
+                            <a href="thirdcouncil-si.html" data-translate="nav-3rd-council">3rd Council</a>
+                            <a href="fourthcouncil-si.html" data-translate="nav-4th-council">4th Council</a>
+                            <a href="fifthcouncil-si.html" data-translate="nav-5th-council">5th Council</a>
+                            <a href="sixthcouncil-si.html" data-translate="nav-6th-council">6th Council</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-translate="nav-members">Members</a>
+                        <div class="dropdown">
+                            <a href="chairman-si.html" data-translate="nav-chairman">Chairman</a>
+                            <a href="ruling-si.html" data-translate="nav-parties">Parties</a>
+                            <a href="opposition-si.html" data-translate="nav-opposition">Opposition</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-translate="nav-downloads">Downloads</a>
+                        <div class="dropdown">
+                            <a href="hansard-si.html" data-translate="nav-hansard">Hansard</a>
+                            <a href="statute-si.html" data-translate="nav-statutes">Statutes</a>
+                            <a href="applicationsforms-si.html" data-translate="nav-applications">Applications & Forms</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a href="gallery-si.html" class="nav-link" data-translate="nav-gallery">Photo Gallery</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="contactus-si.html" class="nav-link" data-translate="nav-contact">Contact Us</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-slideshow" id="heroSlideshow">
+            <div class="hero-slide active" style="background-image: url('photo/1.jpg')"></div>
+            <div class="hero-slide" style="background-image: url('photo/2.jpg')"></div>
+            <div class="hero-slide" style="background-image: url('photo/3.jpg')"></div>
+            <div class="hero-slide" style="background-image: url('photo/4.jpg')"></div>
+        </div>
+        
+        <div class="hero-particles" id="heroParticles"></div>
+        
+        <div class="hero-content">
+            <h1 data-translate="hero-title">Serving the North Western Province</h1>
+            <p data-translate="hero-subtitle">Building Tomorrow, Today</p>
+            <a href="#about" class="cta-button" data-translate="cta-button">Explore Our Services</a>
+        </div>
+
+        <button class="slide-arrow prev" onclick="changeSlide(-1)">‹</button>
+        <button class="slide-arrow next" onclick="changeSlide(1)">›</button>
+
+        <div class="slideshow-controls" id="slideshowControls">
+            <div class="control-dot active" onclick="goToSlide(0)"></div>
+            <div class="control-dot" onclick="goToSlide(1)"></div>
+            <div class="control-dot" onclick="goToSlide(2)"></div>
+            <div class="control-dot" onclick="goToSlide(3)"></div>
+        </div>
+    </section>
+
+    <div id="about" class="page-content">
+        <section style="padding: 4rem 0;">
+            <div class="container">
+                <div class="about-content">
+                    <div class="about-img">
+                        <img src="photo/Sencoolaya.jpg" alt="NWP Council Office">
+                    </div>
+                    <div class="about-text">
+                        <h3 data-translate="vision-title">Our Vision</h3>
+                        <p data-translate="vision-text">"A prosperous Northwestern people."</p>
+
+                        <h3 data-translate="mission-title">Our Mission</h3>
+                        <p data-translate="mission-text">We strive to be a responsive, transparent, and inclusive governmental body that addresses the needs and aspirations of our diverse communities.</p>
+
+                        <h3 data-translate="goals-title">Our Goals</h3>
+                        <ul>
+                            <li>
+                                <i class="fas fa-chart-line"></i>
+                                <span>Implementation of statutory committees, provincial council meetings and advisory committees.</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-users"></i>
+                                <span>Provision of facilities for officials and staff.</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-building"></i>
+                                <span>Institutional affairs and human resource development of the Council Secretariat.</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-coins"></i>
+                                <span>Financial management and maintenance of physical resources of the Council Secretariat.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <section class="leadership">
+        <div class="container">
+            <h2 class="section-title" data-translate="leadership-title">Leadership</h2>
+            <div class="leaders-grid">
+                <div class="leader-card">
+                    <div class="leader-image">
+                        <img src="photo/chairman.jpg" alt="Chairman">
+                    </div>
+                    <div class="leader-info">
+                        <h3 data-translate="chairman-title">Hon. Chairman</h3>
+                        <p><strong data-translate="chairman-name">A.M.T.B.Adhikari</strong></p>
+                        <p data-translate="chairman-position">North Western Provincial Council.</p>
+                    </div>
+                </div>
+                <div class="leader-card">
+                    <div class="leader-image">
+                        <img src="photo/secretary.jpg" alt="Secretary">
+                    </div>
+                    <div class="leader-info">
+                        <h3 data-translate="secretary-title">Secretary</h3>
+                        <p><strong data-translate="secretary-name">M.A.S.Marasinghe</strong></p>
+                        <p data-translate="secretary-position">North Western Provincial Council Office.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="statistics">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number" data-translate="stat-population-num">2.4M</span>
+                    <span class="stat-label" data-translate="stat-population">Population Served</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-translate="stat-area-num">7,812</span>
+                    <span class="stat-label" data-translate="stat-area">Square Kilometers</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-translate="stat-members-num">52</span>
+                    <span class="stat-label" data-translate="stat-members">Council Members</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-translate="stat-departments-num">15</span>
+                    <span class="stat-label" data-translate="stat-departments">Departments</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3 data-translate="footer-contact-title">Contact Information</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> <span data-translate="footer-office">North Western Provincial Council Office</span></p>
+                    <p data-translate="footer-address">Council Office Complex, Kurunegala</p>
+                    <p data-translate="footer-province">North Western Province, Sri Lanka</p>
+                    <p><i class="fas fa-phone"></i> +94 37 222 3391</p>
+                    <p><i class="fas fa-envelope"></i> nwpcouncil@gmail.com</p>
+                </div>
+                <div class="footer-section">
+                    <h3 data-translate="footer-links-title">Quick Links</h3>
+                    <ul>
+                        <li><a href="aboutus-si.html">About Us</a></li>
+                        <li><a href="hansard-si.html">Hansard</a></li>
+                        <li><a href="statute-si.html">Statutes</a></li>
+                        <li><a href="applicationsforms-si.html">Applications & Forms</a></li>
+                        <li><a href="contactus-si.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3 data-translate="footer-services-title">Services</h3>
+                    <ul>
+                        <li><a href="https://governor.nw.gov.lk/">Governor's Office</a></li>
+                        <li><a href="https://psc.nw.gov.lk/">Provincial Public Service Commission</a></li>
+                        <li><a href="http://cs.nw.gov.lk/">Chief Secretary Office</a></li>
+                        <li><a href="https://www.cm.nw.gov.lk/chiefmin_nwp/index.php">Chief Ministry</a></li>
+                        <li><a href="https://www.health.gov.lk/">Ministry of Health</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Council Secretariat - NWP. All rights reserved.</p>
+                <p>Official Government Website - www.nwpc.gov.lk</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Royal Door Animation
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                document.querySelector('.door-left').classList.add('open');
+                document.querySelector('.door-right').classList.add('open');
+                
+                setTimeout(() => {
+                    document.querySelector('.royal-doors').style.display = 'none';
+                }, 2000);
+            }, 500);
+        });
+
+        // Enhanced Prismatic Light Rays with Flowing Curves
+        const canvas = document.getElementById('prismaticCanvas');
+        const ctx = canvas.getContext('2d');
+        let mouseX = 0;
+        let mouseY = 0;
+        let rays = [];
+
+        function resizeCanvas() {
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            mouseX = canvas.width / 2;
+            mouseY = canvas.height / 2;
+            initRays();
+        }
+
+        function initRays() {
+            rays = [];
+            const numRays = 24;
+            
+            for (let i = 0; i < numRays; i++) {
+                rays.push({
+                    baseAngle: (Math.PI * 2 * i) / numRays,
+                    color: `hsl(${(360 / numRays) * i}, 85%, 70%)`,
+                    width: Math.random() * 3 + 2,
+                    phase: Math.random() * Math.PI * 2,
+                    speed: Math.random() * 0.02 + 0.01,
+                    amplitude: Math.random() * 40 + 30,
+                    length: Math.random() * 100 + 150,
+                    segments: []
+                });
+            }
+        }
+
+        function drawRays() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            
+            const dx = mouseX - centerX;
+            const dy = mouseY - centerY;
+            const mouseDistance = Math.sqrt(dx * dx + dy * dy);
+            const mouseAngle = Math.atan2(dy, dx);
+            
+            rays.forEach((ray, index) => {
+                ray.phase += ray.speed;
+                
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                
+                let angleDiff = mouseAngle - ray.baseAngle;
+                while (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
+                while (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
+                
+                const angleProximity = 1 - Math.abs(angleDiff) / Math.PI;
+                const distanceInfluence = Math.min(mouseDistance / 200, 1);
+                const totalInfluence = angleProximity * distanceInfluence * 0.6;
+                
+                const numPoints = 80;
+                const points = [];
+                
+                for (let i = 0; i <= numPoints; i++) {
+                    const t = i / numPoints;
+                    
+                    const currentAngle = ray.baseAngle + angleDiff * totalInfluence * (1 - Math.pow(1 - t, 2));
+                    
+                    const wave = Math.sin(ray.phase + t * Math.PI * 3) * ray.amplitude * (1 - t * 0.5);
+                    const perpAngle = currentAngle + Math.PI / 2;
+                    
+                    const distance = ray.length * t;
+                    let x = centerX + Math.cos(currentAngle) * distance;
+                    let y = centerY + Math.sin(currentAngle) * distance;
+                    
+                    x += Math.cos(perpAngle) * wave * t;
+                    y += Math.sin(perpAngle) * wave * t;
+                    
+                    if (mouseDistance < 300) {
+                        const segmentDx = mouseX - x;
+                        const segmentDy = mouseY - y;
+                        const segmentDist = Math.sqrt(segmentDx * segmentDx + segmentDy * segmentDy);
+                        
+                        if (segmentDist < 200) {
+                            const pull = (1 - segmentDist / 200) * 20 * t;
+                            x += (segmentDx / segmentDist) * pull;
+                            y += (segmentDy / segmentDist) * pull;
+                        }
+                    }
+                    
+                    points.push({ x, y, t });
+                }
+                
+                if (points.length > 0) {
+                    ctx.moveTo(points[0].x, points[0].y);
+                    
+                    for (let i = 1; i < points.length - 2; i++) {
+                        const xc = (points[i].x + points[i + 1].x) / 2;
+                        const yc = (points[i].y + points[i + 1].y) / 2;
+                        ctx.quadraticCurveTo(points[i].x, points[i].y, xc, yc);
+                    }
+                    
+                    if (points.length > 2) {
+                        ctx.quadraticCurveTo(
+                            points[points.length - 2].x,
+                            points[points.length - 2].y,
+                            points[points.length - 1].x,
+                            points[points.length - 1].y
+                        );
+                    }
+                }
+                
+                const gradient = ctx.createLinearGradient(
+                    centerX, centerY,
+                    points[points.length - 1].x,
+                    points[points.length - 1].y
+                );
+                gradient.addColorStop(0, ray.color.replace('70%', '0%'));
+                gradient.addColorStop(0.2, ray.color);
+                gradient.addColorStop(0.8, ray.color);
+                gradient.addColorStop(1, ray.color.replace('70%', '0%'));
+                
+                ctx.strokeStyle = gradient;
+                ctx.lineWidth = ray.width;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                
+                ctx.shadowBlur = 20;
+                ctx.shadowColor = ray.color;
+                ctx.stroke();
+                
+                ctx.shadowBlur = 35;
+                ctx.globalAlpha = 0.4;
+                ctx.stroke();
+                
+                ctx.shadowBlur = 50;
+                ctx.globalAlpha = 0.2;
+                ctx.stroke();
+                
+                ctx.globalAlpha = 1;
+                ctx.shadowBlur = 0;
+            });
+            
+            requestAnimationFrame(drawRays);
+        }
+
+        let targetMouseX = 0;
+        let targetMouseY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            if (e.clientY < 200) {
+                const rect = canvas.getBoundingClientRect();
+                targetMouseX = e.clientX - rect.left;
+                targetMouseY = e.clientY - rect.top;
+            }
+        });
+
+        // Search functionality
+        const searchData = {
+            pages: [
+                {
+                    title: 'Home',
+                    url: 'index.html',
+                    keywords: ['home', 'main', 'welcome', 'north western', 'provincial council', 'nwp'],
+                    content: 'North Western Provincial Council - Democratic Governance, Development, Service'
+                },
+                {
+                    title: 'About Us',
+                    url: 'aboutus-si.html',
+                    keywords: ['about', 'information', 'overview', 'council', 'introduction'],
+                    content: 'Learn about North Western Provincial Council, our history, mission and vision'
+                },
+                {
+                    title: 'Chairman',
+                    url: 'chairman-si.html',
+                    keywords: ['chairman', 'leader', 'chief', 'head', 'A.M.T.B.Adhikari'],
+                    content: 'Hon. Chairman A.M.T.B.Adhikari - North Western Provincial Council'
+                },
+                {
+                    title: 'Ruling Parties',
+                    url: 'ruling-si.html',
+                    keywords: ['ruling', 'parties', 'government', 'coalition', 'members'],
+                    content: 'Ruling party members of the North Western Provincial Council'
+                },
+                {
+                    title: 'Opposition',
+                    url: 'opposition-si.html',
+                    keywords: ['opposition', 'members', 'minority', 'parliament'],
+                    content: 'Opposition members of the North Western Provincial Council'
+                },
+                {
+                    title: '1st Council',
+                    url: 'firstcouncil-si.html',
+                    keywords: ['first', '1st', 'council', 'history', 'initial', 'beginning'],
+                    content: 'History of the First North Western Provincial Council'
+                },
+                {
+                    title: '2nd Council',
+                    url: 'secondcouncil-si.html',
+                    keywords: ['second', '2nd', 'council', 'history'],
+                    content: 'History of the Second North Western Provincial Council'
+                },
+                {
+                    title: '3rd Council',
+                    url: 'thirdcouncil-si.html',
+                    keywords: ['third', '3rd', 'council', 'history'],
+                    content: 'History of the Third North Western Provincial Council'
+                },
+                {
+                    title: '4th Council',
+                    url: 'fourthcouncil-si.html',
+                    keywords: ['fourth', '4th', 'council', 'history'],
+                    content: 'History of the Fourth North Western Provincial Council'
+                },
+                {
+                    title: '5th Council',
+                    url: 'fifthcouncil-si.html',
+                    keywords: ['fifth', '5th', 'council', 'history'],
+                    content: 'History of the Fifth North Western Provincial Council'
+                },
+                {
+                    title: '6th Council',
+                    url: 'sixthcouncil-si.html',
+                    keywords: ['sixth', '6th', 'council', 'history', 'current'],
+                    content: 'History of the Sixth North Western Provincial Council'
+                },
+                {
+                    title: 'Hansard',
+                    url: 'hansard-si.html',
+                    keywords: ['hansard', 'proceedings', 'debates', 'documents', 'records'],
+                    content: 'Official records and proceedings of the Provincial Council'
+                },
+                {
+                    title: 'Statutes',
+                    url: 'statute-si.html',
+                    keywords: ['statutes', 'laws', 'regulations', 'acts', 'legislation'],
+                    content: 'Provincial statutes, laws and regulations'
+                },
+                {
+                    title: 'Applications & Forms',
+                    url: 'applicationsforms-si.html',
+                    keywords: ['applications', 'forms', 'documents', 'downloads', 'templates'],
+                    content: 'Download application forms and documents'
+                },
+                {
+                    title: 'Photo Gallery',
+                    url: 'gallery-si.html',
+                    keywords: ['gallery', 'photos', 'images', 'pictures', 'events'],
+                    content: 'Photo gallery of council events and activities'
+                },
+                {
+                    title: 'Contact Us',
+                    url: 'contactus-si.html',
+                    keywords: ['contact', 'address', 'phone', 'email', 'location', 'reach'],
+                    content: 'Contact information - North Western Provincial Council Office, Kurunegala'
+                }
+            ]
+        };
+
+        function createSearchDropdown() {
+            const searchContainer = document.querySelector('.search-container');
+            const searchDropdown = document.createElement('div');
+            searchDropdown.className = 'search-dropdown';
+            searchDropdown.id = 'searchDropdown';
+            searchContainer.appendChild(searchDropdown);
+        }
+
+        function performSearch(query) {
+            const searchDropdown = document.getElementById('searchDropdown');
+            
+            if (!query || query.trim().length < 2) {
+                searchDropdown.style.display = 'none';
+                return;
+            }
+            
+            const searchTerm = query.toLowerCase().trim();
+            const results = searchData.pages.filter(page => {
+                return page.title.toLowerCase().includes(searchTerm) ||
+                       page.keywords.some(keyword => keyword.includes(searchTerm)) ||
+                       page.content.toLowerCase().includes(searchTerm);
+            });
+            
+            displaySearchResults(results, searchTerm);
+        }
+
+        function displaySearchResults(results, searchTerm) {
+            const searchDropdown = document.getElementById('searchDropdown');
+            
+            if (results.length === 0) {
+                searchDropdown.innerHTML = `
+                    <div class="search-result-item no-results">
+                        <i class="fas fa-search"></i>
+                        <div>
+                            <strong>No results found</strong>
+                            <p>Try different keywords</p>
+                        </div>
+                    </div>
+                `;
+                searchDropdown.style.display = 'block';
+                return;
+            }
+            
+            let resultsHTML = `<div class="search-results-header">Found ${results.length} result${results.length > 1 ? 's' : ''}</div>`;
+            
+            results.forEach(result => {
+                const highlightedTitle = highlightText(result.title, searchTerm);
+                const highlightedContent = highlightText(result.content, searchTerm);
+                
+                resultsHTML += `
+                    <a href="${result.url}" class="search-result-item">
+                        <i class="fas fa-file-alt"></i>
+                        <div class="search-result-content">
+                            <strong>${highlightedTitle}</strong>
+                            <p>${highlightedContent}</p>
+                        </div>
+                    </a>
+                `;
+            });
+            
+            searchDropdown.innerHTML = resultsHTML;
+            searchDropdown.style.display = 'block';
+        }
+
+        function highlightText(text, searchTerm) {
+            const regex = new RegExp(`(${searchTerm})`, 'gi');
+            return text.replace(regex, '<mark>$1</mark>');
+        }
+
+        function updateMouse() {
+            mouseX += (targetMouseX - mouseX) * 0.1;
+            mouseY += (targetMouseY - mouseY) * 0.1;
+            requestAnimationFrame(updateMouse);
+        }
+
+        canvas.addEventListener('mouseenter', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            targetMouseX = e.clientX - rect.left;
+            targetMouseY = e.clientY - rect.top;
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+            targetMouseX = canvas.width / 2;
+            targetMouseY = canvas.height / 2;
+        });
+
+        function createParticles() {
+            const container = document.getElementById('heroParticles');
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.width = (Math.random() * 4 + 2) + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.hero-slide');
+        const dots = document.querySelectorAll('.control-dot');
+        let slideInterval;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+            currentSlide = index;
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        function changeSlide(direction) {
+            currentSlide = (currentSlide + direction + slides.length) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        function goToSlide(index) {
+            showSlide(index);
+        }
+
+        function startSlideshow() {
+            slideInterval = setInterval(nextSlide, 6000);
+        }
+
+        function stopSlideshow() {
+            clearInterval(slideInterval);
+        }
+
+        const translations = {
+            en: {
+                'site-title': 'North Western Provincial Council',
+                'site-subtitle': 'Democratic Governance • Development • Service',
+                'search-placeholder': 'Search...',
+                'nav-home': 'Home',
+                'nav-about': 'About Us',
+                'nav-history': 'History',
+                'nav-1st-council': '1st Council',
+                'nav-2nd-council': '2nd Council',
+                'nav-3rd-council': '3rd Council',
+                'nav-4th-council': '4th Council',
+                'nav-5th-council': '5th Council',
+                'nav-6th-council': '6th Council',
+                'nav-members': 'Members',
+                'nav-chairman': 'Chairman',
+                'nav-parties': 'Parties',
+                'nav-opposition': 'Opposition',
+                'nav-downloads': 'Downloads',
+                'nav-hansard': 'Hansard',
+                'nav-statutes': 'Statutes',
+                'nav-applications': 'Applications & Forms',
+                'nav-gallery': 'Photo Gallery',
+                'nav-contact

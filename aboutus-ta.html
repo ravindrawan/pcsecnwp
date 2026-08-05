@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - North Western Provincial Council</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 20%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #1e3c72;
+        }
+
+        .site-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .back-home {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border: 2px solid white;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .back-home:hover {
+            background: white;
+            color: #1e3c72;
+        }
+
+        .page-header {
+            margin-top: 100px;
+            background: linear-gradient(135deg, 
+                #6a11cb 0%,
+                #2575fc 25%,
+                #00d4ff 50%,
+                #7c3aed 75%,
+                #ec4899 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            color: white;
+            text-align: center;
+            padding: 5rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .breadcrumb {
+            background: white;
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .breadcrumb-nav {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #666;
+        }
+
+        .breadcrumb a {
+            color: #1e3c72;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .main-content {
+            padding: 4rem 0;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        .content-section {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: #1e3c72;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: #ff6b35;
+            border-radius: 2px;
+        }
+
+        .content-section p {
+            margin-bottom: 1rem;
+            text-align: justify;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #ff6b35 0%, #f7941d 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .highlight-box h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .vmv-section {
+            background: white;
+            margin: 2rem 0;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .vmv-tabs {
+            display: flex;
+            background: #f8f9fa;
+        }
+
+        .vmv-tab {
+            flex: 1;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            background: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .vmv-tab.active {
+            background: #1e3c72;
+            color: white;
+        }
+
+        .vmv-content {
+            padding: 2.5rem;
+        }
+
+        .vmv-panel {
+            display: none;
+        }
+
+        .vmv-panel.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .vmv-panel h3 {
+            color: #1e3c72;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .council-composition {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin: 2rem 0;
+        }
+
+        .composition-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .composition-item {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            border-left: 4px solid #ff6b35;
+        }
+
+        .composition-item .count {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1e3c72;
+            display: block;
+        }
+
+        .composition-item .role {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        .council-history {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin: 2rem 0;
+        }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2rem;
+        }
+
+        .history-table th,
+        .history-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .history-table th {
+            background: #1e3c72;
+            color: white;
+        }
+
+        .history-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .sidebar-widget {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .widget-title {
+            font-size: 1.3rem;
+            color: #1e3c72;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #ff6b35;
+            padding-bottom: 0.5rem;
+        }
+
+        .quick-links {
+            list-style: none;
+        }
+
+        .quick-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .quick-links a {
+            color: #666;
+            text-decoration: none;
+            padding: 0.5rem 0;
+            display: block;
+            border-bottom: 1px solid #eee;
+            transition: all 0.3s ease;
+        }
+
+        .quick-links a:hover {
+            color: #1e3c72;
+            padding-left: 10px;
+        }
+
+        .contact-info {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .contact-info h3 {
+            margin-bottom: 1rem;
+        }
+
+        .contact-info p {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stats-section {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 3rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            padding: 1rem;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .vmv-tabs {
+                flex-direction: column;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .history-table {
+                font-size: 0.9rem;
+            }
+
+            .composition-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        *:focus {
+            outline: 2px solid #ff6b35;
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo">
+                        <img src="logo.jpeg" alt="Girl in a jacket" width="200" height="200" class="logo">
+                    </div>
+                    <div class="site-title">வட மேல் மாகாண சபை</div>
+                </div>
+                <a href="hometa.html" class="back-home">
+                    <i class="fas fa-home"></i> முகப்புக்குத் திரும்பு
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>எங்களைப் பற்றி</h1>
+            <p>வரலாறு, பார்வை, நோக்கம் மற்றும் அதிகாரப் பகிர்வு பற்றிய சுருக்கமான அறிமுகம்.</p>
+        </div>
+    </section>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container">
+            <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+                <a href="#">முகப்பு</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>எங்களைப் பற்றி</span>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="content-grid">
+                <!-- Main Content Area -->
+                <div class="content-area">
+                    <!-- Introduction -->
+                    <div class="content-section">
+                        <h2 class="section-title">அறிமுகம்</h2>
+                        <p>1987 இல், இலங்கை அரசியலமைப்பின் 13வது திருத்தம் மற்றும் 1987 இன் 42 ஆம் இலக்க மாகாண சபைகள் சட்டம் மூலம் வழங்கப்பட்ட விதிகளின் கீழ் மாகாண சபைகள் நிறுவப்பட்டன. இலங்கை அரசியலமைப்பின் 13வது திருத்தத்தின் கீழ், இலங்கையின் ஒவ்வொரு மாகாணத்திற்கும் ஒரு மாகாண சபையை நிறுவுவதற்கான விதிகள் செய்யப்பட்டுள்ளன.</p>
+
+<p>இந்த மாகாண சபைகளை நிறுவும்போது, அரசியலமைப்பின் 13வது திருத்தத்தின்படி, மாகாண சபையின் உறுப்பினர்களின் எண்ணிக்கை சம்பந்தப்பட்ட மாகாணத்தின் நில பரப்பளவு மற்றும் மக்கள்தொகையின் அடிப்படையில் தீர்மானிக்கப்பட்டது. 21.03.1988 தேதியிட்ட 499/10 ஆம் இலக்க அசாதாரண வர்த்தமானி அறிவித்தல் மூலம், ஒவ்வொரு மாகாண சபையிலும் உள்ள உறுப்பினர்களின் எண்ணிக்கை மற்றும் மாகாண சபையில் உள்ளடக்கப்பட்ட தேர்தல் மாவட்டங்களின் எண்ணிக்கை தீர்மானிக்கப்பட்டன.</p>
+
+<p>இந்த அனைத்து விதிகளுக்கும் உட்பட்டு, வடமேல் மாகாண சபை தேர்தல் 28.04.1988 அன்று நடத்தப்பட்டது, மேலும் முதல் மாகாண சபை கூட்டம் 12.05.1988 அன்று நடைபெற்றது. ஆளுநர் மாகாண சபையின் நிறைவேற்று அதிகாரியாவார், மேலும் அரசியலமைப்பின் 154(அ) பிரிவின்படி, ஆளுநர் ஜனாதிபதியால் நியமிக்கப்படுகிறார்.</p>
+
+<p>வடமேல் மாகாணத்திற்கு 52 உறுப்பினர்களைக் கொண்ட சட்டமன்றம் நிறுவப்பட்டுள்ளது. மாகாண சபையின் அமைச்சரவையின் அமைப்பு முதலமைச்சர் உட்பட ஐந்து உறுப்பினர்களைக் கொண்டது.</p>
+
+<p>ஒவ்வொரு மாகாணத்திலும், ஒவ்வொரு அமைச்சுக்கும் 05 ஆலோசனைக் குழுக்கள் மற்றும் மாகாண கணக்குகள், சட்டவாக்கம், சபை விவகாரங்கள் மற்றும் பொது மனுக்களுக்கான 04 நிலைக்குழுக்கள் உள்ளன.</p>
+                        
+                        
+                    </div>
+
+                    <!-- Council Composition -->
+                    <div class="council-composition">
+                        <h2 class="section-title">சபை அமைப்பு</h2>
+                        <p>திறம்பட ஆட்சி செய்வதை உறுதிசெய்ய சபை பல்வேறு தலைமைப் பதவிகளை உள்ளடக்கியது.</p>
+                        
+                        <div class="composition-grid">
+                            <div class="composition-item">
+                                <span class="count">01</span>
+                                <span class="role">தலைவர்</span>
+                            </div>
+                            <div class="composition-item">
+                                <span class="count">01</span>
+                                <span class="role">துணைத் தலைவர்</span>
+                            </div>
+                            <div class="composition-item">
+                                <span class="count">01</span>
+                                <span class="role">சபைத் தலைவர்</span>
+                            </div>
+                            <div class="composition-item">
+                                <span class="count">05</span>
+                                <span class="role">அமைச்சர்கள் (முதலமைச்சர் உட்பட)</span>
+                            </div>
+                            <div class="composition-item">
+                                <span class="count">01</span>
+                                <span class="role">எதிர்க்கட்சித் தலைவர்</span>
+                            </div>
+                            <div class="composition-item">
+                                <span class="count">01</span>
+                                <span class="role">அரசாங்க சவுக்கடி</span>
+                            </div>
+                            <div class="composition-item">
+                                <span class="count">01</span>
+                                <span class="role">எதிர்க்கட்சி சவுக்கடி</span>
+                            </div>
+                            <div class="composition-item">
+                                <span class="count">41</span>
+                                <span class="role">உறுப்பினர்கள்</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Council History -->
+                    <div class="council-history">
+                        <h2 class="section-title">சபை வரலாறு</h2>
+                        
+                        
+                        <table class="history-table">
+                            <thead>
+                                <tr>
+                                    <th>மாகாண சபை</th>
+                                    <th>பதவிக் காலம்</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>முதல் மாகாண சபை</td>
+                                    <td>1988.05.12 முதல் 1993.03.16 வரை</td>
+                                </tr>
+                                <tr>
+                                    <td>இரண்டாம் மாகாண சபை</td>
+                                    <td>1993.11.11 முதல் 1998.11.02 வரை</td>
+                                </tr>
+                                <tr>
+                                    <td>மூன்றாம் மாகாண சபை</td>
+                                    <td>1999.02.09 முதல் 2004.02.07 வரை</td>
+                                </tr>
+                                <tr>
+                                    <td>நான்காம் மாகாண சபை</td>
+                                    <td>2004.05.18 முதல் 2008.12.08 வரை</td>
+                                </tr>
+                                <tr>
+                                    <td>ஐந்தாம் மாகாண சபை</td>
+                                    <td>2009.03.12 முதல் 2013.07.05 வரை</td>
+                                </tr>
+                                <tr>
+                                    <td>ஆறாம் மாகாண சபை</td>
+                                    <td>2013.10.11 முதல் 2018.10.10 வரை</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Activities & Functions -->
+                    
+
+                    <!-- Statistics -->
+                    <div class="stats-section">
+                        <h2 style="margin-bottom: 1rem;">எண்ணிக்கை அடிப்படையில் வடமேல் மாகாண சபை</h2>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <span class="stat-number">52</span>
+                                <span class="stat-label">சபை உறுப்பினர்கள்</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">2</span>
+                                <span class="stat-label">நிர்வாக மாவட்டங்கள்</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">5</span>
+                                <span class="stat-label">ஆலோசனைக் குழுக்கள்</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">4</span>
+                                <span class="stat-label">நிலைக்குழுக்கள்</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">6</span>
+                                <span class="stat-label">சபை பதவிக் காலங்கள்</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">35+</span>
+                                <span class="stat-label">சேவை ஆண்டுகள்</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <aside class="sidebar">
+                    <!-- Quick Links -->
+                    <div class="sidebar-widget">
+                        <h3 class="widget-title">விரைவு இணைப்புகள்</h3>
+                        <ul class="quick-links">
+                            <li><a href="firstcouncil.html"><i class="fas fa-users"></i> 1வது சபை</a></li>
+                            <li><a href="secondcouncil.html"><i class="fas fa-users"></i> 2வது சபை</a></li>
+                            <li><a href="thirdcouncil.html"><i class="fas fa-users"></i> 3வது சபை</a></li>
+                            <li><a href="fourthcouncil.html"><i class="fas fa-users"></i> 4வது சபை</a></li>
+                            <li><a href="fifthcouncil.html"><i class="fas fa-users"></i> 5வது சபை</a></li>
+                            <li><a href="sixthcouncil.html"><i class="fas fa-users"></i> 6வது சபை</a></li>
+                            <li><a href="hansard.html"><i class="fas fa-download"></i> ஹன்சார்ட்</a></li>
+                            <li><a href="statute.html"><i class="fas fa-download"></i> சட்டம்</a></li>
+                            <li><a href="contactus.html"><i class="fas fa-envelope"></i> எங்களைத் தொடர்பு கொள்ளுங்கள்</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Contact Information -->
+                    <div class="sidebar-widget">
+                        <div class="contact-info">
+                            <h3><i class="fas fa-phone"></i> எங்களைத் தொடர்பு கொள்ளுங்கள்</h3>
+                            <p><i class="fas fa-map-marker-alt"></i>வடமேல் மாகாண சபை  </p>
+			<p>செயலாளர் அலுவலகம்,</p>
+			<p>4 ஆம் மாடி,</p>
+			<p>வடமேல் மாகாண சபை  </p>
+			<p>அலுவலக வளாகம்,</p>
+			<p>குருணாகல்.</p>
+                            <p><i class="fas fa-phone"></i> +94 37 222 3391</p>
+                            <p><i class="fas fa-envelope"></i> nwpcouncil@gmail.com</p>
+                            <p><i class="fas fa-clock"></i> திங்கள்-வெள்ளி: காலை 8:30 - மாலை 4:15</p>
+                        </div>
+                    </div>
+
+                    <!-- Latest Updates -->
+                    <div class="sidebar-widget">
+                        <h3 class="widget-title">சமீபத்திய புதுப்பிப்புகள்</h3>
+                        <div style="border-left: 3px solid #ff6b35; padding-left: 1rem; margin-bottom: 1rem;">
+                            <h4 style="color: #1e3c72; font-size: 0.9rem; margin-bottom: 0.5rem;">சபை கூட்டம்</h4>
+                            <p style="font-size: 0.8rem; color: #666;">அடுத்த மாகாண சபை அமர்வு ............இல் நடைபெறும் என திட்டமிடப்பட்டுள்ளது.</p>
+                        </div>
+                    </div>
+
+                    <!-- Districts Covered -->
+                    <div class="sidebar-widget">
+                        <h3 class="widget-title">உள்ளடக்கிய மாவட்டங்கள்</h3>
+                        <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                            <h4 style="color: #1e3c72; margin-bottom: 0.5rem;">குருணாகல் மாவட்டம்</h4>
+                            <p style="font-size: 0.9rem; color: #666;">நிர்வாக மையம்</p>
+                        </div>
+                        <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px;">
+                            <h4 style="color: #1e3c72; margin-bottom: 0.5rem;">புத்தளம் மாவட்டம்</h4>
+                            <p style="font-size: 0.9rem; color: #666;"></p>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Vision, Mission, Values Tab Functionality
+        function showTab(tabName) {
+            // Hide all panels
+            const panels = 

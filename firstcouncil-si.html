@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1st Council (1988-1993) - North Western Provincial Council</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans Sinhala', 'Nirmala UI', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 20%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #1e3c72;
+        }
+
+        .site-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border: 2px solid transparent;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            border-color: white;
+        }
+
+        .nav-link.back-home {
+            border-color: white;
+        }
+
+        .nav-link.back-home:hover {
+            background: white;
+            color: #1e3c72;
+        }
+
+        /* Page Header */
+         .page-header {
+            margin-top: 100px;
+            background: linear-gradient(135deg, 
+                #6a11cb 0%,
+                #2575fc 25%,
+                #00d4ff 50%,
+                #7c3aed 75%,
+                #ec4899 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            color: white;
+            text-align: center;
+            padding: 5rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+
+        .page-header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .page-header .subtitle {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .page-header .period {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            background: white;
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .breadcrumb-nav {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #666;
+        }
+
+        .breadcrumb a {
+            color: #1e3c72;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 4rem 0;
+        }
+
+        .section {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: #1e3c72;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: #ff6b35;
+            border-radius: 2px;
+        }
+
+        .section p {
+            margin-bottom: 1rem;
+            text-align: justify;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        /* Statistics */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-item {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        /* Key Dates */
+        .key-dates {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .date-item {
+            background: linear-gradient(135deg, #e8f5e8, #c8e6c9);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #27ae60;
+        }
+
+        .date-item strong {
+            display: block;
+            color: #27ae60;
+            margin-bottom: 5px;
+        }
+
+        /* Leadership */
+        .leadership-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .leadership-item {
+            background: linear-gradient(135deg, #fff5f5, #ffe0e0);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #e74c3c;
+        }
+
+        .leadership-item h4 {
+            color: #c0392b;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .leadership-item p {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #34495e, #2c3e50);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+            transition: all 0.2s ease;
+        }
+
+        .party-unp { border-left: 4px solid #27ae60; }
+        .party-usf { border-left: 4px solid #e74c3c; }
+        .party-slmc { border-left: 4px solid #f39c12; }
+
+        /* Tabs */
+        .tab-container {
+            margin-bottom: 20px;
+        }
+
+        .tabs {
+            display: flex;
+            background: #ecf0f1;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            background: #bdc3c7;
+            color: #2c3e50;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 1em;
+            min-width: 150px;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+        }
+
+        .tab:hover {
+            background: #95a5a6;
+        }
+
+        .tab.active:hover {
+            background: linear-gradient(135deg, #2980b9, #3498db);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .page-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .page-header .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .leadership-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .tab {
+                flex: none;
+            }
+        }
+
+        /* Accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        *:focus {
+            outline: 2px solid #ff6b35;
+            outline-offset: 2px;
+        }
+
+        /* Skip Link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: #1e3c72;
+            color: white;
+            padding: 8px;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .skip-link:focus {
+            top: 6px;
+        }
+    </style>
+</head>
+<body>
+    <a href="#main-content" class="skip-link">ප්‍රධාන අන්තර්ගතයට යන්න</a>
+
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo">
+                        <img src="logo.jpeg" alt="Girl in a jacket" width="200" height="200" class="logo">
+                    </div>
+                    <div class="site-title">වයඹ පළාත් සභාව</div>
+                </div>
+                <nav class="nav-links">
+                    <a href="homesi.html" class="nav-link back-home">
+                        <i class="fas fa-home"></i> මුල් පිටුවට
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="page-header">
+        <div class="container">
+            <h1>1 වන පළාත් සභාව</h1>
+            <div class="period">1988 මැයි 12 - 1993 මාර්තු 16</div>
+        </div>
+    </section>
+
+    <div class="breadcrumb">
+        <div class="container">
+            <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+                <a href="#">මුල් පිටුව</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="#">ඉතිහාසය</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>1වන සභාව</span>
+            </nav>
+        </div>
+    </div>
+
+    <main class="main-content" id="main-content">
+        <div class="container">
+            
+
+            <div class="section">
+                <h2 class="section-title">සභා සංඛ්‍යාලේඛන</h2>
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-number">52</span>
+                        <span class="stat-label">ආරම්භක සාමාජිකයින්</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">4</span>
+                        <span class="stat-label">වසර සහ මාස 10</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">3</span>
+                        <span class="stat-label">දේශපාලන පක්ෂ</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">13</span>
+                        <span class="stat-label">නවක මන්ත්‍රිවරු</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">ප්‍රධාන දිනයන්</h2>
+                <div class="key-dates">
+                    <div class="date-item">
+                        <strong>පළාත් සභා මැතිවරණය පැවැත්වූ දිනය </strong>
+                        1988 අප්‍රේල් 28
+                    </div>
+                    <div class="date-item">
+                        <strong>සභිකයන් දිවුරුම් දුන් දිනය</strong>
+                        1988 මැයි 9
+                    </div>
+                    <div class="date-item">
+                        <strong>පළවන සභා රැස්වීම පැවැත්වූ  දිනය</strong>
+                        1988 මැයි 12
+                    </div>
+                    <div class="date-item">
+                        <strong>පළාත් සභාව විසුරවා හරින ලද දිනය </strong>
+                        1993 මාර්තු 16
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">නායකත්වය</h2>
+                
+                <div class="leadership-grid">
+                    <div class="leadership-item">
+                        <h4>ආණ්ඩුකාරවරු</h4>
+                        <p><strong><small>ගරු ඩී.බී. විජේතුංග මැතිතුමා</small></strong><br>
+                        <small>1988 අප්‍රේල් 30 - 1988 දෙසැම්බර් 31</small></p>
+                        <p><strong><small>ගරු මොන්ටේගු ජයවික්‍රම මැතිතුමා</small></strong><br>
+                        <small>1989 ජනවාරි 1 - 1993 ඔක්තෝබර් 12</small></p>
+                    </div>
+                    
+                    <div class="leadership-item">
+                        <h4>ප්‍රධාන අමාත්‍ය</h4>
+                        <p><strong><small>ගරු ගාමිණි ජයවික්‍රම පෙරේරා මැතිතුමා</small></strong><br>
+                        <small>1988 මැයි 4 - 1993 මාර්තු 16</small></p>
+                    </div>
+                    
+                    <div class="leadership-item">
+                        <h4>සභාපති</h4>
+                        <p><strong><small>ගරු රිචී ප්‍රනාන්දුපුල්ලේ  මැතිතුමා</small></strong><br>
+                        <small>1988 මැයි 12 - 1993 මාර්තු 16</small></p>
+                    </div>
+
+                    <div class="leadership-item">
+                        <h4>නියෝජ්‍ය සභාපතිවරු </h4>
+                        <p><strong><small>ගරු පියසෝම උපාලි මැතිතුමා</small></strong><br>
+                        <small>1988 මැයි 12 - 1988 ඔක්තෝබර් 11</small></p>
+                        <p><strong><small>ගරු රත්න ගුණසේකර මැතිතුමා</small></strong><br>
+                        <small>1989 මාර්තු 7 - 1993 මාර්තු 16</small></p>
+                    </div>
+
+                    <div class="leadership-item">
+                        <h4>සභානායකවරු </h4>
+                        <p><strong><small>ගරු රත්න ගුණසේකර මැතිතුමා</small></strong><br>
+                        <small>1988 මැයි 12 - 1989 මාර්තු 7</small></p>
+                        <p><strong><small>ගරු මුදියන්සේ රත්නායක මැතිතුමා</small></strong><br>
+                        <small>1989 මැයි 25 - 1993 මාර්තු 16</small></p>
+                    </div>
+                    
+                    <div class="leadership-item">
+                        <h4>ආණ්ඩුපක්ෂ සංවිධායකවරු</h4>
+                        <p><strong><small>ගරු රත්න ගුණසේකර මැතිතුමා</small></strong><br>
+                        <small>1988 මැයි 12 - 1989 මාර්තු 7</small></p>
+                        <p><strong><small>ගරු මුදියන්සේ රත්නායක මැතිතුමා</small></strong><br>
+                        <small>1989 මැයි 25 - 1993 මාර්තු 16</small></p>
+                    </div>
+
+                    <div class="leadership-item">
+                        <h4>විපක්ෂ  නායක</h4>
+                        <p><strong><small>ගරු රංජිත් නාවරත්න මැතිතුමා</small></strong><br>
+                        <small>1988 මැයි 12 - 1993 මාර්තු 16</small></p>
+                    </div>
+
+                    <div class="leadership-item">
+                        <h4>විපක්ෂ සංවිධායක</h4>
+                        <p><strong><small>ගරු නිමල්සිරි ඒකනායක මැතිතුමා</small></strong><br>
+                        <small>1988 ජූලි 12 - 1993 මාර්තු 16</small></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">පළාත් අමාත්‍යවරු</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>අමාත්‍යාංශය</th>
+                                <th>අමාත්‍යවරයා</th>
+                                <th>කාලය</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>ප්‍රධාන අමාත්‍යාංශය සහ අධ්‍යාපන හා කර්මාන්ත පළාත් අමාත්‍ය</td>
+                                <td>ගරු ගාමිණි ජයවික්‍රම පෙරේරා මැතිතුමා</td>
+                                <td>1988 මැයි 4 - 1993 මාර්තු 16</td>
+                            </tr>
+                            <tr>
+                                <td>ධීවර හා වනිතා කටයුතු පළාත් අමාත්‍ය</td>
+                                <td>ගරු ඩබ්.එම්. ලැරින් පෙරේරා මැතිණිය</td>
+                                <td>1988 ජූලි 12 - 1993 මාර්තු 16</td>
+                            </tr>
+                            <tr>
+                                <td>පළාත් පාලන නිවාස හා ඉදිකිරීම් පළාත් අමාත්‍ය</td>
+                                <td>ගරු ආරිය බී.රැකව මැතිතුමා </td>
+                                <td>1988 ජූලි 12 - 1988 දෙසැම්බර් 30</td>
+                            </tr>
+                            <tr>
+                                <td>කෘෂිකර්ම, ආහාර හා සමුපකාර පළාත් අමාත්‍ය</td>
+                                <td>ගරු ආර්.එම්. නිමල් බණ්ඩාර මැතිතුමා</td>
+                                <td>1988 ජූලි 12 - 1993 මාර්තු 16</td>
+                            </tr>
+                            <tr>
+                                <td>ඉඩම්, වාරිමාර්ග, ප්‍රවාහන හා සෞඛ්‍ය පළාත් අමාත්‍ය</td>
+                                <td>ගරු එන්.එම්. ධර්මදාස මැතිතුමා</td>
+                                <td>1988 ජූලි 12 - 1993 මාර්තු 16</td>
+                            </tr>
+                            <tr>
+                                <td>සමාජ සුබසාධන, තරුණ කටයුතු, ක්‍රීඩා හා සංස්කෘතික කටයුතු පළාත් අමාත්‍ය</td>
+                                <td>ගරු තිලක දාසනායක මැතිතුමා</td>
+                                <td>1989 මාර්තු 7 - 1992 ජූලි 20</td>
+                            </tr>
+                            <tr>
+                                <td>ඉඩම්, සංස්කෘතික, ග්‍රාමීය සංවර්ධන, ක්‍රීඩා හා යෞවන කටයුතු පළාත් අමාත්‍ය</td>
+                                <td>ගරු ඊ.එම්.ඩී.බී. ඒකනායක මැතිතුමා</td>
+                                <td>1992 අගෝස්තු 27 - 1993 මාර්තු 16</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">දේශපාලන පක්ෂ අනුව ගරු මැතිඇමතිවරුන්</h2>
+                <div class="tab-container">
+                    <div class="tabs">
+                        <button class="tab active" onclick="showTab('unp')">එක්සත් ජාතික පක්ෂය -31</button>
+                        <button class="tab" onclick="showTab('usf')">එක්සත් සමාජවාදී පෙරමුණ -19</button>
+                        <button class="tab" onclick="showTab('slmc')">ශ්‍රී ලංකා මුස්ලිම් කොන්ග්‍රස් පක්ෂය - 2</button>
+                        <button class="tab" onclick="showTab('new')">තේරී පත්වූ නවක මන්ත්‍රිවරු -13</button>
+                    </div>
+                    
+                    <div id="unp" class="tab-content active">
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>නම</th>
+                                        <th>සේවා කාලය</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>ගරු ගාමිණි ජයවික්‍රම පෙරේරා මැතිතුමා</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු ඩබ්.එම්. ලැරින් පෙරේරා මැතිණිය</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු ගරු ආරිය බී.රැකව මැතිතුමා </td><td>1988 මැයි 4 - 1988 දෙසැම්බර් 30</td></tr>
+                                    <tr><td>ගරු ආර්.එම්. නිමල් බණ්ඩාර මැතිතුමා</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු එන්.එම්. ධර්මදාස මැතිතුමා</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු ඒ.එච්.එම්. අලවි මැතිතුමා</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු පියසොම උපාලි මැතිතුමා</td><td>1988 මැයි 4 - 1988 නොවැම්බර් 10</td></tr>
+                                    <tr><td>ගරු එච්.එම්. විමලසිරි හේරත් මැතිතුමා</td><td>1988 මැයි 4 - 1989 ජනවාරි 11</td></tr>
+                                    <tr><td>ගරු ඩබ්.එම්. තෙන්නකෝන් මැතිතුමා</td><td>1988 මැයි 4 - 1988 දෙසැම්බර් 1</td></tr>
+                                    <tr><td>ගරු ආර්.එම්.ගුණසිංහ බණ්ඩා මැතිතුමා</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු අයි.එෆ්. බෙනඩික්ට් ප්‍රනාන්දු මැතිතුමා</td><td>1988 මැයි 4 - 1988 දෙසැම්බර් 1</td></tr>
+                                    <tr><td>ගරු ඩබ්.එම්.එස්.කේ. ධර්මවර්ධන මැතිණිය</td><td>1988 මැයි 4 - 1989 ජනවාරි 11</td></tr>
+                                    <tr><td>ගරු කේ.ඒ. සුමතිපාල මැතිතුමා</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු ආර්.එම්. රත්න ගුණසේකර මැතිතුමා</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු ජේ.ඒ.ඩී. මංගල ජයකොඩි මැතිතුමා</td><td>1988 මැයි 4 - 1990 මාර්තු 10</td></tr>
+                                    <tr><td>ගරු ආර්.එම්. තිලක දාසනායක මැතිතුමා</td><td>1988 මැයි 4 - 1992 ජූලි 20</td></tr>
+                                    <tr><td>ගරු කේ.එම්. ජයවර්ධන බණ්ඩා මැතිතුමා</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු මුදියන්සේ රත්නායක මැතිතුමා</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු ඩබ්.ඒ.එම්. ප්‍රේමරත්න මැතිතුමා</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු දයානන්ද හේරත් මැතිතුමා</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු ඊ.එම්.ඩී.බී. ඒකනායක මැතිතුමා</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු ඩබ්.ඩබ්.පී.ඩබ්.එම්.ආර්. අනුර ගෝපල්ලව මැතිතුමා</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු එස්.එම්. ජයතිලක මැතිතුමා</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු පී.ආර්.එල්.ප්‍රනාන්දුපුල්ලේ මැතිතුමා</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු එච්.එම්. සෝමරත්න මැතිතුමා</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු ආර්.එම්.කේ.බී. රත්නායක මැතිතුමා</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු ආර්.ඒ.එස්. රණසිංහ මැතිතුමා</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු එම්.පී.එච්. වික්‍රමසිංහ මැතිතුමා</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු කුමාරි නිර්මලා කොරයා මැතිණිය</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු ඩබ්.පී.බී. වික්‍රමනායක මැතිතුමා</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු එල්.එම්. අයුබ්කාන් මැතිතුමා</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div id="usf" class="tab-content">
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>නම</th>
+                                        <th>සේවා කාලය</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>ගරු එන්.එච්.එස්. රංජිත් නවරත්න මැතිතුමා</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු ඩබ්.එස්.පී.ඒ.ප්‍රෝටස් තිසේරා මැතිතුමා</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු ඩබ්. මිල්රෝයි එස්. ප්‍රනාන්දු මැතිතුමා</td><td>1988 මැයි 4 - 1989 ජනවාරි 1</td></tr>
+                                    <tr><td>ගරු ඩී.එම්. චන්ද්‍රතිලක මැතිතුමා</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු එම්. ශ්‍රීලාල් රාජේන්ද්‍ර විජේතුංග මැතිතුමා</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු පී. නන්දසිරි ගුණවර්ධන මැතිතුමා</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු පියදාස වික්‍රමනායක මැතිතුමා</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු එස්.ඒ. වික්‍රමසිංහ මැතිතුමා</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු පී.කේ.පී. ශෙල්ටන් නෝනිස් මැතිතුමා</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු දේව බණ්ඩාර සේනාරත්න මැතිතුමා</td><td>1988 මැයි 4 - 1988 දෙසැම්බර් 1</td></tr>
+                                    <tr><td>ගරු ඒ.එම්. හේමචන්ද්‍ර නිමල්සිරි මැතිතුමා</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු ආර්.ආර්.එම්.එන්.බී. කලුහෙන්දිවල මැතිතුමා</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු අයි.එම්. ගුණතිලක මැතිතුමා</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු ඩී.පී. ප්‍රේමචන්ද්‍ර මැතිතුමා</td><td>1988 මැයි 4 - 1989 ජූනි 17</td></tr>
+                                    <tr><td>ගරු එස්.ඩී.එම්. විපුල දිසානායක මැතිතුමා</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු ඩබ්.එම්.ටී.බී. විජේසූරිය මැතිතුමා</td><td>1988 මැයි 4 - 1988 ඔක්තෝබර් 3</td></tr>
+                                    <tr><td>ගරු එම්. ගුණපාල රණවීර මැතිතුමා</td><td>1988 මැයි 4 - 1989 නොවැම්බර් 22</td></tr>
+                                    <tr><td>ගරු ඒ.එම්. තිලකරත්න මැතිතුමා</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු ඩී.ඒ. ජයවර්ධන මැතිතුමා</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div id="slmc" class="tab-content">
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>නම</th>
+                                        <th>සේවා කාලය</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>ගරු අයිදුරුස් මොහොමඩ් ඉල්ලියාස් මැතිතුමා</td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු රසුල්  අබ්දුල් රෂාක් අල්හාජ් අබ්දුල් මැතිතුමා </td><td>1988 මැයි 4 - 1993 මාර්තු 16</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div id="new" class="tab-content">
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>නම</th>
+                                        <th>සේවා කාලය</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>ගරු ඒ.ආර්. දේවගුරු මැතිතුමා</td><td>1989 මාර්තු 22 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු කේ.ඒ. උපාලි අරියරත්න මැතිතුමා</td><td>1989 මාර්තු 22 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු ආර්.පී.ඩී. සුමනදාස මැතිතුමා</td><td>1989 මාර්තු 22 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු ටී.බී.එන්. බොතොට මැතිතුමා</td><td>1989 මාර්තු 22 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු ඩබ්.ටී.එස්. ප්‍රනාන්දු මැතිතුමා</td><td>1989 මාර්තු 22 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු රංජනී විජේසූරිය මැතිණිය</td><td>1989 මාර්තු 22 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු වී.එම්. ගුණවර්ධන මැතිතුමා</td><td>1989 මාර්තු 22 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු ජෝන් නෙවිස් ප්‍රනාන්දු මැතිතුමා</td><td>1989 මාර්තු 22 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු පියසිරි රාමනායක මැතිතුමා</td><td>1989 අප්‍රේල් 24 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු ගිල්බර්ට් ජයවර්ධන මැතිතුමා</td><td>1989 නොවැම්බර් 20 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු තිස්ස හේරත් මැතිතුමා</td><td>1990 ජනවාරි 3 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු ඩී.එම්. තිලකරත්න මැතිතුමා</td><td>1990 අප්‍රේල් 19 - 1993 මාර්තු 16</td></tr>
+                                    <tr><td>ගරු වයි.එච්.පී.ඩී.එස්. කවිසිගමුව මැතිතුමා</td><td>1992 අගෝස්තු 31 - 1993 මාර්තු 16</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function showTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

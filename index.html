@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>North Western Provincial Council Office</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.12) 0%, transparent 50%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.5; }
+            50% { transform: scale(1.1) rotate(5deg); opacity: 0.8; }
+        }
+
+        .main-container {
+            display: flex;
+            gap: 40px;
+            max-width: 1200px;
+            width: 100%;
+            align-items: center;
+            z-index: 1;
+            position: relative;
+        }
+
+        .mace-container {
+            flex: 0 0 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: slideInLeft 0.8s ease-out;
+        }
+
+        .mace-frame {
+            background: rgba(15, 20, 40, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6),
+                        0 0 1px rgba(139, 92, 246, 0.3) inset;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mace-frame::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 30%, rgba(139, 92, 246, 0.1) 50%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .mace-image {
+            width: 100%;
+            height: auto;
+            max-width: 320px;
+            filter: drop-shadow(0 15px 40px rgba(139, 92, 246, 0.5));
+            animation: float 3s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(-15deg); }
+            50% { transform: translateY(-15px) rotate(-15deg); }
+        }
+
+        .mace-label {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 13px;
+            color: #94a3b8;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content-container {
+            flex: 1;
+            background: rgba(15, 20, 40, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 50px 40px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6),
+                        0 0 1px rgba(59, 130, 246, 0.3) inset;
+            text-align: center;
+            border: 1px solid rgba(59, 130, 246, 0.15);
+            animation: slideInRight 0.8s ease-out;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        h1 {
+            font-size: 22px;
+            color: #e2e8f0;
+            margin-bottom: 12px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            line-height: 1.4;
+        }
+
+        .title-divider {
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #3b82f6, transparent);
+            margin: 25px auto;
+            border-radius: 2px;
+        }
+
+        .language-btn {
+            display: block;
+            width: 100%;
+            padding: 20px;
+            margin: 14px 0;
+            border: 2px solid transparent;
+            border-radius: 14px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: #e2e8f0;
+            position: relative;
+            overflow: hidden;
+            line-height: 1.6;
+        }
+
+        .language-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .language-btn:hover::before {
+            left: 100%;
+        }
+
+        .language-btn:hover {
+            border-color: #3b82f6;
+            background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 35px rgba(59, 130, 246, 0.3);
+        }
+
+        .language-btn:active {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 20px rgba(59, 130, 246, 0.2);
+        }
+
+        .btn-primary {
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .footer {
+            margin-top: 40px;
+            font-size: 11px;
+            color: #64748b;
+            padding-top: 25px;
+            border-top: 1px solid rgba(59, 130, 246, 0.1);
+            letter-spacing: 0.3px;
+        }
+
+        .language-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        @media (max-width: 1024px) {
+            .main-container {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .mace-container {
+                flex: 0 0 auto;
+            }
+
+            .mace-frame {
+                padding: 30px;
+            }
+
+            .mace-image {
+                max-width: 250px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .content-container {
+                padding: 40px 25px;
+                border-radius: 20px;
+            }
+
+            .mace-frame {
+                padding: 25px;
+            }
+
+            .mace-image {
+                max-width: 200px;
+            }
+
+            h1 {
+                font-size: 19px;
+                margin-bottom: 10px;
+            }
+
+            .language-btn {
+                padding: 18px;
+                font-size: 16px;
+                margin: 12px 0;
+            }
+
+            .footer {
+                font-size: 10px;
+                margin-top: 35px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="mace-container">
+            <div class="mace-frame">
+                <img src="photo/1.png" alt="Provincial Mace" class="mace-image">
+                <div class="mace-label">Provincial Mace</div>
+            </div>
+        </div>
+
+        <div class="content-container">
+            <h1>North Western Provincial Council Office</h1>
+            <h1>වයඹ පළාත් සභා ලේකම් කාර්යාලය</h1>
+            <h1>வட மேற்கு மாகாண சபை செயலகம்</h1>
+            
+            <div class="title-divider"></div>
+            
+            <button class="language-btn" onclick="redirectTo('sinhala-welcome')">
+                <span>ආයුබෝවන් !<br>සිංහලෙන් බලන්න</span>
+            </button>
+
+            <button class="language-btn" onclick="redirectTo('tamil-welcome')">
+                <span>வணக்கம் !<br>தமிழில் பார்க்கவும்</span>
+            </button>
+
+            <button class="language-btn btn-primary" onclick="redirectTo('english')">
+                <span>WELCOME !<br>View in English</span>
+            </button>
+
+            <div class="footer">
+
+                <p data-translate="footer-copyright">&copy; 2025  Council Secretariat - NWP. All rights reserved.</p>
+                <p data-translate="footer-website">Official Government Website - www.pcsec.nw.gov.lk</p>
+               
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function redirectTo(language) {
+            const urls = {
+                'sinhala-welcome': 'homesi.html',
+                'tamil-welcome': 'hometa.html',
+                'english': 'home.html'
+            };
+
+            const targetUrl = urls[language];
+
+            if (targetUrl) {
+                document.querySelector('.content-container').style.animation = 'slideInRight 0.3s ease-in reverse';
+                setTimeout(() => {
+                    window.location.href = targetUrl;
+                }, 300);
+            }
+        }
+
+        document.querySelectorAll('.language-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                const ripple = document.createElement('div');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.cssText = `
+                    position: absolute;
+                    width: ${size}px;
+                    height: ${size}px;
+                    left: ${x}px;
+                    top: ${y}px;
+                    background: rgba(59, 130, 246, 0.5);
+                    border-radius: 50%;
+                    transform: scale(0);
+                    animation: ripple 0.6s ease-out;
+                    pointer-events: none;
+                `;
+                
+                this.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

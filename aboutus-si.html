@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - North Western Provincial Council</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans Sinhala', 'Nirmala UI', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 20%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #1e3c72;
+        }
+
+        .site-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .back-home {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border: 2px solid white;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .back-home:hover {
+            background: white;
+            color: #1e3c72;
+        }
+
+         .page-header {
+            margin-top: 100px;
+            background: linear-gradient(135deg, 
+                #6a11cb 0%,
+                #2575fc 25%,
+                #00d4ff 50%,
+                #7c3aed 75%,
+                #ec4899 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            color: white;
+            text-align: center;
+            padding: 5rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .breadcrumb {
+            background: white;
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .breadcrumb-nav {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #666;
+        }
+
+        .breadcrumb a {
+            color: #1e3c72;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .main-content {
+            padding: 4rem 0;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        .content-section {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: #1e3c72;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: #ff6b35;
+            border-radius: 2px;
+        }
+
+        .content-section p {
+            margin-bottom: 1rem;
+            text-align: justify;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #ff6b35 0%, #f7941d 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .highlight-box h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .vmv-section {
+            background: white;
+            margin: 2rem 0;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .vmv-tabs {
+            display: flex;
+            background: #f8f9fa;
+        }
+
+        .vmv-tab {
+            flex: 1;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            background: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .vmv-tab.active {
+            background: #1e3c72;
+            color: white;
+        }
+
+        .vmv-content {
+            padding: 2.5rem;
+        }
+
+        .vmv-panel {
+            display: none;
+        }
+
+        .vmv-panel.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .vmv-panel h3 {
+            color: #1e3c72;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .council-composition {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin: 2rem 0;
+        }
+
+        .composition-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .composition-item {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            border-left: 4px solid #ff6b35;
+        }
+
+        .composition-item .count {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1e3c72;
+            display: block;
+        }
+
+        .composition-item .role {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        .council-history {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin: 2rem 0;
+        }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2rem;
+        }
+
+        .history-table th,
+        .history-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .history-table th {
+            background: #1e3c72;
+            color: white;
+        }
+
+        .history-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .sidebar-widget {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .widget-title {
+            font-size: 1.3rem;
+            color: #1e3c72;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #ff6b35;
+            padding-bottom: 0.5rem;
+        }
+
+        .quick-links {
+            list-style: none;
+        }
+
+        .quick-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .quick-links a {
+            color: #666;
+            text-decoration: none;
+            padding: 0.5rem 0;
+            display: block;
+            border-bottom: 1px solid #eee;
+            transition: all 0.3s ease;
+        }
+
+        .quick-links a:hover {
+            color: #1e3c72;
+            padding-left: 10px;
+        }
+
+        .contact-info {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .contact-info h3 {
+            margin-bottom: 1rem;
+        }
+
+        .contact-info p {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stats-section {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 3rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            padding: 1rem;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .vmv-tabs {
+                flex-direction: column;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .history-table {
+                font-size: 0.9rem;
+            }
+
+            .composition-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        *:focus {
+            outline: 2px solid #ff6b35;
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo">
+                        <img src="logo.jpeg" alt="Girl in a jacket" width="200" height="200" class="logo">
+                        
+                    </div>
+                    <div class="site-title">වයඹ පළාත් සභා ලේකම් කාර්යාලය</div>
+                </div>
+                <a href="homesi.html" class="back-home">
+                    <i class="fas fa-home"></i> මුල් පිටුව
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>අප ගැන</h1>
+            <p>ඉතිහාසය,  දැක්ම, මෙහෙවර සහ බලය බෙදා හැරීම පිළිබඳ කෙටි හැඳින්වීමක්.</p>
+        </div>
+    </section>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container">
+            <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+                <a href="#">මුල් පිටුව</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>අප ගැන</span>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="content-grid">
+                <!-- Main Content Area -->
+                <div class="content-area">
+                    <!-- Introduction -->
+                    <div class="content-section">
+                        <h2 class="section-title">හැඳින්වීම</h2>
+                        <p>වර්ෂ 1987 දී ශ්‍රී ලංකා ආණ්ඩුක්‍රම ව්‍යවස්ථාවේ 13 වන සංශෝධනය හා 1987 අංක 42 දරණ පළාත් සභා පණත මඟින් සලසන ලද විධිවිධාන යටතේ පළාත් සභා ස්ථාපිත කරනු ලැබීය. ශ්‍රී ලංකා ආණ්ඩුක්‍රම ව්‍යවස්ථාවේ 13 වන සංශෝධනය යටතේ ලංකාවේ සෑම පළාතකටම එක් පළාත් සභාවක් බැගින් පිහිටුවීමට ප්‍රතිපාදන සලසා ඇත.</p>
+                        
+                        <p>එම පළාත් සභා පිහිටුවීමේදී ආණ්ඩුක්‍රම ව්‍යවස්ථාවේ 13 වන සංශෝධනය අනුව පළාත් සභාවේ සාමාජිකයන් සංඛ්‍යාව අදාළ පළාතේ භූමි ප්‍රමාණය හා ජනගහණය අනුව නිගමනය කර ඇත. 1988.03.21 වන දින අංක 499/10 දරණ අති විශේෂ ගැසට් පත්‍රය මඟින් එක් එක් පළාත් සභාවේ මන්ත්‍රීවරුන් ගණනද , පළාත් සභාවට ඇතුලත් වන මැතිවරණ කොට්ඨාශ ගණනද තීරණය කර ඇත.</p>
+
+<p>මෙම සියළු විධිවිධානයන්ට යටත්ව 1988.04.28 වැනි දින වයඹ පළාත් සභා මැතිවරණය පවත්වා ඇති අතර 1988.05.12 දින ප්‍රථම පළාත් සභා රැස්වීම පවත්වා ඇත. ආණ්ඩුකාරවරයා පළාත් සභාවේ විධායකය වන අතර 154(ආ) ව්‍යවස්ථාව ප්‍රකාරව ජනාධිපතිවරයා විසින් ආණ්ඩුකාරවරයා පත්කරනු ලබයි.</p>
+
+<p>වයඹ පළාත සඳහා මන්ත්‍රීවරුන් 52 දෙනෙකුගෙන් සමන්විත ව්‍යවස්ථාදායකය ස්ථාපිත කර ඇත. පළාත් සභාවේ අමාත්‍ය මණ්ඩලයේ සංයුතිය ප්‍රධාන අමාත්‍යවරයාද ඇතුළුව 5 දෙනෙකි.</p>
+
+<p>සෑම පළාතකම එන් එක් අමාත්‍යංශය සඳහා උපදේශක කමිටු 05 ක්, සහ පළාත් ගිණුම්, නීති සම්පාදන, සභා කටයුතු සහ මහජන පෙත්සම් සඳහා කාරක සභා 04 කි.</p>
+                        
+                                                
+                       
+                    </div>
+
+                    
+                    <!-- Council Composition -->
+                    <div class="council-composition">
+                        <h2 class="section-title">සභා සංයුතිය</h2>
+                        <p>ඵලදායී පාලනයක් සහතික කිරීම සඳහා කවුන්සිලයෙහි විවිධ නායකත්ව තනතුරු ඇතුළත් වේ.</p>
+                        
+                        <div class="composition-grid">
+                            <div class="composition-item">
+                                <span class="count">01</span>
+                                <span class="role">සභාපති</span>
+                            </div>
+                            <div class="composition-item">
+                                <span class="count">01</span>
+                                <span class="role">නියෝජ්‍ය සභාපති</span>
+                            </div>
+                            <div class="composition-item">
+                                <span class="count">01</span>
+                                <span class="role">සභා නායක</span>
+                            </div>
+                            <div class="composition-item">
+                                <span class="count">05</span>
+                                <span class="role">අමාත්‍යවරුන් (ප්‍රධාන අමාත්‍යවරයා ඇතුළුව)</span>
+                            </div>
+                            <div class="composition-item">
+                                <span class="count">01</span>
+                                <span class="role">විපක්ෂ නායක</span>
+                            </div>
+                            <div class="composition-item">
+                                <span class="count">01</span>
+                                <span class="role">ආණ්ඩුපක්ෂ සංවිධායක</span>
+                            </div>
+                            <div class="composition-item">
+                                <span class="count">01</span>
+                                <span class="role">විපක්ෂ සංවිධායක</span>
+                            </div>
+                            <div class="composition-item">
+                                <span class="count">41</span>
+                                <span class="role">ගරු මන්ත්‍රීවරුන්</span>
+                            </div>
+                        </div>
+                        
+                        
+                    </div>
+
+                    <!-- Council History -->
+                    <div class="council-history">
+                        <h2 class="section-title">සභා ඉතිහාසය</h2>
+                        
+                        
+                        <table class="history-table">
+                            <thead>
+                                <tr>
+                                    <th>පළාත් සභාව</th>
+                                    <th>කාල සීමාව</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>පළමු පළාත් සභාව</td>
+                                    <td>1988.05.12 සිට 1993.03.16 දක්වා</td>
+                                </tr>
+                                <tr>
+                                    <td>දෙවන පළාත් සභාව</td>
+                                    <td>1993.11.11 සිට 1998.11.02 දක්වා</td>
+                                </tr>
+                                <tr>
+                                    <td>තුන්වන පළාත් සභාව</td>
+                                    <td>1999.02.09 සිට 2004.02.07 දක්වා</td>
+                                </tr>
+                                <tr>
+                                    <td>හතරවන පළාත් සභාව</td>
+                                    <td>2004.05.18 සිට 2008.12.08 දක්වා</td>
+                                </tr>
+                                <tr>
+                                    <td>පස්වන පළාත් සභාව</td>
+                                    <td>2009.03.12 සිට 2013.07.05 දක්වා</td>
+                                </tr>
+                                <tr>
+                                    <td>හයවන පළාත් සභාව</td>
+                                    <td>2013.10.11 සිට 2018.10.10 දක්වා</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Activities & Functions -->
+                   
+
+                    <!-- Statistics -->
+                    <div class="stats-section">
+                        <h2 style="margin-bottom: 1rem;">අංක අනුව වයඹ පළාත් සභාව</h2>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <span class="stat-number">52</span>
+                                <span class="stat-label">ගරු මැති/ඇමතිවරුන්</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">2</span>
+                                <span class="stat-label">පරිපාලන දිස්ත්‍රික්ක</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">5</span>
+                                <span class="stat-label">උපදේශක කමිටු</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">4</span>
+                                <span class="stat-label">කාරක සභා</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">6</span>
+                                <span class="stat-label">පළාත් සභා වාර ගණන</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">35+</span>
+                                <span class="stat-label">සේවා කාලය</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <aside class="sidebar">
+                    <!-- Quick Links -->
+                    <div class="sidebar-widget">
+                        <h3 class="widget-title">Quick Links</h3>
+                        <ul class="quick-links">
+                            <li><a href="firstcouncil-si.html"><i class="fas fa-users"></i> පළමු පළාත් සභාව</a></li>
+                            <li><a href="secondcouncil-si.html"><i class="fas fa-users"></i> දෙවන පළාත් සභාව</a></li>
+                            <li><a href="thirdcouncil-si.html"><i class="fas fa-users"></i> තුන්වන පළාත් සභාව</a></li>
+                            <li><a href="fourthcouncil-si.html"><i class="fas fa-users"></i> හතරවන පළාත් සභාව</a></li>
+                            <li><a href="fifthcouncil-si.html"><i class="fas fa-users"></i> පස්වන පළාත් සභාව</a></li>
+                            <li><a href="sixthcouncil-si.html"><i class="fas fa-users"></i> හයවන පළාත් සභාව</a></li>
+                            <li><a href="hansard-si.html"><i class="fas fa-download"></i> හැන්සාඩ් වාර්තා</a></li>
+                            <li><a href="statute-si.html"><i class="fas fa-download"></i> ප්‍රඥප්ති</a></li>
+                            <li><a href="contactus-si.html"><i class="fas fa-envelope"></i> අප අමතන්න</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Contact Information -->
+                    <div class="sidebar-widget">
+                        <div class="contact-info">
+                        <h3><i class="fas fa-phone"></i> අප අමතන්න</h3>
+                        <p><i class="fas fa-map-marker-alt"></i>වයඹ පළාත් සභා ලේකම් </p>
+			<p>කාර්යාලය,</p>
+			<p>4 වෙනි මහළ,</p>
+                        <p>වයඹ පළාත් සභා කාර්යාල </p>
+			<p>සංකීර්ණය,</p>
+			<p>කුරුණෑගල.</p>
+ 			<p><i class="fas fa-phone"></i> +94 37 222 3391</p>
+                            <p><i class="fas fa-envelope"></i> nwpcouncil@gmail.com</p>
+                            <p><i class="fas fa-clock"></i> Mon-Fri: 8:30 AM - 4:15 PM</p>
+                        </div>
+                    </div>
+
+                    <!-- Latest Updates -->
+                    <div class="sidebar-widget">
+                        <h3 class="widget-title">නවතම යාවත්කාලීන කිරීම්</h3>
+                        <div style="border-left: 3px solid #ff6b35; padding-left: 1rem; margin-bottom: 1rem;">
+                            <h4 style="color: #1e3c72; font-size: 0.9rem; margin-bottom: 0.5rem;">සභා රැස්වීම</h4>
+                            <p style="font-size: 0.8rem; color: #666;">ඊළඟ පළාත් සභා සැසිවාරය 20..........වන දින පැවැත්වීමට නියමිතය.</p>
+                        </div>
+                       
+                    </div>
+
+                    <!-- Districts Covered -->
+                    <div class="sidebar-widget">
+                        <h3 class="widget-title">Districts Covered</h3>
+                        <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                            <h4 style="color: #1e3c72; margin-bottom: 0.5rem;">කුරුණෑගල දිස්ත්‍රික්කය</h4>
+                            <p style="font-size: 0.9rem; color: #666;">පරිපාලන මධ්‍යස්ථානය </p>
+                        </div>
+                        <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px;">
+                            <h4 style="color: #1e3c72; margin-bottom: 0.5rem;">පුත්තලම දිස්ත්‍රික්කය</h4>
+                            <p style="font-size: 0.9rem; color: #666;"></p>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Vision, Mission, Values Tab Functionality
+        function showTab(tabName) {
+            // Hide all panels
+            const panels = 

@@ -1,0 +1,4024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>North Western Provincial Council Office</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@300;400;700&family=Noto+Sans+Tamil:wght@300;400;700&family=Segoe+UI:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif,
+                         'Noto Sans Sinhala', 'Noto Sans Tamil', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+            overflow-x: hidden;
+        }
+ /* AI Chatbot Styles */
+    .chatbot-container {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        z-index: 10000;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .chat-toggle-btn {
+        width: 65px;
+        height: 65px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #3b82f6, #60a5fa);
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .chat-toggle-btn::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+    }
+
+    .chat-toggle-btn:hover::before {
+        width: 200px;
+        height: 200px;
+    }
+
+    .chat-toggle-btn:hover {
+        transform: scale(1.1) rotate(5deg);
+        box-shadow: 0 12px 32px rgba(59, 130, 246, 0.6);
+    }
+
+    .chat-toggle-btn i {
+        font-size: 28px;
+        color: white;
+        z-index: 1;
+        transition: transform 0.3s ease;
+    }
+
+    .chat-toggle-btn:hover i {
+        transform: scale(1.1);
+    }
+
+    .chat-notification {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        width: 24px;
+        height: 24px;
+        background: #ef4444;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 12px;
+        font-weight: bold;
+        animation: pulse-notification 2s infinite;
+    }
+
+    @keyframes pulse-notification {
+        0%, 100% {
+            transform: scale(1);
+            box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+        }
+        50% {
+            transform: scale(1.1);
+            box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+        }
+    }
+
+    .chat-window {
+        position: absolute;
+        bottom: 85px;
+        right: 0;
+        width: 400px;
+        height: 600px;
+        background: white;
+        border-radius: 24px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        display: none;
+        flex-direction: column;
+        overflow: hidden;
+        animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .chat-window.active {
+        display: flex;
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    .chat-header {
+        background: linear-gradient(135deg, #0f172a, #1e293b);
+        color: white;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        border-radius: 24px 24px 0 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .chat-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(96, 165, 250, 0.3), transparent);
+        animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+        0% { left: -100%; }
+        100% { left: 200%; }
+    }
+
+    .chat-avatar {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #60a5fa, #93c5fd);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .chat-header-info {
+        flex: 1;
+        position: relative;
+        z-index: 1;
+    }
+
+    .chat-header-info h3 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    .chat-status {
+        font-size: 13px;
+        opacity: 0.9;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #10b981;
+        animation: pulse-dot 2s infinite;
+    }
+
+    @keyframes pulse-dot {
+        0%, 100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+        50% {
+            opacity: 0.5;
+            transform: scale(0.8);
+        }
+    }
+
+    .chat-close {
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        color: white;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        position: relative;
+        z-index: 1;
+    }
+
+    .chat-close:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: rotate(90deg);
+    }
+
+    .chat-messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px;
+        background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .chat-messages::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .chat-messages::-webkit-scrollbar-track {
+        background: #f1f5f9;
+    }
+
+    .chat-messages::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 4px;
+    }
+
+    .chat-messages::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+    }
+
+    .message {
+        display: flex;
+        gap: 10px;
+        animation: fadeInMessage 0.4s ease;
+    }
+
+    @keyframes fadeInMessage {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .message.user {
+        flex-direction: row-reverse;
+    }
+
+    .message-avatar {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 16px;
+    }
+
+    .message.bot .message-avatar {
+        background: linear-gradient(135deg, #3b82f6, #60a5fa);
+        color: white;
+    }
+
+    .message.user .message-avatar {
+        background: linear-gradient(135deg, #10b981, #34d399);
+        color: white;
+    }
+
+    .message-content {
+        max-width: 75%;
+        padding: 12px 16px;
+        border-radius: 18px;
+        line-height: 1.5;
+        font-size: 14px;
+    }
+
+    .message.bot .message-content {
+        background: white;
+        color: #1e293b;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        border-bottom-left-radius: 4px;
+    }
+
+    .message.user .message-content {
+        background: linear-gradient(135deg, #3b82f6, #60a5fa);
+        color: white;
+        border-bottom-right-radius: 4px;
+    }
+
+    .message-content a {
+        color: #3b82f6;
+        text-decoration: underline;
+        font-weight: 500;
+    }
+
+    .message.user .message-content a {
+        color: white;
+        text-decoration: underline;
+    }
+
+    .typing-indicator {
+        display: flex;
+        gap: 4px;
+        padding: 12px 16px;
+        background: white;
+        border-radius: 18px;
+        width: fit-content;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .typing-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #94a3b8;
+        animation: typing 1.4s infinite;
+    }
+
+    .typing-dot:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .typing-dot:nth-child(3) {
+        animation-delay: 0.4s;
+    }
+
+    @keyframes typing {
+        0%, 60%, 100% {
+            transform: translateY(0);
+            opacity: 0.7;
+        }
+        30% {
+            transform: translateY(-10px);
+            opacity: 1;
+        }
+    }
+
+    .chat-input-container {
+        padding: 20px;
+        background: white;
+        border-top: 1px solid #e2e8f0;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .chat-input {
+        flex: 1;
+        padding: 12px 16px;
+        border: 2px solid #e2e8f0;
+        border-radius: 25px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        background: #f8fafc;
+    }
+
+    .chat-input:focus {
+        outline: none;
+        border-color: #3b82f6;
+        background: white;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    .chat-send-btn {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #3b82f6, #60a5fa);
+        border: none;
+        color: white;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        font-size: 18px;
+    }
+
+    .chat-send-btn:hover {
+        transform: scale(1.1) rotate(-5deg);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+    }
+
+    .chat-send-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    .quick-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        padding: 10px 0;
+    }
+
+    .quick-action-btn {
+        padding: 8px 14px;
+        background: white;
+        border: 2px solid #e2e8f0;
+        border-radius: 20px;
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        color: #475569;
+    }
+
+    .quick-action-btn:hover {
+        background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+        border-color: #3b82f6;
+        color: #1e40af;
+        transform: translateY(-2px);
+    }
+
+    .welcome-message {
+        text-align: center;
+        padding: 20px;
+        color: #64748b;
+    }
+
+    .welcome-message i {
+        font-size: 48px;
+        color: #3b82f6;
+        margin-bottom: 15px;
+        display: block;
+    }
+
+    .welcome-message h4 {
+        margin: 0 0 10px 0;
+        color: #1e293b;
+        font-size: 18px;
+    }
+
+    @media (max-width: 768px) {
+        .chat-window {
+            width: calc(100vw - 40px);
+            height: calc(100vh - 140px);
+            bottom: 85px;
+            right: 20px;
+        }
+
+        .chatbot-container {
+            bottom: 20px;
+            right: 20px;
+        }
+    }
+.search-container {
+    position: relative;
+    margin-left: 2rem;
+}
+
+.search-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    right: 0;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    max-height: 500px;
+    overflow-y: auto;
+    z-index: 10000;
+    display: none;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.search-results-header {
+    padding: 12px 16px;
+    background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+    border-bottom: 2px solid #3b82f6;
+    font-weight: 600;
+    color: #1e3c72;
+    font-size: 0.9rem;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.search-result-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    border-bottom: 1px solid #f1f5f9;
+    text-decoration: none;
+    color: #333;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.search-result-item:hover {
+    background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+    padding-left: 24px;
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.search-result-item i {
+    color: #3b82f6;
+    font-size: 1.2rem;
+    margin-top: 3px;
+    min-width: 20px;
+}
+
+.search-result-content {
+    flex: 1;
+}
+
+.search-result-content strong {
+    display: block;
+    color: #1e3c72;
+    font-size: 1rem;
+    margin-bottom: 4px;
+}
+
+.search-result-content p {
+    color: #666;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.search-result-item mark {
+    background: linear-gradient(135deg, #fef08a, #fde047);
+    color: #854d0e;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-weight: 600;
+}
+
+.no-results {
+    justify-content: center;
+    padding: 30px 20px;
+    text-align: center;
+    color: #94a3b8;
+    cursor: default;
+}
+
+.no-results:hover {
+    background: transparent;
+    padding: 30px 20px;
+}
+
+.no-results i {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    opacity: 0.5;
+}
+
+/* Scrollbar styling for search dropdown */
+.search-dropdown::-webkit-scrollbar {
+    width: 8px;
+}
+
+.search-dropdown::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 0 12px 12px 0;
+}
+
+.search-dropdown::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+.search-dropdown::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Loading state */
+.search-loading {
+    padding: 20px;
+    text-align: center;
+    color: #3b82f6;
+}
+
+.search-loading i {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .search-dropdown {
+        left: -100px;
+        right: -100px;
+        max-height: 400px;
+    }
+    
+    .search-result-content strong {
+        font-size: 0.9rem;
+    }
+    
+    .search-result-content p {
+        font-size: 0.8rem;
+    }
+}
+        /* Royal Door Opening Animation */
+        .royal-doors {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10000;
+            pointer-events: none;
+        }
+
+        .door {
+            position: absolute;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 50%, #1e293b 100%);
+            transition: transform 2s cubic-bezier(0.77, 0, 0.175, 1);
+            overflow: hidden;
+        }
+
+        .door::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(90deg, 
+                    transparent, 
+                    transparent 40px, 
+                    rgba(255,255,255,0.03) 40px, 
+                    rgba(255,255,255,0.03) 80px);
+            z-index: 1;
+        }
+
+        .door::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+            border-radius: 50%;
+            transform: translateY(-50%);
+            box-shadow: 
+                0 0 30px rgba(251, 191, 36, 0.6),
+                inset 0 0 20px rgba(0,0,0,0.3);
+            z-index: 2;
+        }
+
+        .door-left {
+            left: 0;
+            border-right: 4px solid #fbbf24;
+            box-shadow: inset -20px 0 50px rgba(0,0,0,0.5);
+        }
+
+        .door-left::after {
+            right: 30px;
+        }
+
+        .door-right {
+            right: 0;
+            border-left: 4px solid #fbbf24;
+            box-shadow: inset 20px 0 50px rgba(0,0,0,0.5);
+        }
+
+        .door-right::after {
+            left: 30px;
+        }
+
+        .door-left.open {
+            transform: translateX(-100%);
+        }
+
+        .door-right.open {
+            transform: translateX(100%);
+        }
+
+        .door-ornament {
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 80%;
+            border: 3px solid rgba(251, 191, 36, 0.3);
+            border-radius: 10px;
+            z-index: 1;
+        }
+
+        .door-ornament::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 2px solid rgba(251, 191, 36, 0.2);
+            border-radius: 8px;
+        }
+
+        /* Header with Enhanced Prismatic Effects */
+        .header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            color: white;
+            padding: 1rem 0;
+            position: absolute;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+            overflow: visible;
+        }
+
+        #prismaticCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.7;
+            z-index: 1;
+        }
+
+        .header > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        .top-bar {
+            background: rgba(0,0,0,0.3);
+            padding: 0.5rem 0;
+            font-size: 0.9rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .top-bar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .contact-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .contact-info i {
+            color: #60a5fa;
+        }
+
+        .divider {
+            color: rgba(255,255,255,0.3);
+        }
+
+        .language-selector {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .language-btn {
+            padding: 8px 12px;
+            background-color: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 0.8rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .language-btn:hover {
+            background-color: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(96, 165, 250, 0.3);
+        }
+        
+        .language-btn.active {
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+            color: white;
+            border-color: #60a5fa;
+            box-shadow: 0 4px 12px rgba(96, 165, 250, 0.4);
+        }
+
+        .main-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+            border-radius: 20%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(96, 165, 250, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 12px 32px rgba(96, 165, 250, 0.6);
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20%;
+        }
+
+        .site-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .site-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            color: #94a3b8;
+        }
+
+        .nav {
+            background: rgba(0,0,0,0.2);
+            padding: 0;
+            backdrop-filter: blur(10px);
+            overflow: visible;
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-item {
+            position: relative;
+            z-index: 100;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 1rem 1.5rem;
+            display: block;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #60a5fa, #3b82f6);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(96, 165, 250, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-link:hover::before {
+            width: 80%;
+        }
+
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: linear-gradient(135deg, #1e293b, #334155);
+            min-width: 200px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            z-index: 10001;
+        }
+
+        .nav-item:hover .dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown a {
+            color: #e2e8f0;
+            padding: 0.75rem 1rem;
+            display: block;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .dropdown a:hover {
+            background: rgba(96, 165, 250, 0.2);
+            padding-left: 1.5rem;
+            color: #60a5fa;
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .search-container {
+            position: relative;
+            margin-left: 2rem;
+        }
+
+        .search-input {
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 25px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            width: 250px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .search-input:focus {
+            outline: none;
+            background: rgba(255,255,255,0.2);
+            width: 300px;
+            box-shadow: 0 4px 12px rgba(96, 165, 250, 0.3);
+            border-color: #60a5fa;
+        }
+
+        .search-input::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .news-ticker {
+            background: linear-gradient(135deg, #1e3a8a, #1e40af);
+            color: white;
+            padding: 0.5rem 0;
+            overflow: hidden;
+            position: fixed;
+            top: 140px;
+            width: 100%;
+            z-index: 999;
+            border-top: 2px solid #60a5fa;
+        }
+
+        .ticker-content {
+            white-space: nowrap;
+            animation: ticker 60s linear infinite;
+        }
+
+        @keyframes ticker {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Enhanced Hero Section */
+        .hero {
+            margin-top: 180px;
+            height: 80vh;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+            z-index: 2;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+
+        .hero-slideshow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .hero-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+            animation: kenburns 20s ease-in-out infinite;
+        }
+
+        @keyframes kenburns {
+            0% { transform: scale(1) translateX(0); }
+            50% { transform: scale(1.1) translateX(-20px); }
+            100% { transform: scale(1) translateX(0); }
+        }
+
+        .hero-slide.active {
+            opacity: 1;
+        }
+
+        .hero-slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(15, 23, 42, 0.7) 0%, 
+                rgba(30, 41, 59, 0.5) 50%, 
+                rgba(51, 65, 85, 0.7) 100%);
+            z-index: 1;
+        }
+
+        /* Floating particles */
+        .hero-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: radial-gradient(circle, rgba(96, 165, 250, 0.8) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 15s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(50px); opacity: 0; }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            color: white;
+            max-width: 800px;
+            padding: 0 2rem;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
+            text-shadow: 
+                2px 2px 4px rgba(0,0,0,0.3),
+                0 0 30px rgba(96, 165, 250, 0.5);
+            font-weight: 700;
+        }
+
+        .hero-content p {
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease 0.2s both;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, #3b82f6, #60a5fa);
+            color: white;
+            padding: 1.2rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            transition: all 0.3s ease;
+            animation: fadeInUp 1s ease 0.4s both;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .cta-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .cta-button:hover {
+            background: linear-gradient(45deg, #2563eb, #3b82f6);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.6);
+        }
+
+        .slideshow-controls {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 4;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .control-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .control-dot.active {
+            background: #60a5fa;
+            border-color: white;
+            transform: scale(1.2);
+            box-shadow: 0 0 10px rgba(96, 165, 250, 0.8);
+        }
+
+        .slide-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .slide-arrow:hover {
+            background: rgba(96, 165, 250, 0.4);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .slide-arrow.prev {
+            left: 2rem;
+        }
+
+        .slide-arrow.next {
+            right: 2rem;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #1e3c72;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+            margin: 1rem auto;
+            border-radius: 2px;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .about-img {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+            transition: all 0.4s ease;
+        }
+
+        .about-img:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(59, 130, 246, 0.3);
+        }
+
+        .about-img img {
+            width: 100%;
+            height: auto;
+            transition: all 0.4s ease;
+        }
+
+        .about-img:hover img {
+            transform: scale(1.08);
+        }
+
+        .about-text h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #1e3c72;
+        }
+
+        .about-text p {
+            margin-bottom: 15px;
+        }
+
+        .about-text ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .about-text li {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .about-text li:hover {
+            transform: translateX(10px);
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+        }
+
+        .about-text li i {
+            color: #3b82f6;
+            margin-top: 0.3rem;
+            font-size: 1.2rem;
+        }
+
+        /* Leadership */
+        .leadership {
+            padding: 4rem 0;
+            background: #f8f9fa;
+        }
+
+        .leaders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20rem;
+        }
+
+        .leader-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .leader-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .leader-image {
+            width: 100%;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .leader-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .leader-info {
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .leader-info h3 {
+            font-size: 1.5rem;
+            color: #1e3c72;
+            margin-bottom: 0.5rem;
+        }
+
+        .leader-info p {
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .statistics {
+            padding: 4rem 0;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .statistics::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(96, 165, 250, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-item {
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+        }
+
+        .stat-item:hover {
+            background: rgba(96, 165, 250, 0.15);
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(96, 165, 250, 0.3);
+            border-color: rgba(96, 165, 250, 0.5);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            display: block;
+            background: linear-gradient(135deg, #60a5fa, #93c5fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: white;
+            padding: 3rem 0 1rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: #60a5fa;
+        }
+
+        .footer-section p,
+        .footer-section li {
+            margin-bottom: 0.5rem;
+            line-height: 1.8;
+            color: #94a3b8;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: #60a5fa;
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1rem;
+            text-align: center;
+            color: #64748b;
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                margin-top: 160px;
+                height: 70vh;
+            }
+            
+            .main-header {
+                flex-direction: row;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .logo-section {
+                flex: 1;
+                min-width: 0;
+            }
+
+            .logo-section .site-title {
+                font-size: 1rem;
+            }
+
+            .search-container {
+                display: none;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .nav {
+                display: none;
+            }
+
+            .nav-menu {
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: linear-gradient(135deg, #0f172a, #1e293b);
+                display: none;
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .dropdown {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                background: rgba(0,0,0,0.2);
+            }
+
+            .dropdown a {
+                color: white !important;
+            }
+
+            .slide-arrow {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+
+            .top-bar-content {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .search-input {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .search-input:focus {
+                width: 100%;
+            }
+        }
+
+        *:focus {
+            outline: 2px solid #60a5fa;
+            outline-offset: 2px;
+        }
+
+        /* ── Mobile Drawer Overlay ── */
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            z-index: 1998;
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .mobile-overlay.active { display: block; opacity: 1; }
+
+        /* ── Mobile Drawer Panel ── */
+        .mobile-drawer {
+            position: fixed;
+            top: 0; left: -320px;
+            width: 300px; height: 100%;
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            z-index: 1999;
+            overflow-y: auto; overflow-x: hidden;
+            transition: left 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 6px 0 40px rgba(0,0,0,0.5);
+            display: flex; flex-direction: column;
+        }
+        .mobile-drawer.active { left: 0; }
+        .mobile-drawer::-webkit-scrollbar { width: 4px; }
+        .mobile-drawer::-webkit-scrollbar-track { background: transparent; }
+        .mobile-drawer::-webkit-scrollbar-thumb { background: rgba(96,165,250,0.3); border-radius: 2px; }
+
+        .drawer-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 1rem 1.2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            background: rgba(0,0,0,0.25); flex-shrink: 0;
+        }
+        .drawer-logo-row { display: flex; align-items: center; gap: 10px; }
+        .drawer-logo-img { width: 42px; height: 42px; border-radius: 10px; object-fit: cover; border: 2px solid rgba(96,165,250,0.4); }
+        .drawer-logo-text .drawer-title { font-size: 0.78rem; font-weight: 700; color: #e2e8f0; line-height: 1.2; }
+        .drawer-logo-text .drawer-subtitle { font-size: 0.65rem; color: #64748b; }
+        .drawer-close-btn {
+            width: 34px; height: 34px; border-radius: 50%;
+            background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+            color: #94a3b8; font-size: 1.1rem; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.25s ease; flex-shrink: 0;
+        }
+        .drawer-close-btn:hover { background: rgba(239,68,68,0.15); border-color: rgba(239,68,68,0.4); color: #f87171; transform: rotate(90deg); }
+
+        .drawer-search { padding: 0.8rem 1.2rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .drawer-search-inner {
+            display: flex; align-items: center; gap: 8px;
+            background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 25px; padding: 0.45rem 1rem; transition: border-color 0.25s;
+        }
+        .drawer-search-inner:focus-within { border-color: #60a5fa; background: rgba(96,165,250,0.07); }
+        .drawer-search-inner i { color: #64748b; font-size: 0.85rem; flex-shrink: 0; }
+        .drawer-search-input {
+            background: none; border: none; outline: none;
+            color: #e2e8f0; font-size: 0.82rem; width: 100%;
+            font-family: 'Noto Sans Tamil', sans-serif;
+        }
+        .drawer-search-input::placeholder { color: #475569; }
+
+        .drawer-lang { display: flex; gap: 6px; padding: 0.7rem 1.2rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .drawer-lang-btn {
+            flex: 1; padding: 6px 0;
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px; color: #94a3b8; font-size: 0.72rem;
+            cursor: pointer; text-align: center; transition: all 0.25s;
+            font-family: 'Noto Sans Sinhala', 'Noto Sans Tamil', sans-serif;
+        }
+        .drawer-lang-btn:hover { background: rgba(96,165,250,0.1); border-color: rgba(96,165,250,0.3); color: #60a5fa; }
+        .drawer-lang-btn.active { background: linear-gradient(135deg,#1d4ed8,#3b82f6); border-color: #3b82f6; color: white; font-weight: 600; }
+
+        .drawer-nav { flex: 1; padding: 0.4rem 0; }
+        .drawer-nav-item { border-bottom: 1px solid rgba(255,255,255,0.04); }
+        .drawer-nav-link {
+            display: flex; align-items: center; gap: 12px;
+            padding: 0.85rem 1.2rem; color: #cbd5e1; text-decoration: none;
+            font-size: 0.88rem; font-weight: 500; cursor: pointer;
+            transition: all 0.22s ease; position: relative;
+            font-family: 'Noto Sans Tamil', sans-serif;
+        }
+        .drawer-nav-link:hover,
+        .drawer-nav-item.open > .drawer-nav-link { background: rgba(96,165,250,0.09); color: #60a5fa; }
+        .drawer-nav-link::before {
+            content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+            width: 3px; background: linear-gradient(180deg,#60a5fa,#3b82f6);
+            border-radius: 0 2px 2px 0; opacity: 0; transition: opacity 0.22s;
+        }
+        .drawer-nav-link:hover::before,
+        .drawer-nav-item.open > .drawer-nav-link::before { opacity: 1; }
+        .drawer-nav-icon {
+            width: 32px; height: 32px; border-radius: 8px;
+            background: rgba(255,255,255,0.06); display: flex;
+            align-items: center; justify-content: center;
+            font-size: 0.9rem; flex-shrink: 0; transition: background 0.22s;
+        }
+        .drawer-nav-link:hover .drawer-nav-icon,
+        .drawer-nav-item.open > .drawer-nav-link .drawer-nav-icon { background: rgba(96,165,250,0.18); }
+        .drawer-nav-label { flex: 1; }
+        .drawer-nav-arrow { font-size: 0.75rem; color: #475569; transition: transform 0.28s cubic-bezier(0.4,0,0.2,1), color 0.22s; }
+        .drawer-nav-item.open > .drawer-nav-link .drawer-nav-arrow { transform: rotate(90deg); color: #60a5fa; }
+
+        .drawer-submenu { max-height: 0; overflow: hidden; transition: max-height 0.32s cubic-bezier(0.4,0,0.2,1); background: rgba(0,0,0,0.2); }
+        .drawer-nav-item.open .drawer-submenu { max-height: 500px; }
+        .drawer-submenu a {
+            display: flex; align-items: center; gap: 10px;
+            padding: 0.65rem 1.2rem 0.65rem 3.2rem;
+            color: #94a3b8; text-decoration: none; font-size: 0.82rem;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            transition: all 0.2s ease; font-family: 'Noto Sans Tamil', sans-serif;
+        }
+        .drawer-submenu a::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: #334155; flex-shrink: 0; transition: background 0.2s; }
+        .drawer-submenu a:hover { color: #60a5fa; background: rgba(96,165,250,0.07); padding-left: 3.5rem; }
+        .drawer-submenu a:hover::before { background: #60a5fa; }
+
+        .drawer-footer { padding: 1rem 1.2rem; border-top: 1px solid rgba(255,255,255,0.07); background: rgba(0,0,0,0.2); flex-shrink: 0; }
+        .drawer-footer-title { font-size: 0.7rem; color: #475569; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.6rem; }
+        .drawer-contact-item { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: #64748b; margin-bottom: 0.4rem; }
+        .drawer-contact-item i { color: #3b82f6; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+    <!-- Royal Doors -->
+    <div class="royal-doors">
+        <div class="door door-left">
+            <div class="door-ornament"></div>
+        </div>
+        <div class="door door-right">
+            <div class="door-ornament"></div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <canvas id="prismaticCanvas"></canvas>
+        
+        <div class="top-bar">
+            <div class="container">
+                <div class="top-bar-content">
+                    <div class="contact-info">
+                        <i class="fas fa-phone"></i> <span data-translate="phone">+94 37 222 3391</span>
+                        <span class="divider">|</span>
+                        <i class="fas fa-envelope"></i> <span data-translate="email">nwpcouncil@gmail.com</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="main-header">
+                <div class="logo-section">
+                    <div class="logo">
+                        <img src="logo.jpeg" alt="NWP சின்னம்" class="logo">
+                    </div>
+                    <div>
+                        <h1 class="site-title">வயம்பா மாகாண சபை</h1>
+                        <div class="site-subtitle">වයඹ පළාත් සභාව / North Western Provincial Council</div>
+                    </div>
+                </div>
+                <div class="search-container">
+                    <input type="search" class="search-input" placeholder="தேடுக..." aria-label="Search">
+                </div>
+                <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <nav class="nav">
+            <div class="container">
+                <ul class="nav-menu" id="navMenu">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">முதல் பக்கம்</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="aboutus-ta.html" class="nav-link">எங்களை பற்றி</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">வரலாறு</a>
+                        <div class="dropdown">
+                            <a href="firstcouncil-ta.html">முதல் சபை</a>
+                            <a href="secondcouncil-ta.html">இரண்டாவது சபை</a>
+                            <a href="thirdcouncil-ta.html">மூன்றாவது சபை</a>
+                            <a href="fourthcouncil-ta.html">நான்காவது சபை</a>
+                            <a href="fifthcouncil-ta.html">ஐந்தாவது சபை</a>
+                            <a href="sixthcouncil-ta.html">ஆறாவது சபை</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">உறுப்பினர்கள்</a>
+                        <div class="dropdown">
+                            <a href="chairman-ta.html">தலைவர்</a>
+                            <a href="ruling-ta.html">ஆளும் கட்சி உறுப்பினர்கள்</a>
+                            <a href="opposition-ta.html">எதிர்க்கட்சி உறுப்பினர்கள்</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">பதிவிறக்கங்கள்</a>
+                        <div class="dropdown">
+                            <a href="hansard-ta.html">ஹன்சார்ட்</a>
+                            <a href="statute-ta.html">சட்டங்கள்</a>
+                            
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a href="gallery-ta.html" class="nav-link">புகைப்பட தொகுப்பு</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="contactus-ta.html" class="nav-link">தொடர்பு</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-slideshow" id="heroSlideshow">
+            <div class="hero-slide active" style="background-image: url('photo/1.jpg')"></div>
+            <div class="hero-slide" style="background-image: url('photo/2.jpg')"></div>
+            <div class="hero-slide" style="background-image: url('photo/3.jpg')"></div>
+            <div class="hero-slide" style="background-image: url('photo/4.jpg')"></div>
+        </div>
+        
+        <div class="hero-content">
+            <h1>செழிப்பான வயம்பா மக்கள்</h1>
+            <p>...</p>
+            <a href="#about" class="cta-button">எங்கள் சேவைகளை ஆராயுங்கள்</a>
+        </div>
+
+        <button class="slide-arrow prev" onclick="changeSlide(-1)">‹</button>
+        <button class="slide-arrow next" onclick="changeSlide(1)">›</button>
+
+        <div class="slideshow-controls" id="slideshowControls">
+            <div class="control-dot active" onclick="goToSlide(0)"></div>
+            <div class="control-dot" onclick="goToSlide(1)"></div>
+            <div class="control-dot" onclick="goToSlide(2)"></div>
+            <div class="control-dot" onclick="goToSlide(3)"></div>
+        </div>
+    </section>
+
+    <div id="about" class="page-content">
+        <section style="padding: 4rem 0;">
+            <div class="container">
+                <div class="about-content">
+                    <div class="about-img">
+                        <img src="photo/Sencoolaya.jpg" alt="NWP சபை அலுவலகம்">
+                    </div>
+                    <div class="about-text">
+                        <h3>எங்கள் பார்வை</h3>
+                        <p>"செழிப்பான வயம்பா மக்கள்."</p>
+
+                        <h3>எங்கள் பணி</h3>
+                        <p>வயம்பா மக்களுக்கு செழிப்பை உருவாக்குவதற்காக மக்கள் பிரதிநிதிகளைக் கொண்ட சட்டமன்றத்தை வலுப்படுத்துவதற்கான சட்ட மற்றும் இயற்பியல் சூழலை உருவாக்குதல்.</p>
+
+                        <h3>எங்கள் நோக்கங்கள்</h3>
+                        <ul>
+                            <li>
+                                <i class="fas fa-chart-line"></i>
+                                <span>அரசியலமைப்பு குழுக்கள், மாகாண சபை கூட்டங்கள் மற்றும் ஆலோசனை குழுக்களை செயல்படுத்துதல்.</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-users"></i>
+                                <span>அதிகாரிகள் மற்றும் ஊழியர்களுக்கு வசதிகளை வழங்குதல்.</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-building"></i>
+                                <span>சபை செயலாளர் அலுவலகத்தின் நிறுவன செயல்பாடுகள் மற்றும் மனித வள மேம்பாடு.</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-coins"></i>
+                                <span>சபை செயலாளர் அலுவலகத்தின் நிதி மேலாண்மை மற்றும் இயற்பியல் வள பராமரிப்பு.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <section class="leadership">
+        <div class="container">
+            <h2 class="section-title">தலைமை</h2>
+            <div class="leaders-grid">
+                <div class="leader-card">
+                    <div class="leader-image">
+                        <img src="photo/chairman.jpg" alt="தலைவர்">
+                    </div>
+                    <div class="leader-info">
+                        <h3>மாண்புமிகு தலைவர்</h3>
+                        <p><strong>ஏ.எம்.டி.பி.அதிகாரி அவர்கள்</strong></p>
+                        <p>வயம்பா மாகாண சபை.</p>
+                    </div>
+                </div>
+                <div class="leader-card">
+                    <div class="leader-image">
+                        <img src="photo/secretary.jpg" alt="செயலாளர்">
+                    </div>
+                    <div class="leader-info">
+                        <h3>சபை செயலாளர்</h3>
+                        <p><strong>திரு.எம்.ஏ.பி.சி.ஆலோக பண்டார</strong></p>
+                        <p>வயம்பா மாகாண சபை அலுவலகம்.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="chatbot-container">
+        <button class="chat-toggle-btn" id="chatToggle">
+            <i class="fas fa-comments"></i>
+            <span class="chat-notification">!</span>
+        </button>
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <div class="chat-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="chat-header-info">
+                    <h3>NWP உதவியாளர்</h3>
+                    <div class="chat-status">
+                        <span class="status-dot"></span>
+                        <span>நிகழ்நிலையில்</span>
+                    </div>
+                </div>
+                <button class="chat-close" id="chatClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="chat-messages" id="chatMessages"></div>
+            <div class="chat-input-container">
+                <input type="text" class="chat-input" id="chatInput" 
+                       placeholder="NWP சபை பற்றி என்னிடம் எதையும் கேளுங்கள்..." 
+                       autocomplete="off">
+                <button class="chat-send-btn" id="chatSend">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <section class="statistics">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number">2.4M</span>
+                    <span class="stat-label">சேவை பெறும் மக்கள் தொகை</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">7,812</span>
+                    <span class="stat-label">சதுர கிலோமீட்டர்கள்</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">52</span>
+                    <span class="stat-label">மாண்புமிகு உறுப்பினர்கள்</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">5</span>
+                    <span class="stat-label">மாகாண அமைச்சுகள்</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>தொடர்பு தகவல்</h3>
+                    <p><i class="fas fa-map-marker-alt"></i>வடமேல் மாகாண சபை அலுவலகம்</p>
+		    <p>4 வது மாடி,</p>
+		    <p>வடமேல் மாகாண சபை அலுவலக வளாகம்,</p>
+		    <p>குருணாகல்,</p>
+		    <p>வடமேல் மாகாணம், இலங்கை</p>
+                    <p><i class="fas fa-phone"></i> +94 37 222 3391</p>
+                    <p><i class="fas fa-envelope"></i> nwpcouncil@gmail.com</p>
+                </div>
+                <div class="footer-section">
+                    <h3>விரைவு இணைப்புகள்</h3>
+                    <ul>
+                        <li><a href="aboutus-ta.html">எங்களை பற்றி</a></li>
+                        <li><a href="hansard-ta.html">ஹன்சார்ட்</a></li>
+                        <li><a href="statute-ta.html">சட்டங்கள்</a></li>
+                        <li><a href="contactus-ta.html">எங்களை தொடர்பு கொள்ளுங்கள்</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>சேவைகள்</h3>
+                    <ul>
+                        <li><a href="https://governor.nw.gov.lk/">ஆளுநர் அலுவலகம்</a></li>
+                        <li><a href="https://psc.nw.gov.lk/">மாகாண பொது சேவை ஆணைக்குழு</a></li>
+                        <li><a href="http://cs.nw.gov.lk/">தலைமை செயலாளர் அலுவலகம்</a></li>
+                        <li><a href="https://www.cm.nw.gov.lk/chiefmin_nwp/index.php">முதலமைச்சர் அமைச்சு</a></li>
+                        <li><a href="https://www.health.gov.lk/">சுகாதார அமைச்சு</a></li>
+                        <li><a href="https://">சாலை அபிவிருத்தி அமைச்சு</a></li>
+                        <li><a href="https://">கூட்டுறவு அமைச்சு</a></li>
+                        <li><a href="https://">விவசாய அமைச்சு</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 சபை செயலாளர் அலுவலகம் - வயம்பா மாகாணம். அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை.</p>
+                <p>அதிகாரபூர்வ அரசாங்க வலைத்தளம் - www.pcsec.nw.gov.lk</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+      // AI Chatbot Implementation
+class ChatBot {
+    constructor() {
+        // Point directly to your Vercel proxy endpoint instead of Google
+        this.apiUrl = '/api/chat';
+        this.conversationHistory = [];
+        this.websiteData = this.buildWebsiteKnowledge();
+        this.initializeChat();
+    }
+
+    buildWebsiteKnowledge() {
+        return `
+You are an intelligent assistant for the North Western Provincial Council website. Your role is to help users navigate the website and find information quickly and easily.
+
+WEBSITE STRUCTURE AND PAGES:
+
+1. HOME PAGE (index.html)
+   - Main landing page with hero section
+   - Overview of the Provincial Council
+   - Leadership section
+   - Statistics about the province
+
+2. ABOUT US (aboutus-si.html)
+   - Vision: "A prosperous Northwestern people"
+   - Mission: Creating legal and physical environment for legislature empowerment
+   - Goals and objectives
+   - Council information
+
+3. LEADERSHIP:
+   - Chairman (chairman-si.html): Hon. A.M.T.B.Adhikari
+   - Secretary: M.A.S.Marasinghe
+   - Ruling Parties (ruling-si.html): Government coalition members
+   - Opposition (opposition-si.html): Opposition members
+
+4. HISTORY - Six Council Periods:
+   - 1st Council (firstcouncil-si.html): First Provincial Council period
+   - 2nd Council (secondcouncil-si.html): Second Council period
+   - 3rd Council (thirdcouncil-si.html): Third Council period
+   - 4th Council (fourthcouncil-si.html): Fourth Council period
+   - 5th Council (fifthcouncil-si.html): Fifth Council period
+   - 6th Council (sixthcouncil-si.html): Current/Sixth Council period
+
+5. DOWNLOADS:
+   - Hansard (hansard-si.html): Official proceedings and debates
+   - Statutes (statute-si.html): Provincial laws and regulations
+   - Applications & Forms (applicationsforms-si.html): Downloadable forms and documents
+
+6. PHOTO GALLERY (gallery-si.html)
+   - Event photos
+   - Council activities
+   - Historical images
+
+7. CONTACT US (contactus-si.html)
+   - Address: Provincial Council Office Complex, Kurunegala, North Western Province, Sri Lanka
+   - Phone: +94 37 222 3391
+   - Email: nwpcouncil@gmail.com
+
+Office Data:
+Introduction
+A council was also established for the North Western Province following the devolution process. The council members were elected by popular vote. The North Western Provincial Council functions as a legislature for the purpose of organizing, conducting, and conducting meetings of the council, committees, advisory committee meetings, keeping records, and for the purpose of implementing the mission of improving the living standards of the people of North Western Province as mandated by the Constitution.
+
+The Provincial Council Secretariat, in fulfilling that mission, pays salaries and allowances to all the officers of the Provincial Council, members, and their staff, and provides other facilities.
+
+Power Devolution
+The Provincial Council of the North Western Province is the administrative unit that was given to the North Western Province when the island was divided into 09 administrative units under the 13th Amendment to the Constitution. Its jurisdiction is limited to the North Western Province. It includes the two administrative districts of Kurunegala and Puttalam.
+
+A legislature consisting of 52 members has been established for the North Western Province, determining the number of members to represent the Provincial Council based on population and land size. Of these, 50 members are elected by popular vote. Two are honorary members.
+
+A provincial cabinet is in place in the decision-making process related to the province. Its number is 05 including the Chief Minister. The post of Minister of Finance is held by the Chief Minister ex officio.
+
+There are 05 advisory committees, one advisory committee for each ministry in each province, and 04 committees for provincial accounts, legal drafts, council business, and public petitions, and through them, they have fulfilled their responsibilities well by providing the necessary advice and guidance to the council.
+
+Council Composition
+The Council includes various leadership positions to ensure effective governance.
+
+01
+Chairman
+01
+Deputy Chairman
+01
+House Leader
+05
+Ministers (incl. Chief Minister)
+01
+Leader of the Opposition
+01
+Government whip
+01
+Opposition Whip
+41
+Members
+Council History
+The North Western Provincial Council has served the province through multiple terms since its establishment in 1988.
+
+Provincial Council	Term Period
+First Provincial Council	1988.05.12 to 1993.03.16
+Second Provincial Council	1993.11.11 to 1998.11.02
+Third Provincial Council	1999.02.09 to 2004.02.07
+Fourth Provincial Council	2004.05.18 to 2008.12.08
+Fifth Provincial Council	2009.03.12 to 2013.07.05
+Sixth Provincial Council	2013.10.11 to 2018.10.10
+Key Activities
+Operating legislative sessions, provincial council meetings, and advisory committee meetings
+Providing facilities for office bearers and staff
+Institutional affairs and human resource development of the Council Secretariat
+Financial management and maintenance of physical resources of the Council Secretariat
+The Council operates through 5 Advisory Committees for each provincial ministry, and 4 Standing Committees for provincial accounts, bill drafting, parliamentary affairs, and public petitions. These committees provide necessary advice and guidance to the Council while responsibly fulfilling their duties.
+
+Our Province by Numbers
+52
+Council Members
+2
+Administrative Districts
+5
+Advisory Committees
+4
+Standing Committees
+6
+Council Terms
+35+
+Years of Servi
+-Biography
+The Hon. A.M.T.B. Adhikari has been serving as the Chairman of the North Western Provincial Council since 2015. A distinguished and experienced politician, he is committed to advancing the interests of the people of the North Western Province.
+
+Contact Information
+Office Address
+North Western Provincial Council Secretariat
+Provincial Council Office Complex
+Kurunegala 60000
+North Western Province, Sri Lanka
++94 37 222 3384
++94 37 222 3384
+tikiri.adikari@yahoo.com
+Constituency Office
+Constituency Office
+No. 18/26, Shanthi Sinama pedesa
+polgahawela 60300
+Sri Lanka
++94 77 351 5077
+Key Responsibilities
+Presiding Over Council Sessions
+Leading provincial council meetings, ensuring democratic procedures, and facilitating productive discussions on policy matters affecting the province.
+Inter-governmental Coordination
+Maintaining effective relationships with central government, local authorities, and other provincial councils to ensure coordinated development efforts.
+Public Engagement
+Representing the province in public forums, engaging with citizens, and ensuring that public concerns are addressed through appropriate channels.
+-Foundation of Provincial Democracy
+The First North Western Provincial Council, established in 1988, marked a historic milestone in Sri Lankan governance. Following the enactment of the 13th Amendment to the Constitution, the provincial council system was introduced to devolve power and bring governance closer to the people.
+
+The inaugural council faced the monumental task of establishing institutional frameworks, developing provincial policies, and creating systems for effective service delivery. Despite numerous challenges, including limited resources and the need to build administrative capacity from the ground up, the first council laid the foundation for what would become a robust system of provincial governance.
+
+This pioneering council comprised dedicated public servants and elected representatives who understood the significance of their role in shaping the future of decentralized governance in Sri Lanka. Their work established precedents that continue to guide provincial administration today.
+
+Council Statistics
+52
+Initial Members
+4
+Years & 10 Months
+3
+Political Parties
+13
+New Appointments
+Key Dates
+Provincial Council Election
+April 28, 1988
+Oaths of Council Members
+May 9, 1988
+First Council Meeting
+May 12, 1988
+Council Dissolution
+March 16, 1993
+Leadership
+Governors
+Hon. D.B. Wijethunga
+April 30, 1988 - December 31, 1988
+
+Hon. Montegu Jayawickrama
+January 1, 1989 - October 12, 1993
+
+Chief Minister
+Hon. Gamini Jayawickrama Perera
+May 4, 1988 - March 16, 1993
+
+Chairman
+Hon. Richie Ferandopulle
+May 12, 1988 - March 16, 1993
+
+Deputy Chairman
+Hon. Piyasoma Upali
+May 12, 1988 - October 11, 1988
+
+Hon. Rathna Gunasekara
+March 07, 1989 - March 16, 1993
+
+Leaders of the House
+Hon. Rathna Gunasekara
+May 12, 1988 - March 07, 1989
+
+Hon. Mudiyanse Rathnayaka
+May 25, 1989 - March 16, 1993
+
+Government Whips
+Hon. Rathna Gunasekara
+May 12, 1988 - March 07, 1989
+
+Hon. Mudiyanse Rathnayaka
+May 25, 1989 - March 16, 1993
+
+Leader of the Opposition
+Hon. Ranjith Nawarathna
+May 12, 1988 - March 16, 1993
+
+Opposition Whip
+Hon. Nimalsiri Ekanayaka
+July 12, 1988 - March 16, 1993
+
+Provincial Ministries
+Ministry	Minister	Period
+Chief Ministry and Provincial Ministry of Education & Industries	Hon. Gamini Jayawickrama Perera	May 4, 1988 - Mar 16, 1993
+Provincial Ministry of Fisheries & Women's Affairs	Hon. W.M. Lerin Perera	Jul 12, 1988 - Mar 16, 1993
+Provincial Ministry of Local Government Housing & Construction	Hon. Ariya B. Rekawa	Jul 12, 1988 - Dec 30, 1988
+Provincial Ministry of Agriculture, Foods & Co-Operatives	Hon. R.M. Nimal Bandara	Jul 12, 1988 - Mar 16, 1993
+Provincial Ministry of Land, Irrigation, Transport & Health	Hon. N.M. Dharmadasa	Jul 12, 1988 - Mar 16, 1993
+Provincial Ministry of Social Welfare, Youth Affairs, Sports & Cultural Affairs	Hon. Thilaka Dasanayaka	Mar 7, 1989 - Jul 20, 1992
+Provincial Ministry of Land, Cultural, Rural Development, Sports & Youth Affairs	Hon. E.M.D.B. Ekanayaka	Aug 27, 1992 - Mar 16, 1993
+Council Members by Political Party
+UNP (31 Members)
+USF (19 Members)
+SLMC (2 Members)
+New Appointments (13 Members)
+Member Name	Period of Service
+Hon. Gamini Jayawickrama Perera	May 9, 1988 - Mar 16, 1993
+Hon. W.M. Lerin Perera	May 9, 1988 - Mar 16, 1993
+Hon. Ariya B. Rekawa	May 9, 1988 - Dec 30, 1988
+Hon. R.M. Nimal Bandara	May 9, 1988 - Mar 16, 1993
+Hon. N.M. Dharmadasa	May 9, 1988 - Mar 16, 1993
+Hon. A.H.M. Alavi	May 9, 1988 - Mar 16, 1993
+Hon. Piyasoma Upali	May 9, 1988 - Nov 10, 1988
+Hon. H.M. Wimalasiri Herath	May 9, 1988 - Jan 11, 1989
+Hon. W.M. Thennakon	May 9, 1988 - Dec 1, 1988
+Hon. R.M. Gunasingha Banda	May 9, 1988 - Mar 16, 1993
+Hon. I.F. Benedict Fernando	May 9, 1988 - Dec 1, 1988
+Hon. W.M.S.K. Dharmawardhana	May 9, 1988 - Jan 11, 1989
+Hon. K.A. Sumathipala	May 9, 1988 - Mar 16, 1993
+Hon. R.M. Rathna Gunasekara	May 9, 1988 - Mar 16, 1993
+Hon. J.A.D. Mangala Jayakodi	May 9, 1988 - Mar 10, 1990
+Hon. R.M. Thilaka Dasanayaka	May 9, 1988 - Jul 20, 1992
+Hon. K.M. Jayawardhana Banda	May 9, 1988 - Mar 16, 1993
+Hon. Mudiyanse Rathnayaka	May 9, 1988 - Mar 16, 1993
+Hon. W.A.M. Premarathna	May 9, 1988 - Mar 16, 1993
+Hon. Dayananda Herath	May 9, 1988 - Mar 16, 1993
+Hon. E.M.D.B. Ekanayaka	May 9, 1988 - Mar 16, 1993
+Hon. W.W.P.W.M.R. Anura Gopallawa	May 9, 1988 - Mar 16, 1993
+Hon. S.M. Jayathilaka	May 9, 1988 - Mar 16, 1993
+Hon. P.R.L.Fernandopulle	May 9, 1988 - Mar 16, 1993
+Hon. H.M. Somarathna	May 9, 1988 - Mar 16, 1993
+Hon. R.M.K.B. Rathnayaka	May 12, 1988 - Mar 16, 1993
+Hon. R.A.S. Ranasingha	May 9, 1988 - Mar 16, 1993
+Hon. M.P.H. Wickramasingha	May 9, 1988 - Mar 16, 1993
+Hon. Kumari Nirmala Koraya	May 9, 1988 - Mar 16, 1993
+Hon. W.P.B. Wickramanayaka	May 9, 1988 - Mar 16, 1993
+Hon. L.M. Ayubkhan	May 12, 1988 - Mar 16, 1993
+Council Statistics
+52
+Initial Members
+4
+Years & 10 Months
+3
+Political Parties
+8
+New Appointments
+Key Dates
+Provincial Council Election
+May 17, 1993
+Oaths of Council Members
+May 21, 1993
+First Council Meeting
+November 11, 1993
+Council Dissolution
+November 2, 1998
+Leadership
+Governors
+Hon. Montegu Jayawickrama
+January 1, 1989 – October 12, 1993
+
+Hon. Karunasena Kodithuwakku
+October 13, 1993 – July 7, 1994
+
+Hon. Ananda Tissa De Alvis
+July 8, 1994 – December 31, 1994
+
+Hon. H.G. Arewwawala
+January 12, 1995 – January 4, 1999
+
+Chief Ministers
+Hon. Gamini Jawickrama Perera (U.N.P)
+May 21, 1993 - October 18, 1993
+
+Hon. G.H. Premachandra (D.U.N.F.)
+October 19, 1993 - August 17, 1994
+
+Hon. R.M.R. Nimal Bandara (U.N.P.)
+August 30, 1994 - November 10, 1998
+
+Chairman
+Hon. A.H.M. Saddhatissa Wadigamangawa (D.U.N.F)
+November 11, 1993 - November 10, 1998
+
+Deputy Chairman
+Hon. M.H.M.Navavi (P.A.)
+November 11, 1993 - October 04, 1994
+
+Hon. M.I.B.Hafy (U.N.P)
+October 19, 1993 - November 10, 1998
+
+Leader of the House
+Hon. Jayarathna Herath (P.A.)
+November 11, 1993 - June 30, 1994
+
+Hon. R.M.R.Nimal Bandara (U.N.P)
+July 05, 1994 - September 20, 1994
+
+Hon. W.A.M.Premarathna (U.N.P)
+September 21, 1994 - November 10, 1998
+
+Government Whips
+Hon. Jayarathna Herath (P.A.)
+November 11, 1993 - June 30, 1994
+
+Hon. R.M.R.Nimal Bandara (U.N.P)
+July 05, 1994 - September 20, 1994
+
+Hon. W.A.M.Premarathna (U.N.P)
+September 21, 1994 - November 10, 1998
+
+Leaders of the Opposition
+Hon. Gamini Jayawickrama Perera (U.N.P.)
+November 11, 1993 - June 09, 1994
+
+Hon. Lerin Perera (U.N.P)
+June 21, 1994 - July 05, 1994
+
+Hon. R.M.S.B.Nawinna (P.A.)
+July 06, 1994 - August 17, 1994
+
+Hon. Jayarathna Herath (P.A.)
+October 19, 1994 - November 10, 1998
+
+Opposition Whips
+Hon. Gamini Jayawickrama Perera (U.N.P.)
+November 11, 1994 - June 09, 1994
+
+Hon. Lerin Perera (U.N.P)
+June 21, 1994 - July 05, 1994
+
+Hon. R.M.S.B.Nawinna (P.A.)
+July 05, 1994 - August 17, 1994
+
+Hon. Jayarathna Herath (P.A.)
+October 19, 1994 - November 10, 1998
+
+Provincial Ministries
+Ministry	Minister	Period
+Provincial Ministry of Education,Foods,Co-Operatives,Trade & Commercial Affairs,Cultural,Rural Development, Power & Energy.	Hon. R.M.S.B. Nawinna (P.A.)	Oct 19, 1993 - Jul 5, 1994
+Provincial Ministry of Health & Women’s Affairs.	Hon. Anura Priyadarshana Yapa (P.A.)	Oct 19, 1993 - Jul 5, 1994
+Provincial Ministry of Fisheries & Tourism Affairs.	Hon. Godfri Fernando (P.A.)	Oct 19, 1993 - Jul 5, 1994
+Provincial Ministry of Sports, Youth Affairs & Social Welfares.	Hon. Sunil Ranjan Jayakodi (D.U.N.F.)	Oct 19, 1993 - Mar 19, 1996
+Provincial Ministry of Land,Irrigation,Highways ,Local Government,Housing & Construction,Transport,Industries,Foods & Co-Operatives.	Hon. G.M. Premachandra (D.U.N.F.)	Jul 21, 1994 - Aug 17, 1994
+Provincial Ministry of Finance ,Planning,Low & Order, Land ,Agriculture ,Animal Control,Irrigation,Highways,Local Government,Environment,Housing & Construction,Transport,Industries,Livelihood.	Hon. R.M.R. Nimal Bandara (U.N.P.)	Aug 30, 1994 - Nov 10, 1998
+Provincial Ministry of Education, Rural Development & Cultural Affairs.	Hon. Alfrad Kulathunga (U.N.P.)	Jul 21, 1994 - Nov 10, 1998
+Finance, Planning, Low & Order, Land, Agriculture, Animal Control, Irrigation, Highways, Local Government, Environment, Housing & Construction, Transport, Industries, Livelihood	Hon. R.M.R. Nimal Bandra (U.N.P.)	Mar 27, 1996 - Nov 10, 1998
+Provincial ministry of Indigenous Medicine, Sports & Youth Affairs.	Hon. J.X. Fernando (D.U.N.F.)	Aug 31, 1994 - Nov 10, 1998
+Provincial Ministry of Co-Operative, Foods & Rural Industries.	Hon. B.M. Wijayanayaka (D.U.N.F.)	Mar 27, 1996 - Nov 10, 1998
+Provincial Ministry of Social, Rehabilitation, Fisheries & Women’s Affairs.	Hon. W.M. Lerin Perera (U.N.P.)	July 21, 1994 - Nov 10, 1998
+Council Members by Political Party
+UNP(25 Members)
+PA(18 Members)
+DUNF (9 Members)
+New Appointments-8
+Member Name	Period of Service
+Hon. Gamini Jayawickrama Perera	May 20, 1993 - Jun 9, 1994
+Hon. W.M. Lerin Perera	May 20, 1993 - Nov 10, 1998
+Hon. R.M.R.Nimal Bandara	May 20, 1993 - Nov 10, 1998
+Hon. A.H.M. Alavi	May 20, 1993 - Aug 18, 1994
+Hon. Manjula C.R. Bandara	May 20, 1993 - Nov 10, 1998
+Hon. R.M.K.B. Rathnayaka	May 20, 1993 - Nov 10, 1998
+Hon. W.A.M. Premarathna	May 20, 1993 - Nov 10, 1998
+Hon. D.M. Gamini Disanayaka	May 20, 1993 - Nov 10, 1998
+Hon. D.P. Ajith Rohana	May 20, 1993 - Nov 10, 1998
+Hon. M.I.B.Hafy	May 20, 1993 - Nov 10, 1998
+Hon. Alfrad Kulathunga	May 20, 1993 - Nov 10, 1998
+Hon. Guven Herath	May 20, 1993 - Nov 10, 1998
+Hon. R.M. Gunasingha Banda	May 20, 1993 - Nov 10, 1998
+Hon. W.M. Dissanayaka	May 20, 1993 - Nov 10, 1998
+Hon. Jon Nevis Fernando	May 20, 1993 - Nov 10, 1998
+Hon. W.M. Antony Sugath Tisera	May 20, 1993 - Nov 10, 1998
+Hon. W.M. Karunarathna Wijesundara	May 20, 1993 - Nov 10, 1998
+Hon. S.P. Prasanna Shamal Senarath	May 20, 1993 - Nov 10, 1998
+Hon. R.M. Gunathilaka	May 20, 1993 - Nov 10, 1998
+Hon. K.G. Ananada Pushapa Kumara	May 20, 1993 - Nov 10, 1998
+Hon. M. Upali Herath	May 20, 1993 - Nov 10, 1998
+Hon. F.R.S.E. Fernandopulle	May 20, 1993 - Nov 10, 1998
+Hon. M. Ayubkhan	May 20, 1993 - Nov 10, 1998
+Hon. H.L.D.A. Hilariyan Gunawardhana	May 20, 1993 - Nov 10, 1998
+Hon. J.C. Alawathuwala	May 20, 1993 - Aug 18, 1994
+Council Statistics
+52
+Initial Members
+4
+Years & 11 Months
+3
+Political Parties
+16
+New Appointments
+Key Dates
+Provincial Council Election
+January 25, 1999
+Oaths of Council Members
+February 3, 1999
+First Council Meeting
+February 9, 1999
+Council Dissolution
+February 7, 2004
+Leadership
+Governor
+Hon. Siripala Jayaveera
+January 5, 1999 - April 26, 2004
+
+Chief Ministers
+Hon. R.M.S.B. Nawinna
+January 28, 1999 - December 12, 2001
+
+Hon. Athula Sarath Kumara Wijesingha
+December 12, 2001 - February 7, 2004
+
+Chirman
+Hon. D.M.Chandrathilaka
+February 09, 1999 - February 07, 2004
+
+Deputy Chirman
+Hon. A.M.Indrani Dassanayaka
+February 09, 1999 - February 07, 2004
+
+Leader of the House
+Hon. B.Antony Victor Perera
+February 09, 1999 - November 03, 2000
+
+Hon. Piyasiri Ramanayaka
+November 03, 2004 - February 07, 2004
+
+Government Whip
+Hon. B.K.Kumara Keerthi Chandrasiri
+August 01, 2000 - February 07, 2004
+
+Leader of the Opposition
+Hon. Ashoka Wadigamangawa
+March 06, 2000 - February 07, 2004
+
+Opposition Whip
+Hon. H.B.Abeyrathna
+January 01, 2002 - February 07, 2004
+
+Provincial Ministries
+Ministry	Minister	Period
+Chief Ministry & Provincial Ministry of Finance, Planning Low & Order, Local Government & Provincial Administration, Man Power, Education, Health & Indigenous Medicine	Hon. R.M.S.B. Nawinna	Feb 05, 1999 - Dec 05, 2001
+Provincial Ministry of Sports, Rural Development, Probation & Child Care, Highways, Transport & Youth Affairs	Hon. Neranjan Wickramasingha	Feb 3, 1999 - Feb 07, 2004
+Health, Indigenous Medicine & Co-Operatives	Hon. Jayarathna Herath	Feb 3, 1999 - Oct 10, 2000
+Provincial Ministry of Health, Indigenous Medicine, Social Welfares	Hon. M.H.M. Navavi	Feb 3, 1999 - Feb 07, 2004
+Provincial Ministry of Agriculture, Fisheries & Irrigation	Hon. U.P. Jayarathna	Feb 03, 1999 - Oct 10, 2000
+Provincial Ministry of Land, Agriculture & irrigation	Hon. Athula Wijesingha	Jan 22, 2001 - Dec 12, 2001
+Provincial Ministry of Finance, Planning, Low & Order, Defence Affairs, Local Government & Provincial Administration, Man Power, Education, Environment & Housing Construction, Woman's Affairs, Industries & Rural Industries, Cultural Affairs	Hon. Athula Wijesingha	Dec 12, 2001 - Feb 7, 2004
+Provincial Ministry of Land, Agriculture & Irrigation, Animal Production & Animal Health & Agrarian Service	Hon. Dharmasiri Dasanayaka	May 30, 2002 - Feb 7, 2004
+Provincial Ministry of Fisheries & Co-Operatives	Hon. B. Antony Victor Perera	Nov 6, 2000 - Feb 7, 2004
+Council Members by Political Party
+PA(30 Members)
+UNP(19 Members)
+JVP (3 Members)
+New PA (10)
+New UNP (6)
+New JVP (5)
+Parliament Elected (8)
+Member Name	Period of Service
+Hon. R.M.S.B.Nawinna	Jan 28, 1999 - Dec 5, 2001
+Hon. Jayarathna Herath	Jan 28, 1999 - Oct 10, 2000
+Hon. U.P.Jayarathna	Jan 28, 1999 - Oct 10, 2000
+Hon. M.H.M.Navavi	Jan 28, 1999 - Feb 7, 2004
+Hon. Neranjan Wickramasingha	Jan 28, 1999 - Feb 7, 2004
+Hon. Ranjith Nawarathna	Jan 28, 1999 - Oct 10, 2000
+Hon. S. Kumari Tennakon	Jan 28, 1999 - Oct 10, 2000
+Hon. R.P.D. Gunadasa Dehigama	Jan 28, 1999 - Feb 7, 2004
+Hon. D.M.Chandrathilaka	Jan 28, 1999 - Feb 7, 2004
+Hon. B.K. Kumara Keerthi Chandrasiri	Jan 28, 1999 - Feb 7, 2004
+Hon. A.S. Ihalagama	Jan 28, 1999 - Feb 7, 2004
+Hon. Athula Wijesingha	Jan 28, 1999 - Feb 7, 2004
+Hon. A.M. Somasiri Gunathilaka	Jan 28, 1999 - Feb 7, 2004
+Hon. A.P. Keerthirathna	Jan 28, 1999 - Feb 7, 2004
+Hon. R.D. Wimaladasa	Jan 28, 1999 - Feb 7, 2004
+Hon. R.M. Bandara Rajapaksha	Jan 28, 1999 - Feb 7, 2004
+Hon. Dharmasiri Dasanayaka	Jan 28, 1999 - Feb 07, 2004
+Hon. W.D.H. Chandrarathna	Jan 28, 1999 - Feb 7, 2004
+Hon. Padma Weeththewa	Jan 28, 1999 - Feb 7, 2004
+Hon. M. Premarathna	Jan 28, 1999 - Feb 7, 2004
+Hon. A.M.T.B. Adikari	Jan 28, 1999 - Feb 7, 2004
+Hon. H.M. Tissa Herath	Jan 28, 1999 - Oct 10, 2000
+Hon. A.M.Indrani Dasanayaka	Jan 28, 1999 - Feb 7, 2004
+Hon. A. Dayasritha Tissera	Jan 28, 1999 - Oct 10, 2000
+Hon. Ivon Sriyani Fernando	Jan 28, 1999 - Oct 10, 2000
+Hon. Piyasiri Ramanayaka	Jan 28, 1999 - Feb 7, 2004
+Hon. B.Antony Victor Perera	Jan 28, 1999 - Feb 07, 2004
+Hon. Amal Travin Fernando	Jan 28, 1999 - Feb 17, 1999
+Hon. P.N. Gunawardhana	Jan 28, 1999 - Feb 7, 2004
+Hon. D.Ekanayake	Jan 28, 1999 - Feb 07, 2004
+Council Statistics
+52
+Total Members
+4
+Years & 7 Months
+3
+Political Parties
+5
+Provincial Ministers
+Key Dates
+Provincial Council Election
+April 24, 2004
+Oaths of Council Members
+May 6, 2004
+First Council Meeting
+May 18, 2004
+Council Dissolution
+December 8, 2008
+Leadership
+Governors
+Hon. Darmadasa Wanniarachchi
+April 27, 2004 - October 5, 2007
+
+Hon. Tissa R. Balalla
+October 16, 2007 - January 19, 2015
+
+Chief Minister
+Hon. Athula Sarath Kumara Wijesingha
+April 30, 2004 - December 8, 2008
+
+Chairman
+Hon. Dharmasiri Dasanayaka
+May 18, 2004 - Mar 11, 2009
+
+Deputy Chairman
+Hon. A.M.Somasiri Gunathilaka
+May 18, 2004 - December 08, 2008
+
+Leader of the House
+Hon. B.K.Kumara Keerthi Chandrasiri
+May 18, 2004 - December 08, 2008
+
+Government Whip
+Hon. R.M.Bandara Rajapaksha
+May 18, 2004 - December 08, 2008
+
+Leader of the Opposition
+Hon. Ashoka Wadigamangawa
+May 18, 2004 - September 02, 2008
+
+Hon. Prasanna Shamal Senarath
+September 03, 2008 - December 08, 2008
+
+Opposition Whips
+Hon. Prasanna Shamal Senarath
+May 18, 2004 - September 02, 2008
+
+Hon. M.Ayubkan
+September 02, 2008 - December 08, 2008
+
+Provincial Ministries
+Ministry	Minister	Period
+Chief Ministry & Provincial Ministry of Finance & Planning, Law & Order, Local Government, Environment, Man Power, Education, Road, Transport & Women's Improvement Affairs	Hon. Athula Wijesingha	Apr 30, 2004 - Dec 8, 2008
+Provincial Ministry of Health, Indigenous Medicine, Sports & Youth Affairs	Hon. Neranjan Wickramasingha	May 18, 2004 - Dec 8, 2008
+Provincial Ministry of Fisheries, Rural Industries & Rural Development	Hon. Antony Victor Perera	May 18, 2004 - Dec 8, 2008
+Provincial Ministry of Co-Operatives, Social Welfare, Probation & Child Care, Electricity, Housing & Construction	Hon. Piyasiri Ramanayaka	May 18, 2004 - Dec 8, 2008
+Provincial Ministry of Lands, Agriculture, Irrigation & Animal Production	Hon. R.D. Wimaladasa	May 18, 2004 - Dec 8, 2008
+Council Members by Political Party
+UPFA (31 Members)
+UNP (19 Members)
+SLMC (2 Members)
+New Appointments
+Member Name	Period of Service
+Hon. Athula Wijesingha	Apr 30, 2004 - Dec 8, 2008
+Hon. Neranjan Wickramasingha	May 6, 2004 - Dec 8, 2008
+Hon. Antony Victor Perera	May 6, 2004 - Dec 8, 2008
+Hon. Piyasiri Ramanayaka	May 6, 2004 - Dec 8, 2008
+Hon. R.D. Wimaladasa	May 6, 2004 - Dec 8, 2008
+Hon. S.A. Ranasingha	May 6, 2004 - Dec 8, 2008
+Hon. K.M. Nimal Herath	May 6, 2004 - Dec 8, 2008
+Hon. Dharmasiri Dasanayaka	May 6, 2004 - Dec 8, 2008
+Hon. A.M. Indrani Dasanayaka	May 6, 2004 - Dec 8, 2008
+Hon. A.D. Sumanadasa	May 6, 2004 - Dec 8, 2008
+Hon. K. Sanath Nishantha Perera	May 6, 2004 - Dec 8, 2008
+Hon. H.M.K.M. Gunasekara	May 6, 2004 - Dec 8, 2008
+Hon. Anton Prabhath Sithara	May 6, 2004 - Dec 8, 2008
+Hon. A. Winsant	May 6, 2004 - Dec 8, 2008
+Hon. Neel Priyantha Liyanage	May 6, 2004 - Dec 8, 2008
+Hon. K.A. Gunadasa Kannangara	May 6, 2004 - Dec 8, 2008
+Hon. W. Saman Pushpakumara	May 6, 2004 - Dec 8, 2008
+Hon. Jude Sumal Tissera	May 6, 2004 - Dec 8, 2008
+Hon. A.M.T.B. Adikari	May 6, 2004 - Dec 8, 2008
+Hon. Arundika Fernando	May 6, 2004 - Dec 8, 2008
+Hon. R.M.N. Supun Rajapaksha	May 6, 2004 - Dec 8, 2008
+Hon. B.K.Kumara Keerthi Chandrasiri	May 6, 2004 - Dec 8, 2008
+Hon. R.P.D. Gunadasa Dehigama	May 6, 2004 - Dec 8, 2008
+Hon. Upulangani Malagamuwa	May 6, 2004 - Dec 8, 2008
+Hon. K.W. Shantha Bandara	May 6, 2004 - Dec 8, 2008
+Hon. A.M.Somasiri Gunathilaka	May 6, 2004 - Dec 8, 2008
+Hon. Laxman Wendaruwa	May 6, 2004 - Dec 8, 2008
+Hon.R.M.Bandara Rajapaksha	May 6, 2004 - Dec 8, 2008
+Hon. A.P. Keerthirathna	May 18, 2004 - Dec 8, 2008
+Hon. N.T.M.M. Thahir	May 18, 2004 - Dec 8, 2008
+Hon. Ananda Chandralal	May 18, 2004 - Dec 8, 2008
+Council Statistics
+52
+Total Members
+4
+Years & 4 Months
+3
+Political Parties
+5
+Ministries
+Key Dates & Timeline
+Provincial Council Election
+February 14, 2009
+Oaths of Council Members
+February 27, 2009
+First Council Meeting
+March 12, 2009
+Council Dissolution
+July 5, 2013
+Leadership
+Governor
+Hon. Tissa R. Balalla
+October 16, 2007 - January 19, 2015
+
+Chief Minister
+Hon. Athula Wijesingha
+May 28, 2009 - July 5, 2013
+
+Chairman
+Hon. R.D.Wimaladasa
+March 12, 2009 - July 5, 2013
+
+Deputy Chairman
+Hon. Darmasiri Dasanayaka
+March 12, 2009 - July 5, 2013
+
+Leader of the House
+Hon. H.M.Samanpriya Herath
+March 12, 2009 - July 5, 2013
+
+Government Whip
+Hon. R.M.Bandara Rajapaksha
+March 12, 2009 - July 5, 2013
+
+Leader of the Opposition
+Hon. Prasanna Shamal Senarath
+March 12, 2009 - July 5, 2013
+
+Opposition Whip
+Hon. Shantha Sisira Kumara Abeysekara
+March 12, 2009 - July 5, 2013
+
+Provincial Ministries
+Ministry	Minister	Period
+Chief Ministry & Provincial Ministry of Finance & Planning, Law and Order, Local Government & Provincial Administration, Man Power, Education & Cultural Affairs, Land, Transport, Environment, Tourism, Co-Ordination of Investments, Co-Operatives Development & Food Supplies & Distribution	Hon. Athula Wijesingha	May 28, 2009 - July 5, 2013
+Provincial Ministry of Social Welfare, Probation & Child Care, Woman's Affairs, Rural Industries Development & Rural Development	Hon. Neranjan Wickramasingha	May 28, 2009 - April 2, 2010
+Provincial Ministry of Social Welfare, Probation & Child Care, Woman's Affairs, Rural Industries Development & Rural Development	Hon. R.P.D. Gunadasa Dehigama	June 1, 2010 - July 5, 2013
+Provincial Ministry of Health, Indigenous Medicine, Sports & Youth Affairs	Hon. Ashoka Wadigamangawa	May 28, 2009 - July 5, 2013
+Provincial Ministry of Electricity, Housing & Construction, Fisheries Affairs	Hon. Arundika Fernando	May 28, 2009 - April 2, 2010
+Provincial Ministry of Electricity, Housing & Construction, Fisheries Affairs	Hon. Sanath Nishantha Perera	June 1, 2010 - July 5, 2013
+Provincial Ministry of Agriculture, Animal Production & Development Minor Irrigation & Agrarian Development	Hon. Shantha Bandara	May 28, 2009 - April 2, 2010
+Provincial Ministry of Agriculture, Animal Production & Development Minor Irrigation & Agrarian Development	Hon. H.M.D.B. Herath	June 1, 2010 - July 5, 2013
+Council Members by Political Party
+UPFA Members (37)
+UNP Members (14)
+JVP Members (1)
+Elected to Parliament (5)
+New Appointments (7)
+Member Name	Period of Service
+Hon. R.D.Wimaladasa	Feb 27, 2009 - July 5, 2013
+Hon. Athula Wijesingha	Feb 27, 2009 - July 5, 2013
+Hon. Neranjan Wickramasingha	Feb 27, 2009 - Apr 2, 2010
+Hon. Ashoka Wadigamangawa	Feb 27, 2009 - July 5, 2013
+Hon. Arundika Fernando	Feb 27, 2009 - Apr 2, 2010
+Hon. Shantha Bandara	Feb 27, 2009 - Apr 2, 2010
+Hon. Darmasiri Dasanayaka	Feb 27, 2009 - July 5, 2013
+Hon. Piyasiri Ramanayaka	Feb 27, 2009 - July 5, 2013
+Hon. Antony Victor Perera	Feb 27, 2009 - Apr 2, 2010
+Hon. R.P.D. Gunadasa Dehigama	Feb 27, 2009 - July 5, 2013
+Hon. A.M. Somasiri Gunathilaka	Feb 27, 2009 - July 5, 2013
+Hon. B.K. Kumara Keerthi Chandrasiri	Feb 27, 2009 - July 5, 2013
+Hon. A.P. Keerthirathna	Feb 27, 2009 - July 5, 2013
+Hon. A.M. Indrani Dasanayaka	Feb 27, 2009 - July 5, 2013
+Hon. R.M.S. Soma Kumari Tennakon	Feb 27, 2009 - Sept 24, 2009
+Hon. A.M.T.B. Adhikari	Feb 27, 2009 - July 5, 2013
+Hon. R.M.Bandara Rajapaksha	Feb 27, 2009 - July 5, 2013
+Hon. T.M.T. Malraj Peeris	Feb 27, 2009 - July 5, 2013
+Hon. Sanath Nishantha Perera	Feb 27, 2009 - July 5, 2013
+Hon. Jude Sumal Tissera	Feb 27, 2009 - July 5, 2013
+Hon. H.M.D.B. Herath	Feb 27, 2009 - July 5, 2013
+Hon. N.T.M. Thahir	Feb 27, 2009 - July 5, 2013
+Hon. R.M. Nilantha Supun Rajapaksha	Feb 27, 2009 - July 5, 2013
+Hon. Laxman Wendaruwa	Feb 27, 2009 - July 5, 2013
+Hon. Chandana Prasad Yapa	Feb 27, 2009 - July 5, 2013
+Hon. Janaka Pradeep De Soyza	Feb 27, 2009 - Feb 1, 2012
+Hon. Piyumal Herath	Feb 27, 2009 - July 5, 2013
+Hon. Manjula Dissanayaka	Feb 27, 2009 - July 5, 2013
+Hon. K.R.M. Sandya Kumara Rajapaksha	Feb 27, 2009 - July 5, 2013
+Hon. H.M. Dingiri Banda Herath	Feb 27, 2009 - July 5, 2013
+Hon. Don Kamal Indika	Feb 27, 2009 - July 5, 2013
+Hon. Asanka Nawarathna	Feb 27, 2009 - July 5, 2013
+Hon. Chandra Kamalasiri Herath	Feb 27, 2009 - July 5, 2013
+Hon. Shelton Nimal Peiris	Feb 27, 2009 - July 5, 2013
+Hon. R.M. Sumith Kumara Rajapaksha	Feb 27, 2009 - July 5, 2013
+Hon. Ananda Sarath Kumara	Feb 27, 2009 - June 8, 2013
+Hon. H.M.Samanpriya Herath	Feb 27, 2009 - July 5, 2013
+Council Statistics
+52
+Total Members
+5
+Years
+5
+Political Parties
+7
+Elected to Parliament
+Key Dates
+Provincial Council Election
+September 21, 2013
+Oaths of Council Members
+October 3-8, 2013
+First Council Meeting
+October 11, 2013
+Council Dissolution
+October 10, 2018
+Leadership
+Governors
+Hon. Tissa R. Balalla
+October 1, 2007 - January 19, 2015
+
+Hon. Amara Piyasili Rathnayaka
+January 23, 2015 - April 11, 2018
+
+Hon. K.C. Logeswaran
+April 12, 2018 - January 3, 2019
+
+Chief Ministers
+Hon. Dayasiri Jayasekara
+October 7, 2013 - August 31, 2015
+
+Hon. Dharmasiri Dasanayaka
+September 8, 2015 - October 10, 2018
+
+Chairman
+Hon. Dharmasiri Dasanayaka
+October 11, 2013 - September 07, 2015
+
+Hon. A.M.T.B.Adikari
+October 06, 2015 - To Date
+
+Deputy Chairman
+Hon. R.P.D.Wimaladasa
+October 11, 2013 - May 20, 2015
+
+Hon. A.M.T.B.Adikari
+June 16, 2015 - October 05, 2015
+
+Hon. Somasiri Gunathilaka
+October 06, 2015 - October 10, 2018
+
+Leaders of the House
+Hon. Sumal Tissera
+October 11, 2013 - September 13, 2015
+
+Hon. Chinthaka Amal Mayadunna
+October 06, 2015 - October 10, 2018
+
+Government Whips
+Hon. Johan Fernando
+October 11, 2013 - October 10, 2018
+
+Opposition Leaders
+Hon. J.C.Alawathuwala
+October 08, 2013 - August 31, 2015
+
+Hon. Prasanna Shamal Senarath
+September 22, 2015 - October 10, 2018
+
+Opposition Whips
+Hon. M.A.D.Hector H.Appuhamy
+October 08, 2013 - August 31, 2015
+
+Hon. Chithral Fernando
+September 22, 2015 - October 10, 2018
+
+Provincial Ministries
+First Term Ministries
+Second Term Ministries
+Ministry	Minister	Period
+Chief Ministry & Provincial Minister of Finance & Planning, Law & Order, Local Government & Provincial Administration, Human Resources, Education & Cultural Affairs, Land, Environment, Tourism, Co-Ordination of Investment, Co-Operative Developments & Food Supplies & Distribution	Hon. J.P. Dayasiri Pathmakumara Jayasekara	Oct 7, 2013 - Aug 31, 2015
+Provincial Minister of Social Welfare, Probation & Child Care, Woman's Affairs, Rural Industries Development & Rural Development	Hon. Sandhya Kumara Rajapaksha	Oct 7, 2013 - Sep 13, 2015
+Provincial Minister of Agriculture, Fisheries, Animal Production & Development, Minor Irrigation & Agrarin Development	Hon. Sanath Nishantha Perera	Oct 7, 2013 - Aug 31, 2015
+Provincial Minister of Health, Indigenous Medicine, Sports & Youth Affairs	Hon. H.M.D.B. Herath	Oct 7, 2013 - Sep 13, 2015
+Provincial Minister of Road Development, Transport, Electricity, Housing & Construction	Hon. R.P.D. Gunadasa Dehigama	Oct 7, 2013 - Sep 13, 2015
+Council Members by Political Party
+UPFA (34 Members)
+UNP (12 Members)
+Democratic Party (3 Members)
+SLMC (2 Members)
+JVP (1 Member)
+Elected to Parliament (7 Members)
+New Appointments (8 Members)
+Member Name	Period of Service
+Hon. Dharmasiri Dasanayaka	Sep 25, 2013 - Oct 10, 2018
+Hon. J.P. Dayasiri Pathmakumara Jayasekara	Sep 25, 2013 - Aug 31, 2015
+Hon. J.P. H.M.D.B. Herath	Sep 25, 2013 - Sep 13, 2015
+Hon. R.P.D.Gunadasa Dehigama	Sep 25, 2013 - Oct 10, 2018
+Hon. Sanath Nishantha Perera	Sep 25, 2013 - Aug 31, 2015
+Hon. K.R.M.S.S.Kumara Rajapaksha	Sep 25, 2013 - Oct 10, 2018
+Hon. R.P.D.Wimaladasa	Sep 25, 2013 - Oct 10, 2018
+Hon. W.J.Sumal Thisera	Sep 25, 2013 - Oct 10, 2018
+Hon. Johan S.Fernando	Sep 25, 2013 - Oct 10, 2018
+Hon. Athula Wijesingha	Sep 25, 2013 - Oct 10, 2018
+Hon. Ashoka Wadigamangawa	Sep 25, 2013 - Oct 10, 2018
+Hon. Piyasiri Ramanayaka	Sep 25, 2013 - Oct 10, 2018
+Hon. A.M. Somasiri Gunathilaka	Sep 25, 2013 - Oct 15, 2015
+Hon. A.M. Indrani Dasanayaka	Sep 25, 2013 - Oct 10, 2018
+Hon. B.K. Kumara Keerthi Chandrasiri	Sep 25, 2013 - Oct 10, 2018
+Hon. R.M. Bandara Rajapaksha	Sep 25, 2013 - Oct 10, 2018
+Hon. A.M.T.B. Adikari	Sep 25, 2013 - Jun 15, 2015
+Hon. R.M. Nilantha Supun Rajapaksha	Sep 25, 2013 - Oct 10, 2018
+Hon. H.M. Samanpriya Herath	Sep 25, 2013 - Oct 10, 2018
+Hon. Lakshman Harischandra Weedaruwa	Sep 25, 2013 - Sep 13, 2015
+Hon. Y.A. Chandana Prasad Yapa	Sep 25, 2013 - Oct 10, 2018
+Hon. E.M. Piyumal Herath	Sep 25, 2013 - Oct 10, 2018
+Hon. Chinthan Amal Mayadunna	Sep 25, 2013 - Oct 15, 2015
+Hon. W. Manjula Disanayaka	Sep 25, 2013 - Oct 10, 2018
+Hon. Asanka Nawaratna	Sep 25, 2013 - Oct 10, 2018
+Hon. R.M. Sumith Kumara Rajapaksha	Sep 25, 2013 - Oct 10, 2018
+Hon. Don Kamal Indika	Sep 25, 2013 - Oct 10, 2018
+Hon. H.M. Chandra Kamalasiri Herath	Sep 25, 2013 - Oct 10, 2018
+Hon. Trevin Fernando	Sep 25, 2013 - Oct 10, 2018
+Hon. Palitha Rohana Preethiviraj	Sep 25, 2013 - Oct 10, 2018
+Hon. B.R. Chandra Kumar Basnayaka	Sep 25, 2013 - Oct 10, 2018
+Hon. S.A. Priyandana Premadasaa	Sep 25, 2013 - Oct 10, 2018
+Hon. A.P. Keerththiratna	Sep 25, 2013 - Oct 10, 2018
+Hon. N.T.M.M. Thaheer	Sep 25, 2013 - Oct 10, 2018
+Digital Forms & Applications
+The North Western Provincial Council is committed to providing convenient and accessible digital services to our constituents. Our comprehensive collection of official forms and applications can be downloaded directly from this page, ensuring you have quick access to the documents you need.
+
+All forms are available in PDF format and can be printed and filled in by hand. For assistance with any form or application, please visit our office during business hours. Or call our office.
+
+Service Statistics
+6
+Available Forms
+2
+Main Categories
+24/7
+Download Access
+PDF
+Format Available
+Forms for Council Members (සභා මන්ත්‍රීවරුන් සඳහා අයදුම්පත්)
+Personal Staff Application
+Application form for personal staff members of council members. Required for all staff appointments and administrative purposes.
+Sinhala: පුද්ගලික කාර්ය මණ්ඩල අයදුම් පත්‍ර
+
+Download Form
+Staff ID Card Application
+Identity card application form for members' personal staff. Required for security clearance and official identification purposes.
+Sinhala: මන්ත්‍රී පෞද්ගලික කාර්ය මණ්ඩලය හැඳුනුම්පත් අයදුම් පත්‍ර
+
+Download Form
+Document Request Form
+Official form for requesting stationery. This form is required to obtain stationery as per the stationery requirements.
+Sinhala: ලිපි ද්‍රව්‍ය ඉල්ලුම් පත්‍ර
+
+Download Form
+Private Secretary Application
+Application form for private secretary positions. Required for all appointments to secretarial positions within the council structure.
+Sinhala: පුද්ගලික ලේකම් අයදුම් පත්‍ර
+
+Download Form
+Other Applications (වෙනත් අයදුම් පත්‍ර)
+Vehicle Accident Notification
+Official form for reporting vehicle accidents involving provincial council vehicles or property. Must be submitted within 24 hours of any incident.
+Sinhala: වාහන අනතුරු දැනුම් දීම
+
+Download Form
+Public Petition Committee Application
+Application form for submitting public petitions to the committee. Used by citizens to formally present grievances and requests to the council.
+Sinhala: මහජන පෙත්සම් කාරක සභා අයදුම් පත්‍රය
+
+Download Form
+IMPORTANT STATISTICS:
+- Population Served: 2.4 Million
+- Area: 7,812 Square Kilometers
+- Council Members: 52
+- Departments: 15
+
+RELATED SERVICES:
+- Governor's Office: https://governor.nw.gov.lk/
+- Provincial Public Service Commission: https://psc.nw.gov.lk/
+- Chief Secretary's Office: http://cs.nw.gov.lk/
+- Chief Ministry: https://www.cm.nw.gov.lk/chiefmin_nwp/index.php
+- Health Ministry: https://www.health.gov.lk/
+
+INSTRUCTIONS:
+- Be friendly, conversational, and helpful
+- When users ask about pages or information, provide direct links
+- Use simple, easy-to-understand language
+- If asked about documents or forms, direct them to the downloads section
+- For contact information, provide complete details
+- If you don't know something specific, be honest and suggest where they might find it
+- Always format links as clickable HTML: <a href="url" target="_blank">Link Text</a>
+- Be concise but informative
+- When a user asks for a specific document (e.g., “Download education statute”), provide a direct download link.
+- If unsure which file is needed, list available files with links.
+- If user asks about council history or leadership, provide summaries from the respective page content.
+`;
+    }
+
+  initializeChat() {
+        this.attachEventListeners();
+        this.showWelcomeMessage();
+    }
+
+    attachEventListeners() {
+        const chatToggle = document.getElementById('chatToggle');
+        const chatClose = document.getElementById('chatClose');
+        const chatWindow = document.getElementById('chatWindow');
+        const chatInput = document.getElementById('chatInput');
+        const chatSend = document.getElementById('chatSend');
+        const notification = document.querySelector('.chat-notification');
+
+        if (chatToggle) {
+            chatToggle.addEventListener('click', () => {
+                chatWindow.classList.toggle('active');
+                if (chatWindow.classList.contains('active')) {
+                    chatInput.focus();
+                    if (notification) notification.style.display = 'none';
+                }
+            });
+        }
+
+        if (chatClose) {
+            chatClose.addEventListener('click', () => {
+                chatWindow.classList.remove('active');
+            });
+        }
+
+        if (chatSend) {
+            chatSend.addEventListener('click', () => this.sendMessage());
+        }
+        
+        if (chatInput) {
+            chatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    this.sendMessage();
+                }
+            });
+        }
+    }
+
+    showWelcomeMessage() {
+        const welcomeHTML = `
+            <div class="welcome-message">
+                <i class="fas fa-hand-sparkles"></i>
+                <h4>Welcome to NWP Council Assistant!</h4>
+                <p>I'm here to help you navigate our website and find information quickly.</p>
+            </div>
+            <div class="quick-actions">
+                <button class="quick-action-btn" onclick="chatBot.quickAsk('Tell me about the council')">
+                    About Council
+                </button>
+                <button class="quick-action-btn" onclick="chatBot.quickAsk('Who is the chairman?')">
+                    Chairman Info
+                </button>
+                <button class="quick-action-btn" onclick="chatBot.quickAsk('How can I download forms?')">
+                    Download Forms
+                </button>
+                <button class="quick-action-btn" onclick="chatBot.quickAsk('Contact information')">
+                    Contact Us
+                </button>
+            </div>
+        `;
+        
+        this.addBotMessage(welcomeHTML, true);
+    }
+
+    quickAsk(question) {
+        const chatInput = document.getElementById('chatInput');
+        if (chatInput) {
+            chatInput.value = question;
+            this.sendMessage();
+        }
+    }
+
+    async sendMessage() {
+        const input = document.getElementById('chatInput');
+        const message = input ? input.value.trim() : '';
+        
+        if (!message) return;
+        
+        this.addUserMessage(message);
+        if (input) input.value = '';
+        
+        this.showTypingIndicator();
+        
+        try {
+            const response = await this.callGeminiAPI(message);
+            this.removeTypingIndicator();
+            this.addBotMessage(response);
+        } catch (error) {
+            console.error("Chat Error:", error);
+            this.removeTypingIndicator();
+            this.addBotMessage("I apologize, but I'm having trouble connecting right now. Please try again in a moment, or feel free to explore the website directly!");
+        }
+    }
+
+    async callGeminiAPI(userMessage) {
+        const context = this.websiteData;
+        const conversationContext = this.conversationHistory.slice(-6).map(msg => 
+            `${msg.role === 'user' ? 'User' : 'Assistant'}: ${msg.content}`
+        ).join('\n');
+
+        const prompt = `${context}\n\nPrevious conversation:\n${conversationContext}\n\nUser: ${userMessage}\n\nAssistant:`;
+
+        // We clean up the request payload to send straight to your Vercel Node handler
+        const response = await fetch(this.apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ message: prompt })
+        });
+
+        if (!response.ok) {
+            throw new Error('API request failed');
+        }
+
+        const data = await response.json();
+        
+        // Match the data properties coming out of your api/chat.js architecture file
+        const botResponse = data.reply;
+
+        this.conversationHistory.push({ role: 'user', content: userMessage });
+        this.conversationHistory.push({ role: 'assistant', content: botResponse });
+
+        if (this.conversationHistory.length > 20) {
+            this.conversationHistory = this.conversationHistory.slice(-10);
+        }
+
+        return botResponse;
+    }
+
+    addUserMessage(message) {
+        const messagesContainer = document.getElementById('chatMessages');
+        if (!messagesContainer) return;
+
+        const messageHTML = `
+            <div class="message user">
+                <div class="message-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="message-content">${this.escapeHtml(message)}</div>
+            </div>
+        `;
+        messagesContainer.insertAdjacentHTML('beforeend', messageHTML);
+        this.scrollToBottom();
+    }
+
+    addBotMessage(message, isHTML = false) {
+        const messagesContainer = document.getElementById('chatMessages');
+        if (!messagesContainer) return;
+
+        const content = isHTML ? message : this.formatMessage(message);
+        const messageHTML = `
+            <div class="message bot">
+                <div class="message-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="message-content">${content}</div>
+            </div>
+        `;
+        messagesContainer.insertAdjacentHTML('beforeend', messageHTML);
+        this.scrollToBottom();
+    }
+
+    showTypingIndicator() {
+        const messagesContainer = document.getElementById('chatMessages');
+        if (!messagesContainer) return;
+
+        const typingHTML = `
+            <div class="message bot typing-message">
+                <div class="message-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="typing-indicator">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            </div>
+        `;
+        messagesContainer.insertAdjacentHTML('beforeend', typingHTML);
+        this.scrollToBottom();
+    }
+
+    removeTypingIndicator() {
+        const typingMessage = document.querySelector('.typing-message');
+        if (typingMessage) {
+            typingMessage.remove();
+        }
+    }
+
+    formatMessage(text) {
+        if (!text) return "";
+        text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+        text = text.replace(/\n/g, '<br>');
+        text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+        return text;
+    }
+
+    escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    scrollToBottom() {
+        const messagesContainer = document.getElementById('chatMessages');
+        if (messagesContainer) {
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+    }
+}
+
+// Initialize chatbot safely after DOM is loaded
+let chatBot;
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(() => {
+        chatBot = new ChatBot();
+    }, 2500);
+});
+        // Royal Door Animation
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                document.querySelector('.door-left').classList.add('open');
+                document.querySelector('.door-right').classList.add('open');
+                
+                setTimeout(() => {
+                    document.querySelector('.royal-doors').style.display = 'none';
+                }, 2000);
+            }, 500);
+        });
+
+        // Enhanced Prismatic Light Rays with Flowing Curves
+        const canvas = document.getElementById('prismaticCanvas');
+        const ctx = canvas.getContext('2d');
+        let mouseX = 0;
+        let mouseY = 0;
+        let rays = [];
+
+        function resizeCanvas() {
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            mouseX = canvas.width / 2;
+            mouseY = canvas.height / 2;
+            initRays();
+        }
+
+        function initRays() {
+            rays = [];
+            const numRays = 24;
+            
+            for (let i = 0; i < numRays; i++) {
+                rays.push({
+                    baseAngle: (Math.PI * 2 * i) / numRays,
+                    color: `hsl(${(360 / numRays) * i}, 85%, 70%)`,
+                    width: Math.random() * 3 + 2,
+                    phase: Math.random() * Math.PI * 2,
+                    speed: Math.random() * 0.02 + 0.01,
+                    amplitude: Math.random() * 40 + 30,
+                    length: Math.random() * 100 + 150,
+                    segments: []
+                });
+            }
+        }
+
+        function drawRays() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            
+            // Calculate mouse influence
+            const dx = mouseX - centerX;
+            const dy = mouseY - centerY;
+            const mouseDistance = Math.sqrt(dx * dx + dy * dy);
+            const mouseAngle = Math.atan2(dy, dx);
+            
+            rays.forEach((ray, index) => {
+                ray.phase += ray.speed;
+                
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                
+                // Calculate how much this ray should bend toward mouse
+                let angleDiff = mouseAngle - ray.baseAngle;
+                // Normalize angle difference to -PI to PI
+                while (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
+                while (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
+                
+                // Influence based on mouse distance and angle proximity
+                const angleProximity = 1 - Math.abs(angleDiff) / Math.PI;
+                const distanceInfluence = Math.min(mouseDistance / 200, 1);
+                const totalInfluence = angleProximity * distanceInfluence * 0.6;
+                
+                // Create flowing curve segments
+                const numPoints = 80;
+                const points = [];
+                
+                for (let i = 0; i <= numPoints; i++) {
+                    const t = i / numPoints;
+                    
+                    // Base angle with mouse influence
+                    const currentAngle = ray.baseAngle + angleDiff * totalInfluence * (1 - Math.pow(1 - t, 2));
+                    
+                    // Add wave motion
+                    const wave = Math.sin(ray.phase + t * Math.PI * 3) * ray.amplitude * (1 - t * 0.5);
+                    const perpAngle = currentAngle + Math.PI / 2;
+                    
+                    // Calculate position
+                    const distance = ray.length * t;
+                    let x = centerX + Math.cos(currentAngle) * distance;
+                    let y = centerY + Math.sin(currentAngle) * distance;
+                    
+                    // Apply wave offset
+                    x += Math.cos(perpAngle) * wave * t;
+                    y += Math.sin(perpAngle) * wave * t;
+                    
+                    // Additional mouse attraction for segments
+                    if (mouseDistance < 300) {
+                        const segmentDx = mouseX - x;
+                        const segmentDy = mouseY - y;
+                        const segmentDist = Math.sqrt(segmentDx * segmentDx + segmentDy * segmentDy);
+                        
+                        if (segmentDist < 200) {
+                            const pull = (1 - segmentDist / 200) * 20 * t;
+                            x += (segmentDx / segmentDist) * pull;
+                            y += (segmentDy / segmentDist) * pull;
+                        }
+                    }
+                    
+                    points.push({ x, y, t });
+                }
+                
+                // Draw smooth curve through points
+                if (points.length > 0) {
+                    ctx.moveTo(points[0].x, points[0].y);
+                    
+                    for (let i = 1; i < points.length - 2; i++) {
+                        const xc = (points[i].x + points[i + 1].x) / 2;
+                        const yc = (points[i].y + points[i + 1].y) / 2;
+                        ctx.quadraticCurveTo(points[i].x, points[i].y, xc, yc);
+                    }
+                    
+                    // Last segment
+                    if (points.length > 2) {
+                        ctx.quadraticCurveTo(
+                            points[points.length - 2].x,
+                            points[points.length - 2].y,
+                            points[points.length - 1].x,
+                            points[points.length - 1].y
+                        );
+                    }
+                }
+                
+                // Create gradient
+                const gradient = ctx.createLinearGradient(
+                    centerX, centerY,
+                    points[points.length - 1].x,
+                    points[points.length - 1].y
+                );
+                gradient.addColorStop(0, ray.color.replace('70%', '0%'));
+                gradient.addColorStop(0.2, ray.color);
+                gradient.addColorStop(0.8, ray.color);
+                gradient.addColorStop(1, ray.color.replace('70%', '0%'));
+                
+                // Draw with glow
+                ctx.strokeStyle = gradient;
+                ctx.lineWidth = ray.width;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                
+                // Multiple passes for glow effect
+                ctx.shadowBlur = 20;
+                ctx.shadowColor = ray.color;
+                ctx.stroke();
+                
+                ctx.shadowBlur = 35;
+                ctx.globalAlpha = 0.4;
+                ctx.stroke();
+                
+                ctx.shadowBlur = 50;
+                ctx.globalAlpha = 0.2;
+                ctx.stroke();
+                
+                ctx.globalAlpha = 1;
+                ctx.shadowBlur = 0;
+            });
+            
+            requestAnimationFrame(drawRays);
+        }
+
+        // Track mouse with smooth movement
+        let targetMouseX = 0;
+        let targetMouseY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            if (e.clientY < 200) { // Only when mouse is near header
+                const rect = canvas.getBoundingClientRect();
+                targetMouseX = e.clientX - rect.left;
+                targetMouseY = e.clientY - rect.top;
+            }
+        });
+// Search functionality - Add this to your script section
+const searchData = {
+    pages: [
+        {
+            title: 'Home',
+            url: 'index.html',
+            keywords: ['home', 'main', 'welcome', 'north western', 'provincial council', 'nwp'],
+            content: 'North Western Provincial Council - Democratic Governance, Development, Service'
+        },
+        {
+            title: 'About Us',
+            url: 'aboutus-si.html',
+            keywords: ['about', 'information', 'overview', 'council', 'introduction'],
+            content: 'Learn about North Western Provincial Council, our history, mission and vision'
+        },
+        {
+            title: 'Chairman',
+            url: 'chairman-si.html',
+            keywords: ['chairman', 'leader', 'chief', 'head', 'A.M.T.B.Adhikari'],
+            content: 'Hon. Chairman A.M.T.B.Adhikari - North Western Provincial Council'
+        },
+        {
+            title: 'Ruling Parties',
+            url: 'ruling-si.html',
+            keywords: ['ruling', 'parties', 'government', 'coalition', 'members'],
+            content: 'Ruling party members of the North Western Provincial Council'
+        },
+        {
+            title: 'Opposition',
+            url: 'opposition-si.html',
+            keywords: ['opposition', 'members', 'minority', 'parliament'],
+            content: 'Opposition members of the North Western Provincial Council'
+        },
+        {
+            title: '1st Council',
+            url: 'firstcouncil-si.html',
+            keywords: ['first', '1st', 'council', 'history', 'initial', 'beginning'],
+            content: 'History of the First North Western Provincial Council'
+        },
+        {
+            title: '2nd Council',
+            url: 'secondcouncil-si.html',
+            keywords: ['second', '2nd', 'council', 'history'],
+            content: 'History of the Second North Western Provincial Council'
+        },
+        {
+            title: '3rd Council',
+            url: 'thirdcouncil-si.html',
+            keywords: ['third', '3rd', 'council', 'history'],
+            content: 'History of the Third North Western Provincial Council'
+        },
+        {
+            title: '4th Council',
+            url: 'fourthcouncil-si.html',
+            keywords: ['fourth', '4th', 'council', 'history'],
+            content: 'History of the Fourth North Western Provincial Council'
+        },
+        {
+            title: '5th Council',
+            url: 'fifthcouncil-si.html',
+            keywords: ['fifth', '5th', 'council', 'history'],
+            content: 'History of the Fifth North Western Provincial Council'
+        },
+        {
+            title: '6th Council',
+            url: 'sixthcouncil-si.html',
+            keywords: ['sixth', '6th', 'council', 'history', 'current'],
+            content: 'History of the Sixth North Western Provincial Council'
+        },
+        {
+            title: 'Hansard',
+            url: 'hansard-si.html',
+            keywords: ['hansard', 'proceedings', 'debates', 'documents', 'records'],
+            content: 'Official records and proceedings of the Provincial Council'
+        },
+        {
+            title: 'Statutes',
+            url: 'statute-si.html',
+            keywords: ['statutes', 'laws', 'regulations', 'acts', 'legislation'],
+            content: 'Provincial statutes, laws and regulations'
+        },
+        {
+            title: 'Applications & Forms',
+            url: 'applicationsforms-si.html',
+            keywords: ['applications', 'forms', 'documents', 'downloads', 'templates'],
+            content: 'Download application forms and documents'
+        },
+        {
+            title: 'Photo Gallery',
+            url: 'gallery-si.html',
+            keywords: ['gallery', 'photos', 'images', 'pictures', 'events'],
+            content: 'Photo gallery of council events and activities'
+        },
+        {
+            title: 'Contact Us',
+            url: 'contactus-si.html',
+            keywords: ['contact', 'address', 'phone', 'email', 'location', 'reach'],
+            content: 'Contact information - North Western Provincial Council Office, Kurunegala'
+        }
+    ]
+};
+
+// Create search results dropdown
+function createSearchDropdown() {
+    const searchContainer = document.querySelector('.search-container');
+    const searchDropdown = document.createElement('div');
+    searchDropdown.className = 'search-dropdown';
+    searchDropdown.id = 'searchDropdown';
+    searchContainer.appendChild(searchDropdown);
+}
+
+// Search function
+function performSearch(query) {
+    const searchDropdown = document.getElementById('searchDropdown');
+    
+    if (!query || query.trim().length < 2) {
+        searchDropdown.style.display = 'none';
+        return;
+    }
+    
+    const searchTerm = query.toLowerCase().trim();
+    const results = searchData.pages.filter(page => {
+        return page.title.toLowerCase().includes(searchTerm) ||
+               page.keywords.some(keyword => keyword.includes(searchTerm)) ||
+               page.content.toLowerCase().includes(searchTerm);
+    });
+    
+    displaySearchResults(results, searchTerm);
+}
+
+// Display search results
+function displaySearchResults(results, searchTerm) {
+    const searchDropdown = document.getElementById('searchDropdown');
+    
+    if (results.length === 0) {
+        searchDropdown.innerHTML = `
+            <div class="search-result-item no-results">
+                <i class="fas fa-search"></i>
+                <div>
+                    <strong>No results found</strong>
+                    <p>Try different keywords</p>
+                </div>
+            </div>
+        `;
+        searchDropdown.style.display = 'block';
+        return;
+    }
+    
+    let resultsHTML = `<div class="search-results-header">Found ${results.length} result${results.length > 1 ? 's' : ''}</div>`;
+    
+    results.forEach(result => {
+        const highlightedTitle = highlightText(result.title, searchTerm);
+        const highlightedContent = highlightText(result.content, searchTerm);
+        
+        resultsHTML += `
+            <a href="${result.url}" class="search-result-item">
+                <i class="fas fa-file-alt"></i>
+                <div class="search-result-content">
+                    <strong>${highlightedTitle}</strong>
+                    <p>${highlightedContent}</p>
+                </div>
+            </a>
+        `;
+    });
+    
+    searchDropdown.innerHTML = resultsHTML;
+    searchDropdown.style.display = 'block';
+}
+
+// Highlight matching text
+function highlightText(text, searchTerm) {
+    const regex = new RegExp(`(${searchTerm})`, 'gi');
+    return text.replace(regex, '<mark>$1</mark>');
+}
+
+// Initialize search
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.querySelector('.search-input');
+    
+    if (searchInput) {
+        createSearchDropdown();
+        
+        // Search on input
+        searchInput.addEventListener('input', function(e) {
+            performSearch(e.target.value);
+        });
+        
+        // Search on focus if there's already text
+        searchInput.addEventListener('focus', function(e) {
+            if (e.target.value.trim().length >= 2) {
+                performSearch(e.target.value);
+            }
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            const searchContainer = document.querySelector('.search-container');
+            const searchDropdown = document.getElementById('searchDropdown');
+            
+            if (searchContainer && !searchContainer.contains(e.target)) {
+                if (searchDropdown) {
+                    searchDropdown.style.display = 'none';
+                }
+            }
+        });
+        
+        // Handle Enter key
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const searchDropdown = document.getElementById('searchDropdown');
+                const firstResult = searchDropdown.querySelector('.search-result-item:not(.no-results)');
+                
+                if (firstResult) {
+                    window.location.href = firstResult.getAttribute('href');
+                }
+            }
+        });
+    }
+});
+        // Smooth mouse following
+        function updateMouse() {
+            mouseX += (targetMouseX - mouseX) * 0.1;
+            mouseY += (targetMouseY - mouseY) * 0.1;
+            requestAnimationFrame(updateMouse);
+        }
+
+        canvas.addEventListener('mouseenter', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            targetMouseX = e.clientX - rect.left;
+            targetMouseY = e.clientY - rect.top;
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+            targetMouseX = canvas.width / 2;
+            targetMouseY = canvas.height / 2;
+        });
+
+        // Hero Particles
+        function createParticles() {
+            const container = document.getElementById('heroParticles');
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.width = (Math.random() * 4 + 2) + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        // Slideshow
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.hero-slide');
+        const dots = document.querySelectorAll('.control-dot');
+        let slideInterval;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+            currentSlide = index;
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        function changeSlide(direction) {
+            currentSlide = (currentSlide + direction + slides.length) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        function goToSlide(index) {
+            showSlide(index);
+        }
+
+        function startSlideshow() {
+            slideInterval = setInterval(nextSlide, 6000);
+        }
+
+        function stopSlideshow() {
+            clearInterval(slideInterval);
+        }
+
+        // Translations
+        const translations = {
+            en: {
+                'site-title': 'North Western Provincial Council',
+                'site-subtitle': 'Democratic Governance • Development • Service',
+                'search-placeholder': 'Search...',
+                'nav-home': 'Home',
+                'nav-about': 'About Us',
+                'nav-history': 'History',
+                'nav-1st-council': '1st Council',
+                'nav-2nd-council': '2nd Council',
+                'nav-3rd-council': '3rd Council',
+                'nav-4th-council': '4th Council',
+                'nav-5th-council': '5th Council',
+                'nav-6th-council': '6th Council',
+                'nav-members': 'Members',
+                'nav-chairman': 'Chairman',
+                'nav-parties': 'Parties',
+                'nav-opposition': 'Opposition',
+                'nav-downloads': 'Downloads',
+                'nav-hansard': 'Hansard',
+                'nav-statutes': 'Statutes',
+                'nav-applications': 'Applications & Forms',
+                'nav-gallery': 'Photo Gallery',
+                'nav-contact': 'Contact Us',
+                'hero-title': 'Serving the North Western Province',
+                'hero-subtitle': 'Building Tomorrow, Today',
+                'cta-button': 'Explore Our Services',
+                'vision-title': 'Our Vision',
+                'vision-text': '"A prosperous Northwestern people."',
+                'mission-title': 'Our Mission',
+                'mission-text': 'We strive to be a responsive, transparent, and inclusive governmental body.',
+                'goals-title': 'Our Goals',
+                'leadership-title': 'Leadership',
+                'chairman-title': 'Hon. Chairman',
+                'chairman-name': 'A.M.T.B.Adhikari',
+                'chairman-position': 'North Western Provincial Council.',
+                'secretary-title': 'Secretary',
+                'secretary-name': 'M.A.S.Marasinghe',
+                'secretary-position': 'North Western Provincial Council Office.',
+                'stat-population-num': '2.4M',
+                'stat-population': 'Population Served',
+                'stat-area-num': '7,812',
+                'stat-area': 'Square Kilometers',
+                'stat-members-num': '52',
+                'stat-members': 'Council Members',
+                'stat-departments-num': '15',
+                'stat-departments': 'Departments'
+            },
+            si: {
+                'site-title': 'වයඹ පළාත් සභාව',
+                'hero-title': 'සෞභාග්‍යමත් වයඹ ජනතාවක්',
+                'hero-subtitle': 'හෙට උදා කරමු අද'
+            },
+            ta: {
+                'site-title': 'வடமேல் மாகாண சபை',
+                'hero-title': 'வடமேல் மாகாணத்திற்கு சேவை'
+            }
+        };
+
+        function changeLanguage(lang) {
+            const elements = document.querySelectorAll('[data-translate]');
+            elements.forEach(element => {
+                const key = element.getAttribute('data-translate');
+                if (translations[lang] && translations[lang][key]) {
+                    if (element.tagName === 'INPUT') {
+                        element.placeholder = translations[lang][key];
+                    } else {
+                        element.textContent = translations[lang][key];
+                    }
+                }
+            });
+            localStorage.setItem('selectedLanguage', lang);
+        }
+
+        // Counter animation
+        function animateCounters() {
+            const counters = document.querySelectorAll('.stat-number');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
+                        entry.target.classList.add('animated');
+                        const target = entry.target.getAttribute('data-translate');
+                        let current = 0, finalValue = '', increment = 1;
+                        
+                        if (target === 'stat-population-num') {
+                            increment = 80000;
+                            const timer = setInterval(() => {
+                                current += increment;
+                                if (current >= 2400000) {
+                                    entry.target.textContent = '2.4M';
+                                    clearInterval(timer);
+                                } else {
+                                    entry.target.textContent = (current / 1000000).toFixed(1) + 'M';
+                                }
+                            }, 50);
+                        } else if (target === 'stat-area-num') {
+                            increment = 260;
+                            const timer = setInterval(() => {
+                                current += increment;
+                                if (current >= 7812) {
+                                    entry.target.textContent = '7,812';
+                                    clearInterval(timer);
+                                } else {
+                                    entry.target.textContent = current.toLocaleString();
+                                }
+                            }, 50);
+                        } else if (target === 'stat-members-num') {
+                            increment = 2;
+                            const timer = setInterval(() => {
+                                current += increment;
+                                if (current >= 52) {
+                                    entry.target.textContent = '52';
+                                    clearInterval(timer);
+                                } else {
+                                    entry.target.textContent = current;
+                                }
+                            }, 50);
+                        } else if (target === 'stat-departments-num') {
+                            const timer = setInterval(() => {
+                                current++;
+                                if (current >= 15) {
+                                    entry.target.textContent = '15';
+                                    clearInterval(timer);
+                                } else {
+                                    entry.target.textContent = current;
+                                }
+                            }, 50);
+                        }
+                    }
+                });
+            }, { threshold: 0.5 });
+            counters.forEach(counter => observer.observe(counter));
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            resizeCanvas();
+            updateMouse();
+            drawRays();
+            createParticles();
+            startSlideshow();
+            animateCounters();
+
+            const languageButtons = document.querySelectorAll('.language-btn');
+            languageButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    languageButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    changeLanguage(this.getAttribute('data-lang'));
+                });
+            });
+
+            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+            const navMenu = document.getElementById('navMenu');
+            
+            if (mobileMenuToggle) {
+                mobileMenuToggle.addEventListener('click', function() {
+                    navMenu.classList.toggle('active');
+                    const icon = this.querySelector('i');
+                    icon.classList.toggle('fa-bars');
+                    icon.classList.toggle('fa-times');
+                });
+            }
+
+            const heroSection = document.querySelector('.hero');
+            if (heroSection) {
+                heroSection.addEventListener('mouseenter', stopSlideshow);
+                heroSection.addEventListener('mouseleave', startSlideshow);
+            }
+        });
+
+        window.changeSlide = changeSlide;
+        window.goToSlide = goToSlide;
+        window.addEventListener('resize', resizeCanvas);
+    </script>
+
+    <!-- தமிழ் ஜங்கம நாவிகேஷன் டிராயர் -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+
+    <div class="mobile-drawer" id="mobileDrawer" role="dialog" aria-modal="true" aria-label="நாவிகேஷன் மெனு">
+
+        <div class="drawer-header">
+            <div class="drawer-logo-row">
+                <img src="logo.jpeg" alt="வடமேற்கு மாகாண சபை சின்னம்" class="drawer-logo-img">
+                <div class="drawer-logo-text">
+                    <div class="drawer-title">வடமேற்கு மாகாண சபை</div>
+                    <div class="drawer-subtitle">North Western Provincial Council</div>
+                </div>
+            </div>
+            <button class="drawer-close-btn" id="drawerCloseBtn" aria-label="மெனுவை மூடு">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="drawer-search">
+            <div class="drawer-search-inner">
+                <i class="fas fa-search"></i>
+                <input class="drawer-search-input" type="search" placeholder="தேடுக..." id="drawerSearch">
+            </div>
+        </div>
+
+        <div class="drawer-lang">
+            <button class="drawer-lang-btn" data-lang="en">English</button>
+            <button class="drawer-lang-btn" data-lang="si">සිංහල</button>
+            <button class="drawer-lang-btn active" data-lang="ta">தமிழ்</button>
+        </div>
+
+        <nav class="drawer-nav" aria-label="முக்கிய நாவிகேஷன்">
+
+            <div class="drawer-nav-item">
+                <a href="#" class="drawer-nav-link" onclick="closeDrawer()">
+                    <span class="drawer-nav-icon"><i class="fas fa-home"></i></span>
+                    <span class="drawer-nav-label">முதல் பக்கம்</span>
+                </a>
+            </div>
+
+            <div class="drawer-nav-item">
+                <a href="aboutus-ta.html" class="drawer-nav-link" onclick="closeDrawer()">
+                    <span class="drawer-nav-icon"><i class="fas fa-info-circle"></i></span>
+                    <span class="drawer-nav-label">எங்களை பற்றி</span>
+                </a>
+            </div>
+
+            <div class="drawer-nav-item" id="dni-history">
+                <div class="drawer-nav-link" onclick="toggleDrawerItem('dni-history')">
+                    <span class="drawer-nav-icon"><i class="fas fa-landmark"></i></span>
+                    <span class="drawer-nav-label">வரலாறு</span>
+                    <span class="drawer-nav-arrow"><i class="fas fa-chevron-right"></i></span>
+                </div>
+                <div class="drawer-submenu">
+                    <a href="firstcouncil-ta.html"><span>முதல் சபை</span></a>
+                    <a href="secondcouncil-ta.html"><span>இரண்டாவது சபை</span></a>
+                    <a href="thirdcouncil-ta.html"><span>மூன்றாவது சபை</span></a>
+                    <a href="fourthcouncil-ta.html"><span>நான்காவது சபை</span></a>
+                    <a href="fifthcouncil-ta.html"><span>ஐந்தாவது சபை</span></a>
+                    <a href="sixthcouncil-ta.html"><span>ஆறாவது சபை</span></a>
+                </div>
+            </div>
+
+            <div class="drawer-nav-item" id="dni-members">
+                <div class="drawer-nav-link" onclick="toggleDrawerItem('dni-members')">
+                    <span class="drawer-nav-icon"><i class="fas fa-users"></i></span>
+                    <span class="drawer-nav-label">உறுப்பினர்கள்</span>
+                    <span class="drawer-nav-arrow"><i class="fas fa-chevron-right"></i></span>
+                </div>
+                <div class="drawer-submenu">
+                    <a href="chairman-ta.html"><span>தலைவர்</span></a>
+                    <a href="ruling-ta.html"><span>ஆளும் கட்சி உறுப்பினர்கள்</span></a>
+                    <a href="opposition-ta.html"><span>எதிர்க்கட்சி உறுப்பினர்கள்</span></a>
+                </div>
+            </div>
+
+            <div class="drawer-nav-item" id="dni-downloads">
+                <div class="drawer-nav-link" onclick="toggleDrawerItem('dni-downloads')">
+                    <span class="drawer-nav-icon"><i class="fas fa-download"></i></span>
+                    <span class="drawer-nav-label">பதிவிறக்கங்கள்</span>
+                    <span class="drawer-nav-arrow"><i class="fas fa-chevron-right"></i></span>
+                </div>
+                <div class="drawer-submenu">
+                    <a href="hansard-ta.html"><span>ஹன்சார்ட்</span></a>
+                    <a href="statute-ta.html"><span>சட்டங்கள்</span></a>
+                </div>
+            </div>
+
+            <div class="drawer-nav-item">
+                <a href="gallery-ta.html" class="drawer-nav-link" onclick="closeDrawer()">
+                    <span class="drawer-nav-icon"><i class="fas fa-images"></i></span>
+                    <span class="drawer-nav-label">புகைப்பட தொகுப்பு</span>
+                </a>
+            </div>
+
+            <div class="drawer-nav-item">
+                <a href="contactus-ta.html" class="drawer-nav-link" onclick="closeDrawer()">
+                    <span class="drawer-nav-icon"><i class="fas fa-envelope"></i></span>
+                    <span class="drawer-nav-label">தொடர்பு</span>
+                </a>
+            </div>
+
+        </nav>
+
+        <div class="drawer-footer">
+            <div class="drawer-footer-title">விரைவு தொடர்பு</div>
+            <div class="drawer-contact-item"><i class="fas fa-phone"></i><span>+94 37 222 3391</span></div>
+            <div class="drawer-contact-item"><i class="fas fa-envelope"></i><span>nwpcouncil@gmail.com</span></div>
+            <div class="drawer-contact-item"><i class="fas fa-map-marker-alt"></i><span>குருணாகல், வடமேற்கு மாகாணம்</span></div>
+        </div>
+
+    </div>
+
+    <script>
+        const mobileDrawer   = document.getElementById('mobileDrawer');
+        const mobileOverlay  = document.getElementById('mobileOverlay');
+        const drawerCloseBtn = document.getElementById('drawerCloseBtn');
+        const mobileToggle   = document.querySelector('.mobile-menu-toggle');
+
+        function openDrawer() {
+            mobileDrawer.classList.add('active');
+            mobileOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            drawerCloseBtn.focus();
+        }
+
+        function closeDrawer() {
+            mobileDrawer.classList.remove('active');
+            mobileOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+            if (mobileToggle) mobileToggle.focus();
+        }
+
+        function toggleDrawerItem(id) {
+            const item = document.getElementById(id);
+            if (!item) return;
+            const wasOpen = item.classList.contains('open');
+            document.querySelectorAll('.drawer-nav-item.open').forEach(el => el.classList.remove('open'));
+            if (!wasOpen) item.classList.add('open');
+        }
+
+        if (mobileToggle) mobileToggle.addEventListener('click', openDrawer);
+        drawerCloseBtn.addEventListener('click', closeDrawer);
+        mobileOverlay.addEventListener('click', closeDrawer);
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && mobileDrawer.classList.contains('active')) closeDrawer();
+        });
+
+        document.querySelectorAll('.drawer-lang-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.drawer-lang-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                const lang = this.getAttribute('data-lang');
+                if (typeof changeLanguage === 'function') changeLanguage(lang);
+                document.querySelectorAll('.language-btn').forEach(b => {
+                    b.classList.toggle('active', b.getAttribute('data-lang') === lang);
+                });
+            });
+        });
+
+        const drawerSearch = document.getElementById('drawerSearch');
+        const mainSearch   = document.querySelector('.search-input');
+        if (drawerSearch && mainSearch) {
+            drawerSearch.addEventListener('input', function() {
+                mainSearch.value = this.value;
+                mainSearch.dispatchEvent(new Event('input'));
+            });
+        }
+    </script>
+</body>
+</html>

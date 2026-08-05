@@ -1,0 +1,1771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parliamentary Hansard - Download Centre</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 20%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #1e3c72;
+        }
+
+        .site-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border: 2px solid transparent;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            border-color: white;
+        }
+
+        .nav-link.back-home {
+            border-color: white;
+        }
+
+        .nav-link.back-home:hover {
+            background: white;
+            color: #1e3c72;
+        }
+
+        /* Page Header */
+         .page-header {
+            margin-top: 100px;
+            background: linear-gradient(135deg, 
+                #6a11cb 0%,
+                #2575fc 25%,
+                #00d4ff 50%,
+                #7c3aed 75%,
+                #ec4899 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            color: white;
+            text-align: center;
+            padding: 5rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+
+        .page-header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .page-header .subtitle {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 4rem 0;
+        }
+
+        .section {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: #1e3c72;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: #ff6b35;
+            border-radius: 2px;
+        }
+
+        /* Year Selector */
+        .year-dropdown-container {
+            max-width: 400px;
+            position: relative;
+        }
+
+        .year-dropdown {
+            width: 100%;
+            padding: 1rem 3rem 1rem 1.5rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            background: #f8fafc;
+            color: #475569;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            appearance: none;
+        }
+
+        .year-dropdown:hover {
+            background-color: #e2e8f0;
+            border-color: #cbd5e1;
+            transform: translateY(-2px);
+        }
+
+        .year-dropdown:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .dropdown-icon {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: #475569;
+            font-size: 1.2rem;
+        }
+
+        /* Filter Section */
+        .filter-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .form-group select,
+        .form-group input {
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group select:focus,
+        .form-group input:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+
+        /* Results */
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .results-summary {
+            color: #1e3c72;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .results-count {
+            color: #6b7280;
+            font-size: 0.95rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Month Sections */
+        .month-section {
+            margin-bottom: 3rem;
+        }
+
+        .month-header {
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .month-title {
+            color: #1e3c72;
+            font-size: 1.4rem;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .month-count {
+            background: #3b82f6;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        /* Hansard Items with Download and Open Buttons */
+        .hansard-item {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .hansard-item:hover {
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .hansard-title {
+            color: #1e3c72;
+            font-size: 1.1rem;
+            font-weight: 600;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .download-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .download-btn, .open-btn {
+            padding: 0.6rem 1rem;
+            border: 2px solid;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            background: white;
+        }
+
+        .download-btn {
+            border-color: #dc2626;
+            color: #dc2626;
+        }
+
+        .download-btn:hover {
+            background: #fef2f2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
+        }
+
+        .open-btn {
+            border-color: #3b82f6;
+            color: #3b82f6;
+        }
+
+        .open-btn:hover {
+            background: #eff6ff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+        }
+
+        .download-btn.downloading {
+            opacity: 0.7;
+            cursor: not-allowed;
+            border-color: #f59e0b;
+            color: #f59e0b;
+            background: #fffbeb;
+        }
+
+        .download-btn.success {
+            border-color: #059669;
+            color: #059669;
+            background: #f0fdfa;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: #6b7280;
+        }
+
+        .no-results h3 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .page-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .page-header .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .filter-controls {
+                grid-template-columns: 1fr;
+            }
+
+            .results-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .hansard-item {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 1rem;
+            }
+
+            .hansard-title {
+                text-align: center;
+            }
+
+            .download-actions {
+                justify-content: center;
+            }
+
+            .download-btn, .open-btn {
+                flex: 1;
+                justify-content: center;
+            }
+        }
+
+        /* Skip Link for Accessibility */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: #1e3c72;
+            color: white;
+            padding: 8px;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .skip-link:focus {
+            top: 6px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo">
+                        <img src="logo.jpeg" alt="Girl in a jacket" width="200" height="200" class="logo">
+                    </div>
+                    <div class="site-title">North Western Provincial Council</div>
+                </div>
+                <nav class="nav-links">
+                    <a href="home.html" class="nav-link back-home">
+                        <i class="fas fa-home"></i> Back to Home
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Provincial Council Debate Reports</h1>
+            <div class="subtitle">Official reports on Provincial Council debates (6th council)</div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content" id="main-content">
+        <div class="container">
+            <!-- Year Selector -->
+            <section class="section">
+                <h2 class="section-title">Select Year</h2>
+                <div class="year-dropdown-container">
+                    <select class="year-dropdown" id="yearDropdown">
+                        <option value="">Choose a year...</option>
+                    </select>
+                    <i class="fas fa-chevron-down dropdown-icon"></i>
+                </div>
+            </section>
+
+            <!-- Filter Section -->
+            <section class="section" id="filterSection" style="display: none;">
+                <h2 class="section-title">Filter Options</h2>
+                <div class="filter-controls">
+                    <div class="form-group">
+                        <label for="chamber">Hansard Type</label>
+                        <select id="chamber">
+                            <option value="">All Hansard Types</option>
+                            <option value="General Hansard">General Hansard</option>
+                            <option value="Budget Hansard">Budget Hansard</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="month">Month</label>
+                        <select id="month">
+                            <option value="">All Months</option>
+                            <option value="01">January</option>
+                            <option value="02">February</option>
+                            <option value="03">March</option>
+                            <option value="04">April</option>
+                            <option value="05">May</option>
+                            <option value="06">June</option>
+                            <option value="07">July</option>
+                            <option value="08">August</option>
+                            <option value="09">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="keywords">Search Keywords</label>
+                        <input type="text" id="keywords" placeholder="Search in debates...">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="section" id="hansardResults" style="display: none;">
+                <div class="results-header">
+                    <div>
+                        <div class="results-summary" id="resultsSummary"></div>
+                        <div class="results-count" id="resultsCount"></div>
+                    </div>
+                </div>
+                <div id="hansardList"></div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+// Sample data structure for hansards with file URLs
+const hansardData = {
+    2018: {
+        "10": [
+            {
+                title: "General Hansard", 
+                date: "2018-10-02",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/10CKzrZCMtIeHbhrpZpFCmeDRbDcvKOPM/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "09": [
+            {
+                title: "General Hansard",
+                date: "2018-09-18",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1dm7TSHGKP2tXIgzq-X3EujtX58bRch5N/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2018-09-04",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1fzhJp67XaJ2zV3ceqBBOmHY_sPGWtBvW/view?usp=drive_link",
+                fileType: "pdf"
+            }
+        ],
+        "08": [
+            {
+                title: "General Hansard",
+                date: "2018-08-21",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1_-O1bBcjFsZXsn6C99-E2nLtOcCWhkbd/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2018-08-07",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1xBjrhlmjreE-vjF1-0-uDyX7sQSghBhU/view?usp=drive_link",
+                fileType: "pdf"
+            }
+        ],
+        "07": [
+            {
+                title: "General Hansard",
+                date: "2018-07-17",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1ry8m-E-A6SVuXrF3UVpBFknSwnzzCXG9/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2018-07-03",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/11JNOL4p9IZAobZfe32uXPS7CZxmf0WmQ/view?usp=drive_link",
+                fileType: "pdf"
+            }
+        ],
+        "06": [
+            {
+                title: "General Hansard",
+                date: "2018-06-19",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1JP_hws-PpjD00oWy-6Vnqnq6EMOiGEEJ/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2018-06-05",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1DpsqwCTiV-eiwbeHVmEUFToWuT-47hxz/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "05": [
+            {
+                title: "General Hansard",
+                date: "2018-05-22",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1hMTmxfL_OZQ7mFUwN6BL8s-l5PZTaBST/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2018-05-10",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1iHpXqc7ei488NsnvHa9mNyc4VHWFEiCv/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "04": [
+            {
+                title: "General Hansard",
+                date: "2018-04-03",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1K4HB5PgrPoH8R6110an71W9bV2y-Tx9a/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "03": [
+            {
+                title: "General Hansard",
+                date: "2018-03-06",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1zMiwDGneVuzCX6TjkaBGC4D5__o0TByX/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "02": [
+            {
+                title: "General Hansard",
+                date: "2018-02-20",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1fwDM35gUSltafKAnXDP7aCi5456hdRwu/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "01": [
+            {
+                title: "General Hansard",
+                date: "2018-01-16",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1F0U9SH2ghSiv8_W2V_MqgUCeyl4S-GPl/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ]
+    },
+    2017: {
+        "12": [
+            {
+                title: "Budget Hansard", 
+                date: "2017-12-08",
+                chamber: "Budget Hansard",
+                fileUrl: "https://drive.google.com/file/d/1AZyhcqMQ739clOuZK4JMlqrbqlasS9wz/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "Budget Hansard", 
+                date: "2017-12-07",
+                chamber: "Budget Hansard",
+                fileUrl: "https://drive.google.com/file/d/1KdaGG9W3zlyW_qQei2Ly-p-TdXt2867-/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "Budget Hansard", 
+                date: "2017-12-06",
+                chamber: "Budget Hansard",
+                fileUrl: "https://drive.google.com/file/d/1q8PvWHoAm_wd48URYGcPdzaYb0ivKXaV/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "Budget Hansard", 
+                date: "2017-12-05",
+                chamber: "Budget Hansard",
+                fileUrl: "https://drive.google.com/file/d/1szgQ7_-bMGCq6kHCjZ-SEkIOoD8402HM/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "11": [
+            {
+                title: "General Hansard",
+                date: "2017-11-21", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1yvaAmQ_nqdULgoNxlr_NO4rtm85nQcaW/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2017-11-07",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1dU0aDEiXccdkO791JCyNL1wHg07oxcE_/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "10": [
+            {
+                title: "General Hansard",
+                date: "2017-10-17", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1tkIbNzeXW7twh_m8ax1kPZUvead0LsKn/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2017-10-03",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1mCDXo7jUYkG8eq7DwQLp1WhxWs3UyV9p/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "09": [
+            {
+                title: "General Hansard",
+                date: "2017-09-19", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1aGISCAMz7FI--oK953-FMe1dR4TqMWkn/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2017-09-06",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/12EN5sj48HmnAREFvULvRhixzDtypKKv7/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "08": [
+            {
+                title: "General Hansard",
+                date: "2017-08-29", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1hsN-vs0vXgZwoPTVeuC5TGV5UsSd1KBj/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2017-08-15",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1XrIRDB1rZUlmG61whNOfU_0sJt2jFFyb/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2017-08-01",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1hQG3IqLJSxrT0e_8q8R-D_UAJn_qQKmz/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "07": [
+            {
+                title: "General Hansard",
+                date: "2017-07-18", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/14QeGmz-Ni78xV-iEmR2P5XbxsjYD2DxZ/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2017-07-04",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/174KZZTCZoDOFnyRtAbpw-QtSFl56KHPt/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "06": [
+            {
+                title: "General Hansard",
+                date: "2017-06-20", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1vZZiWSv7eEeuborjiCaUOrYRPt5PoMh7/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2017-06-06",
+                chamber: "General Hansard",
+                fileUrl: "hansard/2017/2017.06.06.pdf",
+                fileType: "pdf"
+            },
+        ],
+        "05": [
+            {
+                title: "General Hansard",
+                date: "2017-05-16", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1UECP7u9UaVPp8IoFf4Honkfx1RerRRA7/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2017-05-04",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1VsI_ZkPWfRQX4UXRE3yWCbiWaBDc5-8J/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "04": [
+            {
+                title: "General Hansard",
+                date: "2017-04-04", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1hChGnD7erHT4o_D8hkOBkE5ruUtBiFDq/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "03": [
+            {
+                title: "General Hansard",
+                date: "2017-03-21", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1Ta-qvm67v7RgUzgQJ8hrj9rYIAcdcKG5/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2017-03-07",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/12twpWIC6LU2mpFT95OE_0fSsxgx3xuEB/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "02": [
+            {
+                title: "General Hansard",
+                date: "2017-02-21", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1MjFlgb24NLXxLhHLBw8iedQMcoQ3aZ5s/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2017-02-07",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1cOhMm4O50jfnyQ13SyBMvx6qyCbCrEnv/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "01": [
+            {
+                title: "General Hansard",
+                date: "2017-01-17", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1XXtsl8_mJLqRbRaUZVu4hl5HCGvM6Vdb/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+    },
+    2016: {
+        "12": [
+            {
+                title: "Budget Hansard", 
+                date: "2016-12-09",
+                chamber: "Budget Hansard",
+                fileUrl: "https://drive.google.com/file/d/14LDdrDqf4n07ehw_mrAmS_I6N2z29mI1/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "Budget Hansard", 
+                date: "2016-12-08",
+                chamber: "Budget Hansard",
+                fileUrl: "https://drive.google.com/file/d/1Ds0zRvSVJH0m9rTwbWNRLnnlZbvjMhvu/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "Budget Hansard", 
+                date: "2016-12-07",
+                chamber: "Budget Hansard",
+                fileUrl: "https://drive.google.com/file/d/1cxVVeWY4LeUp2XJ7hEagjyvzmw95aG3L/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "Budget Hansard", 
+                date: "2016-12-06",
+                chamber: "Budget Hansard",
+                fileUrl: "https://drive.google.com/file/d/1LPYwXtK_dKVwxIVg6BCgok4M_fP2oVG5/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "11": [
+            {
+                title: "General Hansard",
+                date: "2016-11-22", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1a3tWE3wezQS-SVXx6Zd4XqZu1T_BssJx/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2016-11-01",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1zF46Ydrxt-J-dL3HejQ2nL3Wg5yPA4VJ/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "10": [
+            {
+                title: "General Hansard",
+                date: "2016-10-18", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1VPHK3a6-8A_PEpQyzVRnCpwk0gEKJCuT/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2016-10-04",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1nJXxc6mYJZSeFXWC_4XGqwHg4LZ9jZNA/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "09": [
+            {
+                title: "General Hansard",
+                date: "2016-09-20", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1mGEo-1fo4g4BeoxTGvua1TD5EAnMDq3P/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2016-09-06",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1cbbyPnBUIj8oueThoKZU7W6M8crDpM56/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "08": [
+            {
+                title: "General Hansard",
+                date: "2016-08-16", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1IHKkhadAsyCRGy1YPhVM0sCmQzlC5ytu/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2016-08-02",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1hQ1pXBxeHaR5leF2vFuoEwlNQAJLwXo-/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "07": [
+            {
+                title: "General Hansard",
+                date: "2016-07-20", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1cM-dFpl3cDvlHuD_HL5eNjw4C2H7sSC_/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2016-07-05",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1K_6XHCYPLoz_eQ_vFmLwIQY-Dkg1yC0J/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "06": [
+            {
+                title: "General Hansard",
+                date: "2016-06-07", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1vD5mZfVOsJbFGFNZCIEpQbwlv0u2qbRe/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "05": [
+            {
+                title: "General Hansard",
+                date: "2016-05-17", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1tCLqlMB_CE75xyB7NiB8WsN6Xzc7-TQ3/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2016-05-03",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1BnNkpf3-zDfw981kD3zL8-IFhDV6naPN/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "04": [
+            {
+                title: "General Hansard",
+                date: "2016-04-05", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1kzBGHoxBgoi3timgx95lRYRvZKrJJj2A/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "03": [
+            {
+                title: "General Hansard",
+                date: "2016-03-15", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/12ItcSX2kzUqs2IYEu6vxoOiCyXDceeuU/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2016-03-01",
+                chamber: "General Hansard",
+                fileUrl: "hansard/2016/2016.03.01.pdf",
+                fileType: "pdf"
+            },
+        ],
+        "02": [
+            {
+                title: "General Hansard",
+                date: "2016-02-16", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1uu6xOfS03NU1tz_Jxp3fgQ70tSspF3nx/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2016-02-02",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1QrFaazzGeJEekWHWDATZLbnovn077O3c/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "01": [
+            {
+                title: "General Hansard",
+                date: "2016-01-19", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1Zc44niKdsXibDLtWvvu__P60rxXSVW_G/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2016-01-05", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1A1xXlkdcBPWrecB2dgYn0-jHOxVoIIFR/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+    },
+    2015: {
+        "12": [
+            {
+                title: "Budget Hansard", 
+                date: "2015-12-17",
+                chamber: "Budget Hansard",
+                fileUrl: "https://drive.google.com/file/d/1Tw4o6PPg2AxVoj0yi2Kk5NDnC6EDWB0j/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "Budget Hansard", 
+                date: "2015-12-16",
+                chamber: "Budget Hansard",
+                fileUrl: "https://drive.google.com/file/d/1SoqqPunn-3HhwNiWwdQdKK1Mo8GrNZZ2/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "Budget Hansard", 
+                date: "2015-12-15",
+                chamber: "Budget Hansard",
+                fileUrl: "https://drive.google.com/file/d/14WOkkvb3Z5SxvziimWLq-1kWqlMXysAK/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "11": [
+            {
+                title: "General Hansard",
+                date: "2015-11-30", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1zN3vxXl_Htdg6sVjXnoUIUZSU6TBPPQc/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2015-11-17",
+                chamber: "General Hansard",
+                fileUrl: "hansard/2015/2015.11.17.pdf",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2015-11-03",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1KQLnysm50zkXWbYmT7ne49ZaJ6RIRWGP/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "10": [
+            {
+                title: "General Hansard",
+                date: "2015-10-22", 
+                chamber: "General Hansard",
+                fileUrl: "hansard/2015/2015.10.22.pdf",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2015-10-06",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1nwD2ykyQ7xi_mDBeSKUteamYdstkXl4j/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "09": [
+            {
+                title: "General Hansard",
+                date: "2015-09-22", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1cM5AGx6igMRctfnI1mK2ITFg9HYxhbQl/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2015-09-08",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1lv3M6SqYt7UiP3uwp7te-PIzngh6yJFR/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "08": [
+            {
+                title: "General Hansard",
+                date: "2015-08-25", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1pWd_--OXaKW0XpchFAOd_kIJRcI8fI0j/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "07": [
+            {
+                title: "General Hansard",
+                date: "2015-07-07", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1C0P-tG2o0l9MIcSdoqVjcegchYEAz3A6/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "06": [
+            {
+                title: "General Hansard",
+                date: "2015-06-16", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1c6fS-nR3mlYd80ktioqFKOFmVSA3KdtH/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2015-06-03", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1NfEbWA-eOIXrL54tdRS4tIP_ZHFwwSJH/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "05": [
+            {
+                title: "General Hansard",
+                date: "2015-05-19", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1ZPRfrhAs4g1151rRlacZ5tditvrUHRaG/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2015-05-05",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1jTaJ0b2xz7KqSht6OKWxyYYMO8EjYwlM/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "04": [
+            {
+                title: "General Hansard",
+                date: "2015-04-21", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1PAOc7hpuCEcZ53JoWZ7o6nEqO_7tZSvH/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2015-04-07", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1McEJ7HZ2LhtnVlBKN80Mz8iqzwZS6BFI/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "03": [
+            {
+                title: "General Hansard",
+                date: "2015-03-17", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/15IAxyaKCXOSt_cC_tJ6sWHnVvLRWC-xJ/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2015-03-03",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1OzV367_iQJaVxhkPLeo2TONH0LBy4l4j/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "02": [
+            {
+                title: "General Hansard",
+                date: "2015-02-18", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1ixSHmdufbUEMOpOmrIEJgpHLRlE1mjPk/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2015-02-05",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1OhzhC8opKyjPBvZ_1ocfmeiUOX6ch7IT/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "01": [
+            {
+                title: "General Hansard",
+                date: "2015-01-20", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1a0dVAbxuQZgaXbXybMGkOevaXvTxAGqk/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+    },
+    2014: {
+        "12": [
+            {
+                title: "General Hansard", 
+                date: "2014-12-09",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1vd53irGOAVoBW88pgKZ3fGF-2bEFDv3E/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "11": [
+            {
+                title: "Budget Hansard",
+                date: "2014-11-14", 
+                chamber: "Budget Hansard",
+                fileUrl: "https://drive.google.com/file/d/1tV1mJntAAXnJiMRLgFt3GfWJMCqyHMNM/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "Budget Hansard",
+                date: "2014-11-13",
+                chamber: "Budget Hansard",
+                fileUrl: "https://drive.google.com/file/d/1hMzEc7oLrYlDlCQCT1M4dRzcI3P5PiS5/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "Budget Hansard",
+                date: "2014-11-12",
+                chamber: "Budget Hansard",
+                fileUrl: "https://drive.google.com/file/d/1PvNFRvSIiqahwtA4uzelAuavH8OgzzPU/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "Budget Hansard",
+                date: "2014-11-11",
+                chamber: "Budget Hansard",
+                fileUrl: "https://drive.google.com/file/d/1Kf60QIwIUt9WRQbPDsTLPsZtsertEU7s/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "10": [
+            {
+                title: "General Hansard",
+                date: "2014-10-21", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1G0yzKiRjF6ysm38wKc_OhurvNxNWVf9W/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2014-10-07",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/18p7fvkaBqXFa4FWWCfwiMv_Sz43LEpHY/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "09": [
+            {
+                title: "General Hansard",
+                date: "2014-09-23", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1AOPPVmznLChD5Ka7kJ6SPWajencVf6sQ/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "08": [
+            {
+                title: "General Hansard",
+                date: "2014-08-19", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1Y9v6YOPcyekLC389QYXWBBst2xHLHHPR/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2014-08-05", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1JkN8TM_mzdab1ZxGJcaTuRPkXnjgWWNF/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "07": [
+            {
+                title: "General Hansard",
+                date: "2014-07-15", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1Rdbatsfw7WrmNhqsv8oYnMOBs4fX_CB8/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2014-07-01", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1u4vwkSkL5CfDqO7f2pt9CiZpN-FDuvQL/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "06": [
+            {
+                title: "General Hansard",
+                date: "2014-06-17", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1zkiui2R1xNmy30VXtn3jlq9FmVfXVHoN/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2014-06-03", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1TQjvYMCcHUWBHPMQfyRmnpstpAwOwcQI/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "05": [
+            {
+                title: "General Hansard",
+                date: "2014-05-20", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1igQeP-EQnd20eUAKXVuCVQNKn7uSjLH5/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2014-05-06",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1VAGBGwWfHM7c-u4VAxTt9xWa1gF7s_hv/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "04": [
+            {
+                title: "General Hansard",
+                date: "2014-04-01", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1oSyQ2DClN8Oa5yXn6VDa18PViCG9gHTV/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "03": [
+            {
+                title: "General Hansard",
+                date: "2014-03-18", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1u9G2alWnYUIi3_BQ3rjwUkw4kp6O2408/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2014-03-04",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/10bdWkYUW4EuH8NvBXZTk1mjbo0DA-9UF/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "02": [
+            {
+                title: "General Hansard",
+                date: "2014-02-18", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/13Wn9p_MznJv5m-GjvxFn_IZhb2sqIRNJ/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2014-02-05",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/17182WsacbS33MgDaUJqxqcHNS06lg846/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "01": [
+            {
+                title: "General Hansard",
+                date: "2014-01-21", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1Uv_9aIqUqXhB4jrqn582dLaT7rd_txzL/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2014-01-07", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1OPeDfQi2nTTsZMIAlkdO9ByREbT7efgf/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+    },
+    2013: {
+        "12": [
+            {
+                title: "Budget Hansard", 
+                date: "2013-12-06",
+                chamber: "Budget Hansard",
+                fileUrl: "https://drive.google.com/file/d/14A7z-CrzaLBSImmKxJS9HJsSBnx7Nv_c/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "Budget Hansard", 
+                date: "2013-12-05",
+                chamber: "Budget Hansard",
+                fileUrl: "https://drive.google.com/file/d/1tmDVNq8hj8OUPSYAQsX_GsMiHO84PbN3/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "Budget Hansard", 
+                date: "2013-12-04",
+                chamber: "Budget Hansard",
+                fileUrl: "https://drive.google.com/file/d/1b4T5CK8KtGp-QeT5wiNEeWtF8wx_NxBg/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "Budget Hansard", 
+                date: "2013-12-03",
+                chamber: "Budget Hansard",
+                fileUrl: "https://drive.google.com/file/d/1UyErhmbrpHAmOreDrdfEaHluKAN_Y1bx/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "11": [
+            {
+                title: "General Hansard",
+                date: "2013-11-19", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1o_eRZHTVIfbeE8Y_lxkif80tDHWAHrjv/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+        "10": [
+            {
+                title: "General Hansard",
+                date: "2013-10-29", 
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/107qVA2_JuTKc849KfR_5ngizSsv6mggy/view?usp=drive_link",
+                fileType: "pdf"
+            },
+            {
+                title: "General Hansard",
+                date: "2013-10-11",
+                chamber: "General Hansard",
+                fileUrl: "https://drive.google.com/file/d/1e-HF9yRlQgh2Jfz9ihnBpWMFiVv4nFa0/view?usp=drive_link",
+                fileType: "pdf"
+            },
+        ],
+    },
+};
+
+let currentYear = null;
+let filteredData = [];
+
+// Initialize the application
+function init() {
+    generateYearDropdown();
+    setupEventListeners();
+}
+
+// Generate year dropdown options
+function generateYearDropdown() {
+    const yearDropdown = document.getElementById('yearDropdown');
+    const years = Object.keys(hansardData).sort((a, b) => b - a);
+    
+    years.forEach(year => {
+        const option = document.createElement('option');
+        option.value = year;
+        option.textContent = year;
+        yearDropdown.appendChild(option);
+    });
+}
+
+// Select a year
+function selectYear(year) {
+    currentYear = year;
+    
+    if (!year) {
+        document.getElementById('filterSection').style.display = 'none';
+        document.getElementById('hansardResults').style.display = 'none';
+        return;
+    }
+
+    document.getElementById('filterSection').style.display = 'block';
+    document.getElementById('hansardResults').style.display = 'block';
+    
+    loadHansards();
+}
+
+// Load hansards for selected year
+function loadHansards() {
+    const yearData = hansardData[currentYear] || {};
+    const chamber = document.getElementById('chamber').value;
+    const month = document.getElementById('month').value;
+    const keywords = document.getElementById('keywords').value.toLowerCase();
+
+    filteredData = [];
+    Object.entries(yearData).forEach(([monthKey, records]) => {
+        if (month && monthKey !== month) return;
+        
+        records.forEach(record => {
+            if (chamber && record.chamber !== chamber) return;
+            if (keywords && !record.title.toLowerCase().includes(keywords)) return;
+            
+            filteredData.push({...record, month: monthKey});
+        });
+    });
+
+    displayHansards();
+}
+
+// Display hansards grouped by month
+function displayHansards() {
+    const resultsSummary = document.getElementById('resultsSummary');
+    const resultsCount = document.getElementById('resultsCount');
+    const hansardList = document.getElementById('hansardList');
+
+    resultsSummary.textContent = `Hansard Records ${currentYear}`;
+    resultsCount.textContent = `${filteredData.length} records found`;
+
+    if (filteredData.length === 0) {
+        hansardList.innerHTML = `
+            <div class="no-results">
+                <h3>No records found</h3>
+                <p>Try adjusting your filters or selecting a different year.</p>
+            </div>
+        `;
+        return;
+    }
+
+    // Group by month
+    const groupedByMonth = {};
+    filteredData.forEach(record => {
+        if (!groupedByMonth[record.month]) {
+            groupedByMonth[record.month] = [];
+        }
+        groupedByMonth[record.month].push(record);
+    });
+
+    // Sort months in descending order
+    const sortedMonths = Object.keys(groupedByMonth).sort((a, b) => b - a);
+
+    hansardList.innerHTML = '';
+
+    sortedMonths.forEach(monthKey => {
+        const monthName = getMonthName(monthKey);
+        const records = groupedByMonth[monthKey];
+
+        const monthSection = document.createElement('div');
+        monthSection.className = 'month-section';
+        
+        monthSection.innerHTML = `
+            <div class="month-header">
+                <div class="month-title">
+                    ${monthName} ${currentYear}
+                    <span class="month-count">${records.length} records</span>
+                </div>
+            </div>
+        `;
+
+        records.forEach(record => {
+            const hansardItem = createHansardItem(record);
+            monthSection.appendChild(hansardItem);
+        });
+
+        hansardList.appendChild(monthSection);
+    });
+}
+
+// Create hansard item with download and open buttons
+function createHansardItem(record) {
+    const item = document.createElement('div');
+    item.className = 'hansard-item';
+
+    const fileIcon = getFileIcon(record.fileType);
+
+    item.innerHTML = `
+        <div class="hansard-title">
+            ${fileIcon} ${record.title} - ${formatDate(record.date)}
+        </div>
+        <div class="download-actions">
+            <button class="download-btn" onclick="downloadFile('${record.fileUrl}', '${record.date}', this)">
+                <i class="fas fa-download"></i> Download
+            </button>
+            <a href="${record.fileUrl}" target="_blank" class="open-btn">
+                <i class="fas fa-external-link-alt"></i> Open
+            </a>
+        </div>
+    `;
+
+    return item;
+}
+
+// Get file icon based on file type
+function getFileIcon(fileType) {
+    const icons = {
+        'pdf': '<i class="fas fa-file-pdf" style="color: #dc2626;"></i>',
+        'doc': '<i class="fas fa-file-word" style="color: #2563eb;"></i>',
+        'docx': '<i class="fas fa-file-word" style="color: #2563eb;"></i>',
+        'txt': '<i class="fas fa-file-alt" style="color: #6b7280;"></i>',
+        'default': '<i class="fas fa-file" style="color: #9ca3af;"></i>'
+    };
+    return icons[fileType] || icons['default'];
+}
+
+// Setup event listeners
+function setupEventListeners() {
+    document.getElementById('yearDropdown').addEventListener('change', (e) => selectYear(e.target.value));
+    document.getElementById('chamber').addEventListener('change', loadHansards);
+    document.getElementById('month').addEventListener('change', loadHansards);
+    document.getElementById('keywords').addEventListener('input', debounce(loadHansards, 300));
+}
+
+// Utility functions
+function getMonthName(monthKey) {
+    const months = {
+        '01': 'January', '02': 'February', '03': 'March', '04': 'April',
+        '05': 'May', '06': 'June', '07': 'July', '08': 'August',
+        '09': 'September', '10': 'October', '11': 'November', '12': 'December'
+    };
+    return months[monthKey];
+}
+
+// Fixed formatDate function - timezone independent
+function formatDate(dateStr) {
+    // Parse date manually to avoid timezone issues
+    const [year, month, day] = dateStr.split('-');
+    
+    const months = {
+        '01': 'January', '02': 'February', '03': 'March', '04': 'April',
+        '05': 'May', '06': 'June', '07': 'July', '08': 'August',
+        '09': 'September', '10': 'October', '11': 'November', '12': 'December'
+    };
+    
+    const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    
+    // Create date in UTC to avoid timezone shifts
+    const date = new Date(Date.UTC(parseInt(year), parseInt(month) - 1, parseInt(day)));
+    const dayOfWeek = weekdays[date.getUTCDay()];
+    
+    return `${dayOfWeek}, ${months[month]} ${parseInt(day)}, ${year}`;
+}
+
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+// Enhanced download function
+function downloadFile(url, date, btn) {
+    const originalHTML = btn.innerHTML;
+    
+    // Show downloading state
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Downloading...';
+    btn.classList.add('downloading');
+    btn.disabled = true;
+    
+    // Create a temporary link element to trigger download
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `hansard-${date}.pdf`; // Suggest filename
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    
+    // Trigger download
+    link.click();
+    document.body.removeChild(link);
+    
+    // Simulate download completion
+    setTimeout(() => {
+        btn.innerHTML = '<i class="fas fa-check"></i> Downloaded';
+        btn.classList.remove('downloading');
+        btn.classList.add('success');
+        
+        // Reset button after 2 seconds
+        setTimeout(() => {
+            btn.innerHTML = originalHTML;
+            btn.classList.remove('success');
+            btn.disabled = false;
+        }, 2000);
+    }, 1500);
+}
+
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chairman - North Western Provincial Council</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 20%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #1e3c72;
+        }
+
+        .site-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+        }
+.chairman-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;      /* makes image fill circle nicely */
+    border-radius: 50%;     /* ensures perfect circular crop */
+    border: 5px solid rgba(255,255,255,0.3);
+}
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border: 2px solid transparent;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            border-color: white;
+        }
+
+        .nav-link.back-home {
+            border-color: white;
+        }
+
+        .nav-link.back-home:hover {
+            background: white;
+            color: #1e3c72;
+        }
+
+        /* Page Header */
+         .page-header {
+            margin-top: 100px;
+            background: linear-gradient(135deg, 
+                #6a11cb 0%,
+                #2575fc 25%,
+                #00d4ff 50%,
+                #7c3aed 75%,
+                #ec4899 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            color: white;
+            text-align: center;
+            padding: 5rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            background: white;
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .breadcrumb-nav {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #666;
+        }
+
+        .breadcrumb a {
+            color: #1e3c72;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 4rem 0;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        /* Chairman Profile */
+        .chairman-profile {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 120px;
+            height: fit-content;
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .profile-header::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 20px solid #2a5298;
+        }
+
+        .chairman-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            font-size: 5rem;
+            color: white;
+            border: 5px solid rgba(255,255,255,0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .chairman-name {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .chairman-title {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .chairman-term {
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            display: inline-block;
+        }
+
+        .profile-content {
+            padding: 3rem 2rem 2rem;
+        }
+
+        .quick-info {
+            margin-bottom: 2rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-icon {
+            width: 40px;
+            height: 40px;
+            background: #ff6b35;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .info-content {
+            flex: 1;
+        }
+
+        .info-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.25rem;
+        }
+
+        .info-value {
+            font-weight: 600;
+            color: #1e3c72;
+        }
+
+        .contact-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .contact-btn {
+            background: #ff6b35;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            text-decoration: none;
+            text-align: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .contact-btn:hover {
+            background: #e5572d;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 107, 53, 0.3);
+        }
+
+        .contact-btn.secondary {
+            background: #1e3c72;
+        }
+
+        .contact-btn.secondary:hover {
+            background: #2a5298;
+        }
+
+        /* Content Sections */
+        .content-area {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .content-section {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: #1e3c72;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: #ff6b35;
+            border-radius: 2px;
+        }
+
+        .content-section p {
+            margin-bottom: 1rem;
+            text-align: justify;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        /* Contact Information Section */
+        .contact-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .contact-card {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 15px;
+            border-left: 5px solid #ff6b35;
+        }
+
+        .contact-card h4 {
+            color: #1e3c72;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .contact-detail {
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .contact-detail i {
+            width: 20px;
+            color: #ff6b35;
+        }
+
+        .contact-detail span {
+            color: #555;
+        }
+
+        .contact-detail a {
+            color: #1e3c72;
+            text-decoration: none;
+        }
+
+        .contact-detail a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsibilities */
+        .responsibilities-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .responsibilities-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .responsibilities-list li:last-child {
+            border-bottom: none;
+        }
+
+        .responsibility-icon {
+            width: 40px;
+            height: 40px;
+            background: #ff6b35;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 0.25rem;
+        }
+
+        .responsibility-content {
+            flex: 1;
+        }
+
+        .responsibility-title {
+            font-weight: 600;
+            color: #1e3c72;
+            margin-bottom: 0.25rem;
+        }
+
+        .responsibility-desc {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Social Media */
+        .social-section {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-link {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link.facebook { background: #3b5998; }
+        .social-link.twitter { background: #1da1f2; }
+        .social-link.linkedin { background: #0077b5; }
+        .social-link.instagram { background: #e1306c; }
+
+        .social-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .chairman-profile {
+                position: relative;
+                top: 0;
+            }
+
+            .chairman-image {
+                width: 150px;
+                height: 150px;
+                font-size: 4rem;
+            }
+.chairman-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;      /* makes image fill circle nicely */
+    border-radius: 50%;     /* ensures perfect circular crop */
+    border: 5px solid rgba(255,255,255,0.3);
+}
+
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .chairman-name {
+                font-size: 1.5rem;
+            }
+
+            .contact-info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        *:focus {
+            outline: 2px solid #ff6b35;
+            outline-offset: 2px;
+        }
+
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: #1e3c72;
+            color: white;
+            padding: 8px;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .skip-link:focus {
+            top: 6px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">ප්‍රධාන අන්තර්ගතය වෙත යන්න</a>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo">
+                        <img src="logo.jpeg" alt="Girl in a jacket" width="200" height="200" class="logo">
+                    </div>
+                    <div class="site-title">වයඹ පළාත් සභාව</div>
+                </div>
+                <nav class="nav-links">
+                    <a href="homesi.html" class="nav-link back-home">
+                        <i class="fas fa-home"></i> මුල් පිටුවට
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>සභාපති</h1>
+            <p>දැක්ම, අඛණ්ඩතාව සහ පොදු සේවයට හා ප්‍රජාතන්ත්‍රවාදී පාලනයට අචල කැපවීම සමඟ වයඹ පළාත් සභාවට නායකත්වය දීම.</p>
+        </div>
+    </section>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container">
+            <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+                <a href="#">මුල් පිටුව</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="#">සාමාජිකයන්</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>සභාපති</span>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content" id="main-content">
+        <div class="container">
+            <div class="content-grid">
+                <!-- Chairman Profile -->
+                <aside class="chairman-profile">
+                    <div class="profile-header">
+                      <div class="chairman-image">
+    <img src="chairman.jpg" alt="Chairman A.M.T.B. Adhikari">
+</div>
+                        <div class="chairman-name">ගරු ඒ.එම්.ටී.බී.අධිකාරි මහතා</div>
+                        <div class="chairman-title">සභාපති</div>
+                        <div class="chairman-term">වත්මන් ධුර කාලය: 2015 - වර්තමානය</div>
+                    </div>
+                    
+                    <div class="profile-content">
+                        <div class="quick-info">
+                            <div class="info-item">
+                                <div class="info-icon">
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                                <div class="info-content">
+                                    <div class="info-label">කාර්යාල දුරකථනය</div>
+                                    <div class="info-value">+94 37 222 3384</div>
+                                </div>
+                            </div>
+
+                            <div class="info-item">
+                                <div class="info-icon">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div class="info-content">
+                                    <div class="info-label">විද්‍යුත් තැපෑල</div>
+                                    <div class="info-value">tikiri.adikari@yahoo.com</div>
+                                </div>
+                            </div>
+
+                            <div class="info-item">
+                                <div class="info-icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div class="info-content">
+                                    <div class="info-label">මැතිවරණ කොට්ඨාශය</div>
+                                    <div class="info-value">කුරුණෑගල දිස්ත්‍රික්කය</div>
+                                </div>
+                            </div>
+
+                            <div class="info-item">
+                                <div class="info-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="info-content">
+                                    <div class="info-label">දේශපාලන පක්ෂය</div>
+                                    <div class="info-value">ශ්‍රී ලංකා පොදුජන පෙරමුණ</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="social-section">
+                           
+                            <div class="social-links">
+                                
+                                
+                               
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Main Content Area -->
+                <div class="content-area">
+                    <!-- Biography -->
+                    <div class="content-section">
+                        <h2 class="section-title">චරිතාපදානය</h2>
+                        <p>ගරු ඒ.එම්.ටී.බී. අධිකාරි මහතා තෙවෙනි පළාත් සභාවේ සිට  අඛණ්ඩව මේ වන තෙක් වයඹ පළාත් සභාවේ ගරු මන්ත්‍රීවරයකු ලෙස කටයුතු කරමින් සිටින අතර 2015 ජූනි මස සිට 2015 ඔක්තෝබර් මාසය දක්වා නියෝජ්‍ය සභාපති ධූරය හොබවන ලදි. එතුමා 2015 ඔක්තෝබර් 06 වන දින වයඹ පළාත් සභාවේ සභාපති ධූරයට තේරී පත්වීය.</p>
+                        
+                        
+                    </div>
+
+                    <!-- Contact Information -->
+                    <div class="content-section">
+                        <h2 class="section-title">සම්බන්ධතා තොරතුරු</h2>
+                        <div class="contact-info-grid">
+                            <div class="contact-card">
+                                <h4><i class="fas fa-building"></i> කාර්යාල ලිපිනය</h4>
+                                <div class="contact-detail">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>වයඹ පළාත් සභා ලේකම් කාර්යාලය<br>
+			            4 වෙනි මහළ<br>
+                                    පළාත් සභා කාර්යාල සංකීර්ණය<br>
+                                    කුරුණෑගල 60000<br>
+                                    වයඹ පළාත, ශ්‍රී ලංකාව</span>
+                                </div>
+                                <div class="contact-detail">
+                                    <i class="fas fa-phone"></i>
+                                    <span>+94 77 351 5077</span>
+                                </div>
+                                <div class="contact-detail">
+                                    <i class="fas fa-fax"></i>
+                                    <span>+94 37 222 3384</span>
+                                </div>
+                                <div class="contact-detail">
+                                    <i class="fas fa-envelope"></i>
+                                    <a href="mailto:tikiri.adikari@yahoo.com">tikiri.adikari@yahoo.com</a>
+                                </div>
+                            </div>
+
+                            
+
+                    <!-- Key Responsibilities -->
+                    
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
